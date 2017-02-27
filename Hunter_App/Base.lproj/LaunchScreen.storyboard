@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,30 +19,47 @@
                         <viewControllerLayoutGuide type="bottom" id="xb3-aO-Qok"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Ze5-6b-2t3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Launching" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uaU-1Y-xIj">
-                                <rect key="frame" x="119" y="243" width="93" height="35"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="93" id="ZJA-Wm-PW9"/>
-                                </constraints>
+                            <imageView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" image="grass_18" translatesAutoresizingMaskIntoConstraints="NO" id="GrG-Sj-3Tg">
+                                <rect key="frame" x="297" y="170" width="429" height="429"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Loading Hunter Game....." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uaU-1Y-xIj">
+                                <rect key="frame" x="416" y="373.5" width="191" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Launching Screen" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MGP-ot-bUs">
+                                <rect key="frame" x="376" y="262" width="273" height="39"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="31"/>
+                                <color key="textColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                <color key="highlightedColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="uaU-1Y-xIj" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="223" id="3gR-oX-bdV"/>
-                            <constraint firstItem="uaU-1Y-xIj" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" constant="119" id="LPj-f8-A6J"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="uaU-1Y-xIj" secondAttribute="bottom" constant="389" id="oYe-v6-Gf8"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="MGP-ot-bUs" secondAttribute="trailing" constant="355" id="MXf-aV-3mx"/>
+                            <constraint firstItem="MGP-ot-bUs" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="242" id="N6d-oD-b87"/>
+                            <constraint firstItem="uaU-1Y-xIj" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="NUw-WA-XPU"/>
+                            <constraint firstItem="MGP-ot-bUs" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="356" id="OrH-JL-tUz"/>
+                            <constraint firstItem="uaU-1Y-xIj" firstAttribute="top" secondItem="MGP-ot-bUs" secondAttribute="bottom" constant="72.5" id="P06-Du-Way"/>
+                            <constraint firstItem="GrG-Sj-3Tg" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="VKg-ig-grQ"/>
+                            <constraint firstItem="GrG-Sj-3Tg" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="fjw-Du-n1P"/>
+                            <constraint firstItem="uaU-1Y-xIj" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="iap-4j-dBN"/>
                         </constraints>
                     </view>
+                    <value key="contentSizeForViewInPopover" type="size" width="1024" height="768"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="1024" height="768"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="104.8" y="197.45127436281859"/>
+            <point key="canvasLocation" x="293.60000000000002" y="154.27286356821591"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="grass_18" width="429" height="429"/>
+    </resources>
 </document>

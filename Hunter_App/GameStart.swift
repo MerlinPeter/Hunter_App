@@ -50,21 +50,7 @@ class GameStart: SKScene {
                 self.view?.presentScene(prefScene)
                 
                 
-                /*
- if nodeTouchedName == "monsterCalloutInfoBattle"{
- //            if userData?.objectForKey("withinRange") as! Bool{
- if let scene=ArenaMonsterBattleScene(fileNamed: "ArenaMonsterBattleScene"){
- scene.scaleMode = .Fill
- scene.userData=NSMutableDictionary()
- print(userData?.objectForKey("id")?.stringValue)
- scene.userData?.setObject((userData?.objectForKey("id"))!, forKey: "id")
- scene.userData?.setObject(userData?.objectForKey("image") as! UIImage, forKey: "image")
- scene.userData?.setObject("practice", forKey: "arenaType")
- scene.userData?.setObject("map", forKey: "where")
- view!.frame=CGRect(x: 0, y: 0, width: userPhoneWidth, height: userPhoneHeight)
- view?.presentScene(scene)
- }*/
-            }
+             }
 
  
         }

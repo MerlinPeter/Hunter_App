@@ -31,6 +31,13 @@ class GameScene: SKScene {
             self.view?.presentScene(gameoverLabel)
         }
  
+            
+            if node[0].name == "tickSprite" {
+                let gamewin = SKScene(fileNamed: "GameWin") as! GameWin
+                
+                self.view?.presentScene(gamewin)
+            }
+
         }
         
     }

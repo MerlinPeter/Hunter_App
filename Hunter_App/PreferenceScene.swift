@@ -25,7 +25,7 @@ class PreferenceScene: SKScene {
         if let location = touch?.location(in: self) {
             let node = self.nodes(at: location)
             
-            if node[0].name == "exitLabel" {
+            if node[0].name == "exitLabel" || node[0].name == "okLable" {
                 if let scrname = self.userData?.value(forKey: "scrname")  {
                     if (scrname as! String == "GameStart") {
                         let scene = SKScene(fileNamed: "GameStartScene") as! GameStart
