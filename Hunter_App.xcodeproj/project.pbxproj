@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		D02799C31E63D3BF00C34A57 /* GameWin.sks in Resources */ = {isa = PBXBuildFile; fileRef = D02799C21E63D3BF00C34A57 /* GameWin.sks */; };
 		D02799C51E63D3E600C34A57 /* GameWin.swift in Sources */ = {isa = PBXBuildFile; fileRef = D02799C41E63D3E600C34A57 /* GameWin.swift */; };
+		D02799C71E6408D200C34A57 /* GameFlow.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D02799C61E6408D200C34A57 /* GameFlow.storyboard */; };
 		D031F27C1E5FCC59000E646B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D031F27B1E5FCC59000E646B /* AppDelegate.swift */; };
 		D031F27E1E5FCC59000E646B /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D031F27D1E5FCC59000E646B /* GameScene.sks */; };
 		D031F2801E5FCC59000E646B /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = D031F27F1E5FCC59000E646B /* Actions.sks */; };
@@ -28,6 +29,7 @@
 /* Begin PBXFileReference section */
 		D02799C21E63D3BF00C34A57 /* GameWin.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameWin.sks; sourceTree = "<group>"; };
 		D02799C41E63D3E600C34A57 /* GameWin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameWin.swift; sourceTree = "<group>"; };
+		D02799C61E6408D200C34A57 /* GameFlow.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = GameFlow.storyboard; sourceTree = "<group>"; };
 		D031F2781E5FCC59000E646B /* Hunter_App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hunter_App.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D031F27B1E5FCC59000E646B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		D031F27D1E5FCC59000E646B /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -81,6 +83,7 @@
 				D0915BEE1E6120280020D014 /* GameOver.sks */,
 				D0915BF01E6120510020D014 /* GameOver.swift */,
 				D031F2831E5FCC59000E646B /* GameViewController.swift */,
+				D02799C61E6408D200C34A57 /* GameFlow.storyboard */,
 				D031F2931E5FD0FA000E646B /* GameStartScene.sks */,
 				D031F2971E5FEC81000E646B /* GameStart.swift */,
 				D031F27D1E5FCC59000E646B /* GameScene.sks */,
@@ -164,6 +167,7 @@
 				D031F2891E5FCC59000E646B /* Assets.xcassets in Resources */,
 				D031F28C1E5FCC59000E646B /* LaunchScreen.storyboard in Resources */,
 				D031F2961E5FD14E000E646B /* PreferenceScene.sks in Resources */,
+				D02799C71E6408D200C34A57 /* GameFlow.storyboard in Resources */,
 				D031F2801E5FCC59000E646B /* Actions.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
