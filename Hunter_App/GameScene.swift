@@ -2,16 +2,18 @@
 //  GameScene.swift
 //  Hunter_App
 //
-//  Created by Peter on 2/23/17.
-//  Copyright © 2017 peter. All rights reserved.
+// 
 //
 
 import SpriteKit
 import GameplayKit
-import CoreMotion;
+import CoreMotion
+import MotionHUD
 
-class GameScene: SKScene {
 
+class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
+    let soldierCategory:UInt32 = 0x1 << 0;
+    let bulletCategory:UInt32 = 0x1 << 1;
     //let  manager  = CMMotionManager()
     var motionManager: CMMotionManager!
     var lastTouchPosition: CGPoint?
@@ -23,7 +25,7 @@ class GameScene: SKScene {
     //this is our actor
     var walkingfox = SKSpriteNode()
     
-    let Player = SKSpriteNode(imageNamed: "Fox.png" )
+    let Player = SKSpriteNode(imageNamed: "bunny.png" )
     let mycamera : SKCameraNode = SKCameraNode()
     let bgImage = SKSpriteNode(imageNamed: "background.png")
     let bgImage1 = SKSpriteNode(imageNamed: "background.png")
@@ -33,6 +35,11 @@ class GameScene: SKScene {
     var touching: Bool = false
 
     override func didMove(to view: SKView) {
+        
+        //doubletab
+        let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
+        tap.numberOfTapsRequired = 2
+        view.addGestureRecognizer(tap)
         
     // code to load images
         
@@ -48,10 +55,12 @@ class GameScene: SKScene {
         walkingfox = SKSpriteNode(imageNamed: textureatlas.textureNames[0] )
         walkingfox.position=CGPoint(x:(self.size.width/2 ) , y:self.size.height/5)
         walkingfox.physicsBody=SKPhysicsBody(circleOfRadius: walkingfox.size.width/2)
-        walkingfox.setScale( 2.0)
+       // walkingfox.setScale( 2.0)
         walkingfox.physicsBody!.allowsRotation = false
         walkingfox.physicsBody!.linearDamping = 0.5
-        
+   //     walkingfox.physicsBody!.categoryBitMask = soldierCategory
+   //     walkingfox.physicsBody!.contactTestBitMask = bulletCategory
+  //      walkingfox.physicsBody!.collisionBitMask = 0
         self.addChild(walkingfox)
         
         
@@ -63,11 +72,16 @@ class GameScene: SKScene {
 
         bgImage.position = CGPoint(x:0,y: self.size.height/2)
         // 1
-        let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: -(1024), y: 0, width: 1024 * 3, height: 768))
+        //let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: -(1024), y: 0, width: 1024 * 3, height: 768))
+        let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: 0, y: 0, width: 667*9 , height: 375))
         // 2
        borderBody.friction = 1
         // 3
-       self.physicsBody = borderBody
+     self.physicsBody = borderBody
+   //  self.physicsBody?.contactTestBitMask = bulletCategory | soldierCategory
+     borderBody.isDynamic=false
+    // borderBody.
+        
         
         bgImage.zPosition = 0
         
@@ -88,12 +102,15 @@ class GameScene: SKScene {
         self.name = "Ground";
 
      
-        Player.position = CGPoint(x:self.size.width * 9, y:self.size.height/5)
+        Player.position = CGPoint(x:5336, y:self.size.height/5)
        
         Player.physicsBody = SKPhysicsBody(circleOfRadius: Player.size.width/2)
-        Player.zPosition = 1
+      //  Player.physicsBody?.categoryBitMask = bulletCategory
+   //     Player.physicsBody?.contactTestBitMask = soldierCategory
+    //    Player.physicsBody?.collisionBitMask = soldierCategory
+        Player.zPosition = 0
         
-      // self.addChild(Player)
+       self.addChild(Player)
         
        self.addChild(mycamera)
         
@@ -101,7 +118,7 @@ class GameScene: SKScene {
         
         mycamera.position = CGPoint(x:self.size.width/2, y:self.size.height/2)
         
-        Player.physicsBody?.isDynamic = true
+        Player.physicsBody?.isDynamic = false
   
        createGround()
         //createRoof()
@@ -115,9 +132,12 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         
- //      walkingfox.position.x = walkingfox.position.x - 5
-        
+     //      walkingfox.position.x = walkingfox.position.x - 5
+        super.update(currentTime)
+
         mycamera.position.x = walkingfox.position.x
+        
+   
  
         
       // moveGrounds()
@@ -129,11 +149,14 @@ class GameScene: SKScene {
             #else
                 if let accelerometerData = motionManager.accelerometerData {
                     physicsWorld.gravity = CGVector(dx: accelerometerData.acceleration.y * -50, dy: accelerometerData.acceleration.x * 50)
-                }
+                }                
             #endif
         
         
-        //jump
+        //code for motionhud
+        
+        
+        
         
     
         
@@ -150,7 +173,7 @@ class GameScene: SKScene {
         {
             let ground = SKSpriteNode(imageNamed: "groundtile.png")
             ground.name = "Ground"
-            ground.size = CGSize(width: (self.scene?.size.width)!, height: 50)
+            ground.size = CGSize(width: (self.scene?.size.width)!, height: 35)
             ground.anchorPoint = CGPoint(x: 0.5, y: 0.5)
             ground.physicsBody = SKPhysicsBody(rectangleOf: ground.size)
             ground.physicsBody?.isDynamic=false
@@ -226,13 +249,16 @@ class GameScene: SKScene {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        walkingfox.run(SKAction.repeatForever(SKAction.animate(with: texturearray, timePerFrame: 0.1)))
-        
-        if touching {
-            print("Go!")
-            walkingfox.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 360))
+        if (walkingfox.hasActions()){
+            walkingfox.removeAllActions()
+         }else{
+            walkingfox.run(SKAction.repeatForever(SKAction.animate(with: texturearray, timePerFrame: 0.1)))
+            
         }
-        touching = true
+        /*if touching {
+           walkingfox.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 160))
+        }
+        touching = true*/
 
         
     
@@ -254,7 +280,7 @@ class GameScene: SKScene {
         }*/
 
         
-      /*  let touch = touches.first
+        /*let touch = touches.first
         if let location = touch?.location(in: self) {
             let node = self.nodes(at: location)
             if node[0].name == "gamepreferLabel" {
@@ -295,5 +321,14 @@ class GameScene: SKScene {
         lastTouchPosition = nil
     }
     
+    func doubleTapped() {
+        // do something cool here
+        walkingfox.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 360))
+
+    }
     
+    func didBeginContact(contact: SKPhysicsContact) {
+        print("CONTACT")
+        
+    }
 }

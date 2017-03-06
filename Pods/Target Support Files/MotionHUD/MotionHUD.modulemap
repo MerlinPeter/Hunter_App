@@ -1,0 +1,6 @@
+framework module MotionHUD {
+  umbrella header "MotionHUD-umbrella.h"
+
+  export *
+  module * { export * }
+}

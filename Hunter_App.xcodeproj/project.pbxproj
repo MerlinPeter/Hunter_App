@@ -26,9 +26,12 @@
 		D073D7A41E6CFD0700684780 /* sample (1).mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D073D7A31E6CFD0700684780 /* sample (1).mp3 */; };
 		D0915BEF1E6120280020D014 /* GameOver.sks in Resources */ = {isa = PBXBuildFile; fileRef = D0915BEE1E6120280020D014 /* GameOver.sks */; };
 		D0915BF11E6120510020D014 /* GameOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0915BF01E6120510020D014 /* GameOver.swift */; };
+		DD48B92EB5DAE64F7465BD91 /* Pods_Hunter_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 661DF2F44B9E4DDF7DB8F547 /* Pods_Hunter_App.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		661DF2F44B9E4DDF7DB8F547 /* Pods_Hunter_App.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Hunter_App.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CC361EFDE51E4ADE10C67AC7 /* Pods-Hunter_App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hunter_App.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Hunter_App/Pods-Hunter_App.debug.xcconfig"; sourceTree = "<group>"; };
 		D02799C21E63D3BF00C34A57 /* GameWin.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameWin.sks; sourceTree = "<group>"; };
 		D02799C41E63D3E600C34A57 /* GameWin.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameWin.swift; sourceTree = "<group>"; };
 		D02799C61E6408D200C34A57 /* GameFlow.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = GameFlow.storyboard; sourceTree = "<group>"; };
@@ -50,6 +53,7 @@
 		D073D7A31E6CFD0700684780 /* sample (1).mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "sample (1).mp3"; sourceTree = "<group>"; };
 		D0915BEE1E6120280020D014 /* GameOver.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameOver.sks; sourceTree = "<group>"; };
 		D0915BF01E6120510020D014 /* GameOver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOver.swift; sourceTree = "<group>"; };
+		F11D85E250AEC17EB87918EB /* Pods-Hunter_App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hunter_App.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hunter_App/Pods-Hunter_App.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,18 +61,38 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD48B92EB5DAE64F7465BD91 /* Pods_Hunter_App.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2416CA205174E7317C8147DA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				CC361EFDE51E4ADE10C67AC7 /* Pods-Hunter_App.debug.xcconfig */,
+				F11D85E250AEC17EB87918EB /* Pods-Hunter_App.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		BC406CAF11F8AB7D2DBF9986 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				661DF2F44B9E4DDF7DB8F547 /* Pods_Hunter_App.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D031F26F1E5FCC59000E646B = {
 			isa = PBXGroup;
 			children = (
 				D073D7A21E6CFCE500684780 /* My music */,
 				D031F27A1E5FCC59000E646B /* Hunter_App */,
 				D031F2791E5FCC59000E646B /* Products */,
+				2416CA205174E7317C8147DA /* Pods */,
+				BC406CAF11F8AB7D2DBF9986 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -121,9 +145,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = D031F2901E5FCC59000E646B /* Build configuration list for PBXNativeTarget "Hunter_App" */;
 			buildPhases = (
+				ED49FA8B6FF1271D1E3A6C0F /* [CP] Check Pods Manifest.lock */,
 				D031F2741E5FCC59000E646B /* Sources */,
 				D031F2751E5FCC59000E646B /* Frameworks */,
 				D031F2761E5FCC59000E646B /* Resources */,
+				8E7F887BE97BB7A32DFA33AA /* [CP] Embed Pods Frameworks */,
+				DB28D26C9B619E43B4FB1F3A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -190,6 +217,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		8E7F887BE97BB7A32DFA33AA /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Hunter_App/Pods-Hunter_App-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DB28D26C9B619E43B4FB1F3A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Hunter_App/Pods-Hunter_App-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		ED49FA8B6FF1271D1E3A6C0F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D031F2741E5FCC59000E646B /* Sources */ = {
@@ -323,31 +398,33 @@
 		};
 		D031F2911E5FCC59000E646B /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CC361EFDE51E4ADE10C67AC7 /* Pods-Hunter_App.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = S36L8PTJAV;
 				INFOPLIST_FILE = Hunter_App/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peter.Hunter-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
 		D031F2921E5FCC59000E646B /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F11D85E250AEC17EB87918EB /* Pods-Hunter_App.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = S36L8PTJAV;
 				INFOPLIST_FILE = Hunter_App/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peter.Hunter-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
