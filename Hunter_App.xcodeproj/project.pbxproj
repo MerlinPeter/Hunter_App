@@ -22,6 +22,8 @@
 		D031F2961E5FD14E000E646B /* PreferenceScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D031F2951E5FD14E000E646B /* PreferenceScene.sks */; };
 		D031F2981E5FEC81000E646B /* GameStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D031F2971E5FEC81000E646B /* GameStart.swift */; };
 		D031F29A1E5FEEBA000E646B /* PreferenceScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D031F2991E5FEEBA000E646B /* PreferenceScene.swift */; };
+		D073D7A11E6C03D200684780 /* foxwalk.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D073D7A01E6C03D200684780 /* foxwalk.atlas */; };
+		D073D7A41E6CFD0700684780 /* sample (1).mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D073D7A31E6CFD0700684780 /* sample (1).mp3 */; };
 		D0915BEF1E6120280020D014 /* GameOver.sks in Resources */ = {isa = PBXBuildFile; fileRef = D0915BEE1E6120280020D014 /* GameOver.sks */; };
 		D0915BF11E6120510020D014 /* GameOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0915BF01E6120510020D014 /* GameOver.swift */; };
 /* End PBXBuildFile section */
@@ -44,6 +46,8 @@
 		D031F2951E5FD14E000E646B /* PreferenceScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PreferenceScene.sks; sourceTree = "<group>"; };
 		D031F2971E5FEC81000E646B /* GameStart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameStart.swift; sourceTree = "<group>"; };
 		D031F2991E5FEEBA000E646B /* PreferenceScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceScene.swift; sourceTree = "<group>"; };
+		D073D7A01E6C03D200684780 /* foxwalk.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; name = foxwalk.atlas; path = ../../IosPete/gameProject/Assets/sprite_fox/fox_walking/foxwalk.atlas; sourceTree = "<group>"; };
+		D073D7A31E6CFD0700684780 /* sample (1).mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "sample (1).mp3"; sourceTree = "<group>"; };
 		D0915BEE1E6120280020D014 /* GameOver.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameOver.sks; sourceTree = "<group>"; };
 		D0915BF01E6120510020D014 /* GameOver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOver.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -62,6 +66,7 @@
 		D031F26F1E5FCC59000E646B = {
 			isa = PBXGroup;
 			children = (
+				D073D7A21E6CFCE500684780 /* My music */,
 				D031F27A1E5FCC59000E646B /* Hunter_App */,
 				D031F2791E5FCC59000E646B /* Products */,
 			);
@@ -78,6 +83,7 @@
 		D031F27A1E5FCC59000E646B /* Hunter_App */ = {
 			isa = PBXGroup;
 			children = (
+				D073D7A01E6C03D200684780 /* foxwalk.atlas */,
 				D031F27B1E5FCC59000E646B /* AppDelegate.swift */,
 				D031F27F1E5FCC59000E646B /* Actions.sks */,
 				D0915BEE1E6120280020D014 /* GameOver.sks */,
@@ -98,6 +104,14 @@
 				D031F28D1E5FCC59000E646B /* Info.plist */,
 			);
 			path = Hunter_App;
+			sourceTree = "<group>";
+		};
+		D073D7A21E6CFCE500684780 /* My music */ = {
+			isa = PBXGroup;
+			children = (
+				D073D7A31E6CFD0700684780 /* sample (1).mp3 */,
+			);
+			name = "My music";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -132,6 +146,7 @@
 				TargetAttributes = {
 					D031F2771E5FCC59000E646B = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = S36L8PTJAV;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -163,9 +178,11 @@
 				D02799C31E63D3BF00C34A57 /* GameWin.sks in Resources */,
 				D0915BEF1E6120280020D014 /* GameOver.sks in Resources */,
 				D031F2941E5FD0FA000E646B /* GameStartScene.sks in Resources */,
+				D073D7A11E6C03D200684780 /* foxwalk.atlas in Resources */,
 				D031F27E1E5FCC59000E646B /* GameScene.sks in Resources */,
 				D031F2891E5FCC59000E646B /* Assets.xcassets in Resources */,
 				D031F28C1E5FCC59000E646B /* LaunchScreen.storyboard in Resources */,
+				D073D7A41E6CFD0700684780 /* sample (1).mp3 in Resources */,
 				D031F2961E5FD14E000E646B /* PreferenceScene.sks in Resources */,
 				D02799C71E6408D200C34A57 /* GameFlow.storyboard in Resources */,
 				D031F2801E5FCC59000E646B /* Actions.sks in Resources */,
@@ -308,11 +325,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = S36L8PTJAV;
 				INFOPLIST_FILE = Hunter_App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peter.Hunter-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -320,11 +340,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = S36L8PTJAV;
 				INFOPLIST_FILE = Hunter_App/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.peter.Hunter-App";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};

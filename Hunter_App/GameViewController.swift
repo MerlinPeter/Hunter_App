@@ -9,11 +9,24 @@
 import UIKit
 import SpriteKit
 import GameplayKit
+//import AVFoundation
 
 class GameViewController: UIViewController {
+    
+    //var audioPlayer = AVAudioPlayer()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        //music
+       /* do{
+            audioPlayer = try AVAudioPlayer(contentsOf: URL.init(fileURLWithPath: Bundle.main.path(forResource: "sample(1)", ofType: "mp3")!))
+            audioPlayer.prepareToPlay()
+        }
+        catch{
+            print(error)
+        }*/
+        
         
         if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
@@ -29,7 +42,14 @@ class GameViewController: UIViewController {
             
             view.showsFPS = true
             view.showsNodeCount = true
+            //view.showsPhysics = true
+            
+
         }
+        
+        
+        
+        
     }
 
     override var shouldAutorotate: Bool {
