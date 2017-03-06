@@ -12,8 +12,12 @@ import MotionHUD
 
 
 class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
-    let soldierCategory:UInt32 = 0x1 << 0;
-    let bulletCategory:UInt32 = 0x1 << 1;
+    
+    
+    let   category_fence:UInt32  = 0x1 << 3;
+    let   category_bunny:UInt32  = 0x1 << 2;
+    let   category_fox:UInt32    = 0x1 << 0;
+    
     //let  manager  = CMMotionManager()
     var motionManager: CMMotionManager!
     var lastTouchPosition: CGPoint?
@@ -35,6 +39,24 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     var touching: Bool = false
 
     override func didMove(to view: SKView) {
+        
+        motionManager = CMMotionManager()
+        motionManager.startAccelerometerUpdates()
+        self.physicsWorld.contactDelegate = self
+        
+        //border
+        // 1
+        //let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: -(1024), y: 0, width: 1024 * 3, height: 768))
+        let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: 0, y: 0, width: 667*9 , height: 375))
+        // 2
+        borderBody.friction = 1
+        // 3
+        self.physicsBody = borderBody
+        self.physicsBody?.categoryBitMask = category_fence
+        self.physicsBody?.contactTestBitMask = category_fox
+        
+        borderBody.isDynamic=false
+        
         
         //doubletab
         let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
@@ -58,29 +80,21 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
        // walkingfox.setScale( 2.0)
         walkingfox.physicsBody!.allowsRotation = false
         walkingfox.physicsBody!.linearDamping = 0.5
-   //     walkingfox.physicsBody!.categoryBitMask = soldierCategory
-   //     walkingfox.physicsBody!.contactTestBitMask = bulletCategory
-  //      walkingfox.physicsBody!.collisionBitMask = 0
+        walkingfox.physicsBody!.categoryBitMask = category_fox
+        walkingfox.physicsBody!.contactTestBitMask = category_fence | category_bunny
+    //    walkingfox.physicsBody!.collisionBitMask = category_bunny
+        walkingfox.physicsBody!.usesPreciseCollisionDetection = true
         self.addChild(walkingfox)
         
         
         
-        motionManager = CMMotionManager()
-        motionManager.startAccelerometerUpdates()
+
+
         
        self.physicsWorld.gravity = CGVector(dx: 0.0, dy: 0.0)
 
         bgImage.position = CGPoint(x:0,y: self.size.height/2)
-        // 1
-        //let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: -(1024), y: 0, width: 1024 * 3, height: 768))
-        let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: 0, y: 0, width: 667*9 , height: 375))
-        // 2
-       borderBody.friction = 1
-        // 3
-     self.physicsBody = borderBody
-   //  self.physicsBody?.contactTestBitMask = bulletCategory | soldierCategory
-     borderBody.isDynamic=false
-    // borderBody.
+     
         
         
         bgImage.zPosition = 0
@@ -102,12 +116,14 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         self.name = "Ground";
 
      
-        Player.position = CGPoint(x:5336, y:self.size.height/5)
+        Player.position = CGPoint(x:5000, y:self.size.height/5)
        
         Player.physicsBody = SKPhysicsBody(circleOfRadius: Player.size.width/2)
-      //  Player.physicsBody?.categoryBitMask = bulletCategory
-   //     Player.physicsBody?.contactTestBitMask = soldierCategory
-    //    Player.physicsBody?.collisionBitMask = soldierCategory
+       Player.physicsBody?.categoryBitMask = category_bunny
+       Player.physicsBody?.contactTestBitMask = category_fence | category_bunny
+       // Player.physicsBody?.collisionBitMask = category_fox
+        Player.physicsBody?.isDynamic = false
+
         Player.zPosition = 0
         
        self.addChild(Player)
@@ -118,7 +134,6 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         
         mycamera.position = CGPoint(x:self.size.width/2, y:self.size.height/2)
         
-        Player.physicsBody?.isDynamic = false
   
        createGround()
         //createRoof()
@@ -181,7 +196,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
            ground.position = CGPoint(x: CGFloat(i) * ground.size.width, y: 0)
             
             self.addChild(ground)
-            print("ground created"  , CGFloat(i) * ground.size.width )
+    //        print("ground created"  , CGFloat(i) * ground.size.width )
             
             
         }
@@ -327,8 +342,27 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
 
     }
     
-    func didBeginContact(contact: SKPhysicsContact) {
-        print("CONTACT")
-        
-    }
+  
+    
+    func didBegin(_ contact: SKPhysicsContact) {
+        var firstBody: SKPhysicsBody
+        var secondBody: SKPhysicsBody
+        // 2
+        if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
+            firstBody = contact.bodyA
+            secondBody = contact.bodyB
+        } else {
+            firstBody = contact.bodyB
+            secondBody = contact.bodyA
+        }
+        // 3
+        if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask == category_bunny {
+            print("Fox hit bunny. First contact has been made.")
+            let gamewin = SKScene(fileNamed: "GameWin") as! GameWin
+            
+            self.view?.presentScene(gamewin)
+            
+
+        }
+            }
 }

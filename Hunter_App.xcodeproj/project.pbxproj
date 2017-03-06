@@ -22,10 +22,10 @@
 		D031F2961E5FD14E000E646B /* PreferenceScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D031F2951E5FD14E000E646B /* PreferenceScene.sks */; };
 		D031F2981E5FEC81000E646B /* GameStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D031F2971E5FEC81000E646B /* GameStart.swift */; };
 		D031F29A1E5FEEBA000E646B /* PreferenceScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D031F2991E5FEEBA000E646B /* PreferenceScene.swift */; };
-		D073D7A11E6C03D200684780 /* foxwalk.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D073D7A01E6C03D200684780 /* foxwalk.atlas */; };
 		D073D7A41E6CFD0700684780 /* sample (1).mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D073D7A31E6CFD0700684780 /* sample (1).mp3 */; };
 		D0915BEF1E6120280020D014 /* GameOver.sks in Resources */ = {isa = PBXBuildFile; fileRef = D0915BEE1E6120280020D014 /* GameOver.sks */; };
 		D0915BF11E6120510020D014 /* GameOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0915BF01E6120510020D014 /* GameOver.swift */; };
+		D7F5682A1E6E0CF300163554 /* foxwalk.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D7F568291E6E0CF300163554 /* foxwalk.atlas */; };
 		DD48B92EB5DAE64F7465BD91 /* Pods_Hunter_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 661DF2F44B9E4DDF7DB8F547 /* Pods_Hunter_App.framework */; };
 /* End PBXBuildFile section */
 
@@ -49,10 +49,10 @@
 		D031F2951E5FD14E000E646B /* PreferenceScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PreferenceScene.sks; sourceTree = "<group>"; };
 		D031F2971E5FEC81000E646B /* GameStart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameStart.swift; sourceTree = "<group>"; };
 		D031F2991E5FEEBA000E646B /* PreferenceScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceScene.swift; sourceTree = "<group>"; };
-		D073D7A01E6C03D200684780 /* foxwalk.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; name = foxwalk.atlas; path = ../../IosPete/gameProject/Assets/sprite_fox/fox_walking/foxwalk.atlas; sourceTree = "<group>"; };
 		D073D7A31E6CFD0700684780 /* sample (1).mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "sample (1).mp3"; sourceTree = "<group>"; };
 		D0915BEE1E6120280020D014 /* GameOver.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameOver.sks; sourceTree = "<group>"; };
 		D0915BF01E6120510020D014 /* GameOver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOver.swift; sourceTree = "<group>"; };
+		D7F568291E6E0CF300163554 /* foxwalk.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = foxwalk.atlas; sourceTree = "<group>"; };
 		F11D85E250AEC17EB87918EB /* Pods-Hunter_App.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Hunter_App.release.xcconfig"; path = "Pods/Target Support Files/Pods-Hunter_App/Pods-Hunter_App.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,7 +107,7 @@
 		D031F27A1E5FCC59000E646B /* Hunter_App */ = {
 			isa = PBXGroup;
 			children = (
-				D073D7A01E6C03D200684780 /* foxwalk.atlas */,
+				D7F568291E6E0CF300163554 /* foxwalk.atlas */,
 				D031F27B1E5FCC59000E646B /* AppDelegate.swift */,
 				D031F27F1E5FCC59000E646B /* Actions.sks */,
 				D0915BEE1E6120280020D014 /* GameOver.sks */,
@@ -205,7 +205,7 @@
 				D02799C31E63D3BF00C34A57 /* GameWin.sks in Resources */,
 				D0915BEF1E6120280020D014 /* GameOver.sks in Resources */,
 				D031F2941E5FD0FA000E646B /* GameStartScene.sks in Resources */,
-				D073D7A11E6C03D200684780 /* foxwalk.atlas in Resources */,
+				D7F5682A1E6E0CF300163554 /* foxwalk.atlas in Resources */,
 				D031F27E1E5FCC59000E646B /* GameScene.sks in Resources */,
 				D031F2891E5FCC59000E646B /* Assets.xcassets in Resources */,
 				D031F28C1E5FCC59000E646B /* LaunchScreen.storyboard in Resources */,
