@@ -18,7 +18,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     let   category_bunny:UInt32  = 0x1 << 2;
     let   category_fox:UInt32    = 0x1 << 0;
     
-    //let  manager  = CMMotionManager()
+    
     var motionManager: CMMotionManager!
     var lastTouchPosition: CGPoint?
 
@@ -26,10 +26,17 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     var texturearray = [SKTexture]()
     
     let ground = SKSpriteNode()
-    //this is our actor
-    var walkingfox = SKSpriteNode()
     
-    let Player = SKSpriteNode(imageNamed: "bunny.png" )
+    //MARK: - Actors
+    
+    var  walkingfox  : SKSpriteNode!
+    var  bunny  : SKSpriteNode!
+    
+    
+    //let Player = SKSpriteNode(imageNamed: "bunny.png" )
+    
+    //MARK: - Cammera
+    
     let mycamera : SKCameraNode = SKCameraNode()
     let bgImage = SKSpriteNode(imageNamed: "background.png")
     let bgImage1 = SKSpriteNode(imageNamed: "background.png")
@@ -37,15 +44,36 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     let bgImage2 = SKSpriteNode(imageNamed: "background.png")
 
     var touching: Bool = false
-
+    
+    
+    //MARK: - Setup
+    func setup(){
+        
+        walkingfox = Fox()
+        walkingfox.position = CGPoint(x:self.frame.midX, y:walkingfox.size.height/2 + 10)
+        self.addChild(walkingfox)
+        
+        bunny = Bunny()
+        bunny.position = CGPoint(x:self.frame.midX + 200, y:self.size.height/5)
+        self.addChild(bunny)
+        
+        self.camera=mycamera
+        mycamera.position = CGPoint(x:self.size.width/2, y:self.size.height/2)
+        self.addChild(mycamera)
+        
+        
+    }
+ 
     override func didMove(to view: SKView) {
         
+        setup()
         motionManager = CMMotionManager()
         motionManager.startAccelerometerUpdates()
         self.physicsWorld.contactDelegate = self
         
+        
         //border
-        // 1
+        // ipad
         //let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: -(1024), y: 0, width: 1024 * 3, height: 768))
         let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: 0, y: 0, width: 667*9 , height: 375))
         // 2
@@ -54,8 +82,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         self.physicsBody = borderBody
         self.physicsBody?.categoryBitMask = category_fence
         self.physicsBody?.contactTestBitMask = category_fox
-        
-        borderBody.isDynamic=false
+          borderBody.isDynamic=false
         
         
         //doubletab
@@ -63,7 +90,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         tap.numberOfTapsRequired = 2
         view.addGestureRecognizer(tap)
         
-    // code to load images
+        // code to load images
         
         textureatlas = SKTextureAtlas(named: "foxwalk")
         
@@ -74,99 +101,44 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             
         }
         
-        walkingfox = SKSpriteNode(imageNamed: textureatlas.textureNames[0] )
-        walkingfox.position=CGPoint(x:(self.size.width/2 ) , y:self.size.height/5)
-        walkingfox.physicsBody=SKPhysicsBody(circleOfRadius: walkingfox.size.width/2)
-       // walkingfox.setScale( 2.0)
-        walkingfox.physicsBody!.allowsRotation = false
-        walkingfox.physicsBody!.linearDamping = 0.5
-        walkingfox.physicsBody!.categoryBitMask = category_fox
-        walkingfox.physicsBody!.contactTestBitMask = category_fence | category_bunny
-    //    walkingfox.physicsBody!.collisionBitMask = category_bunny
-        walkingfox.physicsBody!.usesPreciseCollisionDetection = true
-        self.addChild(walkingfox)
-        
-        
-        
-
-
-        
-       self.physicsWorld.gravity = CGVector(dx: 0.0, dy: 0.0)
-
         bgImage.position = CGPoint(x:0,y: self.size.height/2)
-     
-        
-        
         bgImage.zPosition = 0
-        
-        //self.addChild(bgImage)
-        
+         //self.addChild(bgImage)
         bgImage1.position = CGPoint(x:bgImage1.size.width,y: self.size.height/2)
-        
-        bgImage1.zPosition = 0
-        
-     //   self.addChild(bgImage1)
-        
-        bgImage2.position = CGPoint(x:-bgImage1.size.width,y: self.size.height/2)
-        
+         bgImage1.zPosition = 0
+         //   self.addChild(bgImage1)
+         bgImage2.position = CGPoint(x:-bgImage1.size.width,y: self.size.height/2)
         bgImage2.zPosition = 0
-        
-       // self.addChild(bgImage2)
-        
-        self.name = "Ground";
-
-     
-        Player.position = CGPoint(x:5000, y:self.size.height/5)
-       
-        Player.physicsBody = SKPhysicsBody(circleOfRadius: Player.size.width/2)
-       Player.physicsBody?.categoryBitMask = category_bunny
-       Player.physicsBody?.contactTestBitMask = category_fence | category_bunny
-       // Player.physicsBody?.collisionBitMask = category_fox
-        Player.physicsBody?.isDynamic = false
-
-        Player.zPosition = 0
-        
-       self.addChild(Player)
-        
-       self.addChild(mycamera)
-        
-       self.camera=mycamera
-        
-        mycamera.position = CGPoint(x:self.size.width/2, y:self.size.height/2)
-        
-  
-       createGround()
-        //createRoof()
-        
-    
-
-        
-   
+        // self.addChild(bgImage2)
         
     }
     
+    
     override func update(_ currentTime: TimeInterval) {
         
-     //      walkingfox.position.x = walkingfox.position.x - 5
-        super.update(currentTime)
+        //walkingfox.position.x = walkingfox.position.x - 5
+        
 
-        mycamera.position.x = walkingfox.position.x
+      //  mycamera.position.x = walkingfox.position.x
+        super.update( currentTime)
         
    
  
         
       // moveGrounds()
-             #if (arch(i386) || arch(x86_64))
+       /*      #if (arch(i386) || arch(x86_64))
                 if let currentTouch = lastTouchPosition {
                     let diff = CGPoint(x: currentTouch.x - walkingfox.position.x, y: currentTouch.y - walkingfox.position.y)
                     physicsWorld.gravity = CGVector(dx: diff.x / 100, dy: diff.y / 100)
                 }
             #else
                 if let accelerometerData = motionManager.accelerometerData {
+                    print("upate")
+                    super.update(currentTime)
                     physicsWorld.gravity = CGVector(dx: accelerometerData.acceleration.y * -50, dy: accelerometerData.acceleration.x * 50)
                 }                
             #endif
-        
+        */
         
         //code for motionhud
         
@@ -358,9 +330,9 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         // 3
         if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask == category_bunny {
             print("Fox hit bunny. First contact has been made.")
-            let gamewin = SKScene(fileNamed: "GameWin") as! GameWin
+           // let gamewin = SKScene(fileNamed: "GameWin") as! GameWin
             
-            self.view?.presentScene(gamewin)
+           // self.view?.presentScene(gamewin)
             
 
         }
