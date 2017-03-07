@@ -13,6 +13,22 @@ import MotionHUD
 
 class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
+    //MARK: -- Init
+    override init(size: CGSize ) {
+        super.init(size: size)
+       // self.backgroundColor = backgroundColor
+    
+
+ 
+    }
+    
+    // We have to add the code below to stop Xcode complaining
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setup()
+        //fatalError("init(coder:) has not been implemented")
+    }
+    
     
     let   category_fence:UInt32  = 0x1 << 3;
     let   category_bunny:UInt32  = 0x1 << 2;
@@ -38,6 +54,8 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     //MARK: - Cammera
     
     let mycamera : SKCameraNode = SKCameraNode()
+    
+    
     let bgImage = SKSpriteNode(imageNamed: "background.png")
     let bgImage1 = SKSpriteNode(imageNamed: "background.png")
 
@@ -66,7 +84,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
  
     override func didMove(to view: SKView) {
         
-        setup()
+      
         motionManager = CMMotionManager()
         motionManager.startAccelerometerUpdates()
         self.physicsWorld.contactDelegate = self
@@ -144,11 +162,6 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         
         
         
-        
-    
-        
-        
-        
         }
     
   
@@ -172,26 +185,6 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             
             
         }
-    }
-    func createRoof(){
-        
-        
-      /*  for i in 0...10
-        {
-            let ground = SKSpriteNode(imageNamed: "groundtile.png")
-            ground.name = "Ground"
-            ground.size = CGSize(width: (self.scene?.size.width)!, height: 50)
-            ground.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-            ground.physicsBody = SKPhysicsBody(rectangleOf: ground.size)
-            ground.physicsBody?.isDynamic=false
-            
-            ground.position = CGPoint(x: CGFloat(i) * ground.size.width + self.size.height, y: 0)
-            
-            self.addChild(ground)
-            print("ground created"  , CGFloat(i) * ground.size.width )
-            
-            
-        }*/
     }
     
     func moveGrounds(){
@@ -220,14 +213,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
     
         
-       /* for touch: AnyObject in touches {
-            let location = touch.location(in: self)
-            Player.position.x = location.x
-            Player.position.y = location.y
-            
-        }*/
-    
-        if let touch = touches.first {
+          if let touch = touches.first {
             let location = touch.location(in: self)
             lastTouchPosition = location
         }
@@ -242,31 +228,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             walkingfox.run(SKAction.repeatForever(SKAction.animate(with: texturearray, timePerFrame: 0.1)))
             
         }
-        /*if touching {
-           walkingfox.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 160))
-        }
-        touching = true*/
 
-        
-    
-    /*   if let touch = touches.first {
-            let location = touch.location(in: self)
-            lastTouchPosition = location
-        }
- */
-        // Fox jump 
-
-        
-        
-        
-      /*  for touch: AnyObject in touches {
-            let location = touch.location(in: self)
-            Player.position.x = location.x
-            Player.position.y = location.y
-            
-        }*/
-
-        
         /*let touch = touches.first
         if let location = touch?.location(in: self) {
             let node = self.nodes(at: location)
