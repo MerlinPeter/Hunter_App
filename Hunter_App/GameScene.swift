@@ -14,58 +14,51 @@ import MotionHUD
 class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     //MARK: -- Init
+    
     override init(size: CGSize ) {
         super.init(size: size)
-       // self.backgroundColor = backgroundColor
-    
-
- 
     }
     
-    // We have to add the code below to stop Xcode complaining
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        setup()
-        //fatalError("init(coder:) has not been implemented")
+        actor_setup()
+        border_setup()
     }
     
-    
-    let   category_fence:UInt32  = 0x1 << 3;
-    let   category_bunny:UInt32  = 0x1 << 2;
-    let   category_fox:UInt32    = 0x1 << 0;
-    
-    
+    //MARK: - General Variables
+
+    let category_fence:UInt32  = 0x1 << 3;
+    let category_bunny:UInt32  = 0x1 << 2;
+    let category_fox:UInt32    = 0x1 << 0;
     var motionManager: CMMotionManager!
     var lastTouchPosition: CGPoint?
-
-    var textureatlas = SKTextureAtlas()
-    var texturearray = [SKTexture]()
+    var touching: Bool = false
     
-    let ground = SKSpriteNode()
-    
-    //MARK: - Actors
+    //MARK: - Actors Variables
     
     var  walkingfox  : SKSpriteNode!
     var  bunny  : SKSpriteNode!
     
+    //MARK: - Animaton Variables
     
-    //let Player = SKSpriteNode(imageNamed: "bunny.png" )
+    var textureatlas = SKTextureAtlas()
+    var texturearray = [SKTexture]()
     
-    //MARK: - Cammera
+    //MARK: - Cammera Variables
     
     let mycamera : SKCameraNode = SKCameraNode()
     
+     //MARK: - Background Variables
     
     let bgImage = SKSpriteNode(imageNamed: "background.png")
     let bgImage1 = SKSpriteNode(imageNamed: "background.png")
-
     let bgImage2 = SKSpriteNode(imageNamed: "background.png")
+    let ground = SKSpriteNode()
+    
 
-    var touching: Bool = false
-    
-    
     //MARK: - Setup
-    func setup(){
+    
+    func actor_setup(){
         
         walkingfox = Fox()
         walkingfox.position = CGPoint(x:self.frame.midX, y:walkingfox.size.height/2 + 10)
@@ -82,6 +75,43 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         
     }
  
+    func border_setup(){
+    
+    // ipad
+    //let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: -(1024), y: 0, width: 1024 * 3, height: 768))
+    let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: 0, y: 0, width: 667*9 , height: 375))
+    // 2
+    borderBody.friction = 1
+    // 3
+    self.physicsBody = borderBody
+    self.physicsBody?.categoryBitMask = category_fence
+    self.physicsBody?.contactTestBitMask = category_fox
+    borderBody.isDynamic=false
+    
+    }
+    
+    func scene_setup(){
+        bgImage.position = CGPoint(x:0,y: self.size.height/2)
+        bgImage.zPosition = 0
+        //self.addChild(bgImage)
+        bgImage1.position = CGPoint(x:bgImage1.size.width,y: self.size.height/2)
+        bgImage1.zPosition = 0
+        //   self.addChild(bgImage1)
+        bgImage2.position = CGPoint(x:-bgImage1.size.width,y: self.size.height/2)
+        bgImage2.zPosition = 0
+        // self.addChild(bgImage2)
+        
+    }
+    
+    func screen_tap_setup(view :SKView){
+        //doubletab
+        let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
+        tap.numberOfTapsRequired = 2
+        view.addGestureRecognizer(tap)
+        
+    }
+    //MARK: - SKScene functions
+    
     override func didMove(to view: SKView) {
         
       
@@ -89,24 +119,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         motionManager.startAccelerometerUpdates()
         self.physicsWorld.contactDelegate = self
         
-        
-        //border
-        // ipad
-        //let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: -(1024), y: 0, width: 1024 * 3, height: 768))
-        let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: 0, y: 0, width: 667*9 , height: 375))
-        // 2
-        borderBody.friction = 1
-        // 3
-        self.physicsBody = borderBody
-        self.physicsBody?.categoryBitMask = category_fence
-        self.physicsBody?.contactTestBitMask = category_fox
-          borderBody.isDynamic=false
-        
-        
-        //doubletab
-        let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
-        tap.numberOfTapsRequired = 2
-        view.addGestureRecognizer(tap)
+        screen_tap_setup(view: view)
         
         // code to load images
         
@@ -119,95 +132,15 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             
         }
         
-        bgImage.position = CGPoint(x:0,y: self.size.height/2)
-        bgImage.zPosition = 0
-         //self.addChild(bgImage)
-        bgImage1.position = CGPoint(x:bgImage1.size.width,y: self.size.height/2)
-         bgImage1.zPosition = 0
-         //   self.addChild(bgImage1)
-         bgImage2.position = CGPoint(x:-bgImage1.size.width,y: self.size.height/2)
-        bgImage2.zPosition = 0
-        // self.addChild(bgImage2)
-        
+
     }
     
     
     override func update(_ currentTime: TimeInterval) {
         
-        //walkingfox.position.x = walkingfox.position.x - 5
-        
-
-      //  mycamera.position.x = walkingfox.position.x
         super.update( currentTime)
-        
-   
- 
-        
-      // moveGrounds()
-       /*      #if (arch(i386) || arch(x86_64))
-                if let currentTouch = lastTouchPosition {
-                    let diff = CGPoint(x: currentTouch.x - walkingfox.position.x, y: currentTouch.y - walkingfox.position.y)
-                    physicsWorld.gravity = CGVector(dx: diff.x / 100, dy: diff.y / 100)
-                }
-            #else
-                if let accelerometerData = motionManager.accelerometerData {
-                    print("upate")
-                    super.update(currentTime)
-                    physicsWorld.gravity = CGVector(dx: accelerometerData.acceleration.y * -50, dy: accelerometerData.acceleration.x * 50)
-                }                
-            #endif
-        */
-        
-        //code for motionhud
-        
-        
-        
-        }
-    
-  
-    
-    func createGround(){
-    
-       
-        for i in 0...10
-        {
-            let ground = SKSpriteNode(imageNamed: "groundtile.png")
-            ground.name = "Ground"
-            ground.size = CGSize(width: (self.scene?.size.width)!, height: 35)
-            ground.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-            ground.physicsBody = SKPhysicsBody(rectangleOf: ground.size)
-            ground.physicsBody?.isDynamic=false
-            
-           ground.position = CGPoint(x: CGFloat(i) * ground.size.width, y: 0)
-            
-            self.addChild(ground)
-    //        print("ground created"  , CGFloat(i) * ground.size.width )
-            
-            
-        }
-    }
-    
-    func moveGrounds(){
-        
-        self.enumerateChildNodes(withName: "Ground", using:({
-            (node, error) in
-            
-            node.position.x-=2
-        
-            if node.position.x < (-(self.scene?.size.width)!)
-            {
-                
-                node.position.x += (self.scene?.size.width)! * 3
-                
-            }
-            
-            
-        })
-        
-        
-        
-        )
-    }
+     
+ }
     
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -229,54 +162,44 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             
         }
 
-        /*let touch = touches.first
-        if let location = touch?.location(in: self) {
-            let node = self.nodes(at: location)
-            if node[0].name == "gamepreferLabel" {
-                let prefScene = SKScene(fileNamed: "PreferenceScene") as! PreferenceScene
-                prefScene.userData = NSMutableDictionary()
-                prefScene.userData?.setObject("GameScene", forKey: "scrname"  as NSCopying)
-                self.view?.presentScene(prefScene)
-            }
-            
-            
-            if node[0].name == "gameoverLabel" {
-                let gameoverLabel = SKScene(fileNamed: "GameOver") as! GameOver
-                
-                self.view?.presentScene(gameoverLabel)
-            }
-            
-            
-            if node[0].name == "tickSprite" {
-                let gamewin = SKScene(fileNamed: "GameWin") as! GameWin
-                
-                self.view?.presentScene(gamewin)
-            }
-            
-         
-            
-        }*/
-        
-    }
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        //lastTouchPosition = nil
-        
-       // touching = false
-        
-        
-    }
+      }
+
     
     override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
         lastTouchPosition = nil
     }
     
+    //MARK: - Custom Functions
+    
     func doubleTapped() {
-        // do something cool here
         walkingfox.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 360))
 
     }
     
-  
+    func createGround(){
+        
+        
+        for i in 0...10
+        {
+            let ground = SKSpriteNode(imageNamed: "groundtile.png")
+            ground.name = "Ground"
+            ground.size = CGSize(width: (self.scene?.size.width)!, height: 35)
+            ground.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+            ground.physicsBody = SKPhysicsBody(rectangleOf: ground.size)
+            ground.physicsBody?.isDynamic=false
+            
+            ground.position = CGPoint(x: CGFloat(i) * ground.size.width, y: 0)
+            
+            self.addChild(ground)
+            //        print("ground created"  , CGFloat(i) * ground.size.width )
+            
+            
+        }
+    }
+
+    
+    //MARK: - Contact Delegate functions
+
     
     func didBegin(_ contact: SKPhysicsContact) {
         var firstBody: SKPhysicsBody
@@ -292,11 +215,87 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         // 3
         if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask == category_bunny {
             print("Fox hit bunny. First contact has been made.")
-           // let gamewin = SKScene(fileNamed: "GameWin") as! GameWin
+            // let gamewin = SKScene(fileNamed: "GameWin") as! GameWin
             
-           // self.view?.presentScene(gamewin)
+            // self.view?.presentScene(gamewin)
             
-
+            
         }
-            }
+    }
 }
+
+
+//code for accelmetor function
+
+/*   
+ 
+ #if (arch(i386) || arch(x86_64))
+ if let currentTouch = lastTouchPosition {
+ let diff = CGPoint(x: currentTouch.x - walkingfox.position.x, y: currentTouch.y - walkingfox.position.y)
+ physicsWorld.gravity = CGVector(dx: diff.x / 100, dy: diff.y / 100)
+ }
+ #else
+ if let accelerometerData = motionManager.accelerometerData {
+ print("upate")
+ super.update(currentTime)
+ physicsWorld.gravity = CGVector(dx: accelerometerData.acceleration.y * -50, dy: accelerometerData.acceleration.x * 50)
+ }
+ #endif
+ 
+ button code
+ let touch = touches.first
+ if let location = touch?.location(in: self) {
+ let node = self.nodes(at: location)
+ if node[0].name == "gamepreferLabel" {
+ let prefScene = SKScene(fileNamed: "PreferenceScene") as! PreferenceScene
+ prefScene.userData = NSMutableDictionary()
+ prefScene.userData?.setObject("GameScene", forKey: "scrname"  as NSCopying)
+ self.view?.presentScene(prefScene)
+ }
+ 
+ 
+ if node[0].name == "gameoverLabel" {
+ let gameoverLabel = SKScene(fileNamed: "GameOver") as! GameOver
+ 
+ self.view?.presentScene(gameoverLabel)
+ }
+ 
+ 
+ if node[0].name == "tickSprite" {
+ let gamewin = SKScene(fileNamed: "GameWin") as! GameWin
+ 
+ self.view?.presentScene(gamewin)
+ }
+ 
+ 
+ 
+ }
+ 
+ func moveGrounds(){
+ 
+ self.enumerateChildNodes(withName: "Ground", using:({
+ (node, error) in
+ 
+ node.position.x-=2
+ 
+ if node.position.x < (-(self.scene?.size.width)!)
+ {
+ 
+ node.position.x += (self.scene?.size.width)! * 3
+ 
+ }
+ 
+ 
+ })
+ 
+ 
+ 
+ )
+ }
+
+ 
+ */
+
+
+
+
