@@ -180,15 +180,18 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         
         if ((lefttouches == 1) && (righttouches == 0)){
             
-            let leftMove = SKAction.move(by: CGVector(dx:1.0 * kHugeTime * kMoveSpeed, dy:0), duration: kHugeTime )
+            let leftMove = SKAction.move(by: CGVector(dx:-1.0 * kHugeTime * kMoveSpeed, dy:0), duration: kHugeTime )
             walkingfox.run(leftMove)
 
             //SKAction *leftMove = [SKAction moveBy:CGVectorMake(-1.0*kMoveSpeed*kHugeTime,0) duration:kHugeTime];
 
-        }
+        }else if ((lefttouches == 0) && (righttouches == 1)){
+            let rightMove = SKAction.move(by: CGVector(dx:1.0 * kHugeTime * kMoveSpeed, dy:0), duration: kHugeTime )
+            walkingfox.run(rightMove)
+
 
       }
-
+    }
     
     override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
         lastTouchPosition = nil
