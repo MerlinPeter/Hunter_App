@@ -36,6 +36,8 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     var touching: Bool = false
     var righttouches = 0 //: Int
     var lefttouches = 0 //: Int
+    var kMoveSpeed : Double = 200.0;
+
     
     
     //MARK: - Actors Variables
@@ -157,29 +159,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        /*
- [super touchesBegan:touches withEvent: event];
- 
- static const NSTimeInterval kHugeTime = 9999.0;
- SKNode *character = [self childNodeWithName:@"Character"];
- 
- 
- 
- for (UITouch *touch in touches) {
- if ([touch locationInNode:character.parent].x < character.position.x){
- leftTouches++;
- }
- else{
- rightTouches++;
- }
- }
- 
- if ((leftTouches == 1) && (rightTouches == 0)){
- //move left
- character.xScale = -1.0*ABS(character.xScale);
- //SKAction *shuffleNoise = [SKAction playSoundFileNamed:@"shuffle" waitForCompletion:YES];
- //SKAction *repeatNoise = [SKAction rep*/
-        
+        let  kHugeTime : TimeInterval = 9999.0;
         super.touchesBegan(touches, with: event)
         
         for touch: UITouch in touches {
@@ -199,10 +179,12 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         }
         
         if ((lefttouches == 1) && (righttouches == 0)){
-            //SKAction leftMove = SKAction.move(by: CGVector, duration: )
-             //   [SKAction moveBy:CGVectorMake(-1.0*kMoveSpeed*kHugeTime,0) duration:kHugeTime];
-
             
+            let leftMove = SKAction.move(by: CGVector(dx:1.0 * kHugeTime * kMoveSpeed, dy:0), duration: kHugeTime )
+            walkingfox.run(leftMove)
+
+            //SKAction *leftMove = [SKAction moveBy:CGVectorMake(-1.0*kMoveSpeed*kHugeTime,0) duration:kHugeTime];
+
         }
 
       }
