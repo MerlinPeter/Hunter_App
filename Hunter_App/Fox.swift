@@ -8,11 +8,8 @@
 
 import SpriteKit
 
-class Fox : SKSpriteNode{
-    
-    let   category_fence:UInt32  = 0x1 << 3;
-    let   category_bunny:UInt32  = 0x1 << 2;
-    let   category_fox:UInt32    = 0x1 << 0;
+class Fox : CommonSpriteNode{
+  
     
     // MARK: -Init
     init() {

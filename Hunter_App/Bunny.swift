@@ -8,13 +8,9 @@
 
 import SpriteKit
 
-class Bunny : SKSpriteNode{
+class Bunny : CommonSpriteNode{
     
-    let   category_fence:UInt32  = 0x1 << 3;
-    let   category_bunny:UInt32  = 0x1 << 2;
-    let   category_fox:UInt32    = 0x1 << 0;
-    
-    // MARK: -Init
+     // MARK: -Init
     init() {
         let texture = SKTexture(imageNamed: "bunny.png")
         super.init(texture: texture, color: UIColor.clear, size: texture.size())
