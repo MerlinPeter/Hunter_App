@@ -9,7 +9,8 @@
 import SpriteKit
 
 class Border : SKNode {
-    // MARK: - Contact Variables
+    // MARK: - Contact Variables 
+    // should be taken to parent class
     let   category_fence:UInt32  = 0x1 << 3;
     let   category_bunny:UInt32  = 0x1 << 2;
     let   category_fox:UInt32    = 0x1 << 0;
@@ -19,7 +20,6 @@ class Border : SKNode {
 
     
  public func setup(){
-
     borderBody.friction = 1
     self.physicsBody = borderBody
     self.physicsBody?.categoryBitMask = category_fence
