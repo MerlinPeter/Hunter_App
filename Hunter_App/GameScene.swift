@@ -17,6 +17,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     override init(size: CGSize ) {
         super.init(size: size)
+
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -33,6 +34,9 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     var motionManager: CMMotionManager!
     var lastTouchPosition: CGPoint?
     var touching: Bool = false
+    var righttouches = 0 //: Int
+    var lefttouches = 0 //: Int
+    
     
     //MARK: - Actors Variables
     
@@ -50,7 +54,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
      //MARK: - Background Variables
     
-    let bgImage = SKSpriteNode(imageNamed: "background.png")
+    let background = SKSpriteNode(imageNamed: "background.png")
     let bgImage1 = SKSpriteNode(imageNamed: "background.png")
     let bgImage2 = SKSpriteNode(imageNamed: "background.png")
     let ground = SKSpriteNode()
@@ -69,7 +73,24 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         self.addChild(bunny)
         
         self.camera=mycamera
+        mycamera.position=CGPoint(x:self.frame.midX, y:walkingfox.size.height/2 + 10)
+        
+        let horizConstraint = SKConstraint.distance(SKRange(upperLimit: 50), to: walkingfox)
+        
+        let vertConstraint = SKConstraint.distance(SKRange(upperLimit: 100), to: walkingfox)
+        
+
+        let leftConstraint = SKConstraint.positionX(SKRange(lowerLimit: (camera?.position.x)!))
+        
+        let rightConstraint = SKConstraint.positionX(SKRange(upperLimit: (background.frame.size.width - (camera?.position.x)!)))
+            
+        let bottomConstraint = SKConstraint.positionY(SKRange(lowerLimit: (camera?.position.y)!))
+        
+        let topConstraint = SKConstraint.positionX(SKRange(upperLimit: (background.frame.size.width - (camera?.position.y)!)))
+        
         mycamera.position = CGPoint(x:self.size.width/2, y:self.size.height/2)
+        mycamera.constraints = [horizConstraint,vertConstraint,leftConstraint,bottomConstraint,rightConstraint,topConstraint]
+        
         self.addChild(mycamera)
         
         
@@ -91,9 +112,10 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     }
     
     func scene_setup(){
-        bgImage.position = CGPoint(x:0,y: self.size.height/2)
-        bgImage.zPosition = 0
-        //self.addChild(bgImage)
+        background.position = CGPoint(x:0,y: self.size.height/2)
+        background.zPosition = 0
+        self.addChild(background)
+        
         bgImage1.position = CGPoint(x:bgImage1.size.width,y: self.size.height/2)
         bgImage1.zPosition = 0
         //   self.addChild(bgImage1)
@@ -155,10 +177,51 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
+        /*
+ [super touchesBegan:touches withEvent: event];
+ 
+ static const NSTimeInterval kHugeTime = 9999.0;
+ SKNode *character = [self childNodeWithName:@"Character"];
+ 
+ 
+ 
+ for (UITouch *touch in touches) {
+ if ([touch locationInNode:character.parent].x < character.position.x){
+ leftTouches++;
+ }
+ else{
+ rightTouches++;
+ }
+ }
+ 
+ if ((leftTouches == 1) && (rightTouches == 0)){
+ //move left
+ character.xScale = -1.0*ABS(character.xScale);
+ //SKAction *shuffleNoise = [SKAction playSoundFileNamed:@"shuffle" waitForCompletion:YES];
+ //SKAction *repeatNoise = [SKAction rep*/
+        
+        super.touchesBegan(touches, with: event)
+        
+        for touch: UITouch in touches {
+            if touch.location(in: walkingfox.parent!).x < walkingfox.position.x {
+                lefttouches += 1
+            }else{
+                righttouches += 1
+            }
+            
+        }
+ 
         if (walkingfox.hasActions()){
             walkingfox.removeAllActions()
          }else{
             walkingfox.run(SKAction.repeatForever(SKAction.animate(with: texturearray, timePerFrame: 0.1)))
+            
+        }
+        
+        if ((lefttouches == 1) && (righttouches == 0)){
+            //SKAction leftMove = SKAction.move(by: CGVector, duration: )
+             //   [SKAction moveBy:CGVectorMake(-1.0*kMoveSpeed*kHugeTime,0) duration:kHugeTime];
+
             
         }
 
@@ -191,7 +254,6 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             ground.position = CGPoint(x: CGFloat(i) * ground.size.width, y: 0)
             
             self.addChild(ground)
-            //        print("ground created"  , CGFloat(i) * ground.size.width )
             
             
         }
