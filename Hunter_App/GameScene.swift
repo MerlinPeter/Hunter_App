@@ -40,8 +40,8 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     //MARK: - Actors Variables
     
-    var  walkingfox  : SKSpriteNode!
-    var  bunny  : SKSpriteNode!
+    var  walkingfox =  Fox()
+    var  bunny = Bunny()
     
     //MARK: - Animaton Variables
     
@@ -50,7 +50,8 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     //MARK: - Cammera Variables
     
-    let mycamera : SKCameraNode = SKCameraNode()
+     
+    private let mycamera = Camera()
     
      //MARK: - BackGround & Border Variables
     private let border = Border()
@@ -65,33 +66,20 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     func actor_setup(){
         
-        walkingfox = Fox()
+       
         walkingfox.position = CGPoint(x:self.frame.midX, y:walkingfox.size.height/2 + 10)
         self.addChild(walkingfox)
         
-        bunny = Bunny()
+        
         bunny.position = CGPoint(x:self.frame.midX + 200, y:self.size.height/5)
         self.addChild(bunny)
+        mycamera.setup(walkingfox: walkingfox, background: background)
         
-        self.camera=mycamera
+        self.camera = mycamera
+        
+        
         mycamera.position=CGPoint(x:self.frame.midX, y:walkingfox.size.height/2 + 10)
-        
-        let horizConstraint = SKConstraint.distance(SKRange(upperLimit: 50), to: walkingfox)
-        
-        let vertConstraint = SKConstraint.distance(SKRange(upperLimit: 100), to: walkingfox)
-        
-
-        let leftConstraint = SKConstraint.positionX(SKRange(lowerLimit: (camera?.position.x)!))
-        
-        let rightConstraint = SKConstraint.positionX(SKRange(upperLimit: (background.frame.size.width - (camera?.position.x)!)))
-            
-        let bottomConstraint = SKConstraint.positionY(SKRange(lowerLimit: (camera?.position.y)!))
-        
-        let topConstraint = SKConstraint.positionX(SKRange(upperLimit: (background.frame.size.width - (camera?.position.y)!)))
-        
-        mycamera.position = CGPoint(x:self.size.width/2, y:self.size.height/2)
-        mycamera.constraints = [horizConstraint,vertConstraint,leftConstraint,bottomConstraint,rightConstraint,topConstraint]
-        
+             
         self.addChild(mycamera)
         
         

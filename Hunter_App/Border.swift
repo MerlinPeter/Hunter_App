@@ -14,11 +14,11 @@ class Border : SKNode {
     let   category_bunny:UInt32  = 0x1 << 2;
     let   category_fox:UInt32    = 0x1 << 0;
     
-    
+    let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: 0, y: 0, width: 667*9 , height: 375))
+
 
     
  public func setup(){
-    let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: 0, y: 0, width: 667*9 , height: 375))
 
     borderBody.friction = 1
     self.physicsBody = borderBody
