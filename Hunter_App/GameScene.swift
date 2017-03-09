@@ -52,8 +52,9 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     let mycamera : SKCameraNode = SKCameraNode()
     
-     //MARK: - Background Variables
-    
+     //MARK: - BackGround & Border Variables
+    private let border = Border()
+
     let background = SKSpriteNode(imageNamed: "background.png")
     let bgImage1 = SKSpriteNode(imageNamed: "background.png")
     let bgImage2 = SKSpriteNode(imageNamed: "background.png")
@@ -98,17 +99,8 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
  
     func border_setup(){
     
-    // ipad
-    //let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: -(1024), y: 0, width: 1024 * 3, height: 768))
-    let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: 0, y: 0, width: 667*9 , height: 375))
-    // 2
-    borderBody.friction = 1
-    // 3
-    self.physicsBody = borderBody
-    self.physicsBody?.categoryBitMask = category_fence
-    self.physicsBody?.contactTestBitMask = category_fox
-    borderBody.isDynamic=false
-    
+        border.setup()
+        addChild(border)
     }
     
     func scene_setup(){
