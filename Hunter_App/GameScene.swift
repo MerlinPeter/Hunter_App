@@ -36,10 +36,11 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     var motionManager: CMMotionManager!
     var lastTouchPosition: CGPoint?
     var touching: Bool = false
-    var righttouches = 0 //: Int
-    var lefttouches = 0 //: Int
+    var righttouches :Int = 0 //: Int
+    var lefttouches :Int = 0 //: Int
     var kMoveSpeed : Double = 200.0;
-
+    var jump = 0
+    
     
     
     //MARK: - Actors Variables
@@ -52,6 +53,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     var textureatlas = SKTextureAtlas()
     var texturearray = [SKTexture]()
     var walkAnimation = SKAction()
+    var walkAnimation2 = SKAction()
     
     
     //MARK: - Cammera Variables
@@ -92,6 +94,16 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             
         }
         walkAnimation = SKAction.repeatForever(SKAction.animate(with: texturearray, timePerFrame: 0.1))
+        textureatlas = SKTextureAtlas(named: "foxwalk2")
+        
+        for i  in 0...(textureatlas.textureNames.count-1){
+            
+            let filename = "fox_\(i).png"
+            texturearray.append(SKTexture(imageNamed: filename))
+            
+        }
+        walkAnimation2 = SKAction.repeatForever(SKAction.animate(with: texturearray, timePerFrame: 0.1))
+        
 
     }
     func border_setup(){
@@ -108,9 +120,9 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     func screen_tap_setup(view :SKView){
         //doubletab
-        let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
-        tap.numberOfTapsRequired = 2
-        view.addGestureRecognizer(tap)
+        //let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
+        //tap.numberOfTapsRequired = 2
+       // view.addGestureRecognizer(tap)
         
     }
     //MARK: - SKScene functions
@@ -128,7 +140,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
        // mycammera.setup(walkingfox: walkingfox, background: background_node)
         
           mycammera.position = CGPoint(x: self.frame.midX , y: self.frame.midY)
-          let horizConstraint = SKConstraint.distance(SKRange(upperLimit: 50), toNode: walkingfox)
+          let horizConstraint = SKConstraint.distance(SKRange(upperLimit: 50), to: walkingfox)
         
         
          let vertConstraint = SKConstraint.distance(SKRange(upperLimit: 100), to: walkingfox)
@@ -176,7 +188,10 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         super.touchesBegan(touches, with: event)
         
         for touch: UITouch in touches {
+            print(touch.location(in: walkingfox.parent!).x)
+            print(walkingfox.position.x)
             if touch.location(in: walkingfox.parent!).x < walkingfox.position.x {
+                
                 lefttouches += 1
             }else{
                 righttouches += 1
@@ -194,29 +209,89 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             
             let leftMove = SKAction.move(by: CGVector(dx:-1.0 * kHugeTime * kMoveSpeed, dy:0), duration: kHugeTime )
             walkingfox.run(leftMove)
-            walkingfox.run(walkAnimation)
+            walkingfox.run(walkAnimation2,withKey:"walkingAnimation")
             //mycammera.position = walkingfox.position
 
             
         }else if ((lefttouches == 0) && (righttouches == 1)){
             let rightMove = SKAction.move(by: CGVector(dx:1.0 * kHugeTime * kMoveSpeed, dy:0), duration: kHugeTime )
             walkingfox.run(rightMove)
-            walkingfox.run(walkAnimation)
+            walkingfox.run(walkAnimation,withKey:"walkingAnimation_r")
          //   mycammera.position = walkingfox.position
-
-            
             
         }
+        
+        else if ((lefttouches + righttouches) > 1){
+            //jump
+            
+            let jump = SKAction.applyImpulse(CGVector(dx: 0, dy: 900), duration: 0.3)
+                
+            walkingfox.run(jump)
+            
+            print("jump")
+        }
+        
+        print("touchbegin")
+    print(lefttouches)
+    print(righttouches)
+        
+        
+    }
+    
+    
+    
+    
+    func reduceTouches(_ touches: Set<UITouch>?, with event: UIEvent?){
+        
+        
+        for touch: UITouch in touches! {
+            
+            if touch.location(in: walkingfox.parent!).x < walkingfox.position.x {
+                lefttouches -= 1
+            }else{
+                righttouches -= 1
+            }
+            
+        }
+
+        while((lefttouches < 0) || (righttouches < 0)){
+            
+            if (lefttouches < 0){
+
+                lefttouches = 0
+            }
+            if (righttouches < 0){
+                lefttouches += righttouches
+                righttouches = 0
+            }
+            
+        }
+        
+        if((lefttouches + righttouches) <= 0){
+            print("stop")
+
+            walkingfox.removeAction(forKey: "walkingAnimation")
+            walkingfox.removeAction(forKey: "walkingAnimation_r")
+        }
+        print("reeduce")
+        print(lefttouches)
+        print(righttouches)
+        
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
-        lastTouchPosition = nil
+    super.touchesCancelled(touches!, with: event)
+    self.reduceTouches(touches, with: event)
+    }
+    override func touchesEnded(_ touches: Set<UITouch>?, with event: UIEvent?) {
+       super.touchesEnded(touches!, with: event)
+        self.reduceTouches(touches, with: event)
     }
     
     //MARK: - Custom Functions
     
     func doubleTapped() {
-        walkingfox.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 360))
+//        walkingfox.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 360))
 
     }
     
