@@ -52,8 +52,11 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     var textureatlas = SKTextureAtlas()
     var texturearray = [SKTexture]()
+    var textureatlas2 = SKTextureAtlas()
+    var texturearray2 = [SKTexture]()
     var walkAnimation = SKAction()
     var walkAnimation2 = SKAction()
+    var jumpAnimation = SKAction()
     
     
     //MARK: - Cammera Variables
@@ -94,15 +97,26 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             
         }
         walkAnimation = SKAction.repeatForever(SKAction.animate(with: texturearray, timePerFrame: 0.1))
-        textureatlas = SKTextureAtlas(named: "foxwalk2")
         
-        for i  in 0...(textureatlas.textureNames.count-1){
+        textureatlas2 = SKTextureAtlas(named: "foxwalk2")
+        
+        for i  in 0...(textureatlas2.textureNames.count-1){
             
-            let filename = "fox_\(i).png"
-            texturearray.append(SKTexture(imageNamed: filename))
+            let filename = "fox2_\(i).png"
+            texturearray2.append(SKTexture(imageNamed: filename))
             
         }
-        walkAnimation2 = SKAction.repeatForever(SKAction.animate(with: texturearray, timePerFrame: 0.1))
+        walkAnimation2 = SKAction.repeatForever(SKAction.animate(with: texturearray2, timePerFrame: 0.1))
+        texturearray2.removeAll()
+        textureatlas2 = SKTextureAtlas(named: "foxjump")
+        
+        for i  in 0...(textureatlas2.textureNames.count-1){
+            
+            let filename = "fox_3_\(i).png"
+            texturearray2.append(SKTexture(imageNamed: filename))
+            
+        }
+        jumpAnimation = SKAction.animate(with: texturearray2, timePerFrame: 0.1)
         
 
     }
@@ -140,21 +154,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
        // mycammera.setup(walkingfox: walkingfox, background: background_node)
         
           mycammera.position = CGPoint(x: self.frame.midX , y: self.frame.midY)
-          let horizConstraint = SKConstraint.distance(SKRange(upperLimit: 50), to: walkingfox)
-        
-        
-         let vertConstraint = SKConstraint.distance(SKRange(upperLimit: 100), to: walkingfox)
-         
-         
-         let leftConstraint = SKConstraint.positionX(SKRange(lowerLimit: (mycammera.position.x)))
-         let bottomConstraint = SKConstraint.positionY(SKRange(lowerLimit: mycammera.position.y))
-         
-         let rightConstraint = SKConstraint.positionX(SKRange(upperLimit: (border.frame.size.width - mycammera.position.x)))
-         
-         
-         let topConstraint = SKConstraint.positionX(SKRange(upperLimit: (border.frame.size.width - mycammera.position.y)))
-         
-         mycammera.constraints = [horizConstraint,vertConstraint,leftConstraint,bottomConstraint,rightConstraint,topConstraint]
+ 
         self.camera=mycammera
         
         
@@ -166,7 +166,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
  
         super.update( currentTime)
  
-        mycammera.position = CGPoint(x: self.frame.midX , y: self.frame.midY)
+        mycammera.position = walkingfox.position
 
  
  }
@@ -174,11 +174,6 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
  
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
  
- 
-          if let touch = touches.first {
-            let location = touch.location(in: self)
-            lastTouchPosition = location
-        }
         
     }
     
@@ -208,15 +203,15 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         if ((lefttouches == 1) && (righttouches == 0)){
             
             let leftMove = SKAction.move(by: CGVector(dx:-1.0 * kHugeTime * kMoveSpeed, dy:0), duration: kHugeTime )
-            walkingfox.run(leftMove)
-            walkingfox.run(walkAnimation2,withKey:"walkingAnimation")
+            walkingfox.run(leftMove, withKey :"MoveAction")
+            walkingfox.run(walkAnimation,withKey:"walkingAnimation")
             //mycammera.position = walkingfox.position
 
             
         }else if ((lefttouches == 0) && (righttouches == 1)){
             let rightMove = SKAction.move(by: CGVector(dx:1.0 * kHugeTime * kMoveSpeed, dy:0), duration: kHugeTime )
-            walkingfox.run(rightMove)
-            walkingfox.run(walkAnimation,withKey:"walkingAnimation_r")
+            walkingfox.run(rightMove, withKey :"MoveAction")
+            walkingfox.run(walkAnimation2,withKey:"walkingAnimation")
          //   mycammera.position = walkingfox.position
             
         }
@@ -224,10 +219,11 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         else if ((lefttouches + righttouches) > 1){
             //jump
             
-            let jump = SKAction.applyImpulse(CGVector(dx: 0, dy: 900), duration: 0.3)
+            let jump = SKAction.applyImpulse(CGVector(dx: 0, dy: 1000), duration: 0.3)
                 
             walkingfox.run(jump)
-            
+            walkingfox.run(jumpAnimation,withKey:"jumpAnimation")
+
             print("jump")
         }
         
@@ -257,8 +253,8 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         while((lefttouches < 0) || (righttouches < 0)){
             
             if (lefttouches < 0){
-
-                lefttouches = 0
+                righttouches += lefttouches;
+                  lefttouches = 0
             }
             if (righttouches < 0){
                 lefttouches += righttouches
@@ -271,7 +267,8 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             print("stop")
 
             walkingfox.removeAction(forKey: "walkingAnimation")
-            walkingfox.removeAction(forKey: "walkingAnimation_r")
+            walkingfox.removeAction(forKey: "MoveAction")
+  
         }
         print("reeduce")
         print(lefttouches)
@@ -280,12 +277,12 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
-    super.touchesCancelled(touches!, with: event)
-    self.reduceTouches(touches, with: event)
+      super.touchesCancelled(touches!, with: event)
+      self.reduceTouches(touches, with: event)
     }
     override func touchesEnded(_ touches: Set<UITouch>?, with event: UIEvent?) {
        super.touchesEnded(touches!, with: event)
-        self.reduceTouches(touches, with: event)
+       self.reduceTouches(touches, with: event)
     }
     
     //MARK: - Custom Functions
