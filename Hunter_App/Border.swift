@@ -21,7 +21,7 @@ class Border : SKNode {
     public func setup(border:SKNode){
         
     borderBody=SKPhysicsBody(edgeLoopFrom: border.frame)
-        
+    
     borderBody.friction = 1
     self.physicsBody = borderBody
     self.physicsBody?.categoryBitMask = category_fence
