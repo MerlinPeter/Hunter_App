@@ -22,9 +22,10 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        border_setup()
+
         actor_setup()
         animate_setup()
-        border_setup()
 
     }
     
@@ -61,11 +62,12 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     //MARK: - Cammera Variables
     
-     
-    var mycammera = Camera()
+    var front_camera :SKNode!
+
+   // var mycammera = Camera()
     
      //MARK: - BackGround & Border Variables
-    private let border = Border()
+     let border = Border()
     var background_node:SKNode!
 
       let ground = SKSpriteNode()
@@ -76,7 +78,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     func actor_setup(){
         
        
-        walkingfox.position = CGPoint(x: self.frame.midX , y: self.frame.midY)
+        walkingfox.position = CGPoint(x: -184 , y: 0)
         self.addChild(walkingfox)
         
         
@@ -123,9 +125,19 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     func border_setup(){
         
         background_node = self.childNode(withName: "background")
+ 
         
         border.setup(border: background_node)
+        
+        
         addChild(border)
+        let barra = SKShapeNode(rectOf: CGSize(width: 300, height: 100))
+        barra.name = "bar"
+        barra.fillColor = SKColor.white
+        barra.position = CGPoint(x: 0, y: self.size.height/10)
+       
+        
+        //self.addChild(barra)
     }
     
     func scene_setup(){
@@ -149,24 +161,40 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         self.physicsWorld.contactDelegate = self
         
         screen_tap_setup(view: view)
+        //let zeroRange = SKRange(constantValue: 0)
+       // let foxConst = SKConstraint.distance(zeroRange, to: self.background_node)
         
+        front_camera = self.childNode(withName: "front_camera")
+        let horizConstraint = SKConstraint.distance(SKRange(upperLimit: 100), to: walkingfox)
         
-       // mycammera.setup(walkingfox: walkingfox, background: background_node)
+
+        let vertConstraint = SKConstraint.distance(SKRange(upperLimit: 50), to: walkingfox)
         
-          mycammera.position = CGPoint(x: self.frame.midX , y: self.frame.midY)
- 
-        self.camera=mycammera
+        print(front_camera.position.x)
+         let leftConstraint = SKConstraint.positionX(SKRange(lowerLimit: front_camera.position.x))
+        let bottomConstraint = SKConstraint.positionY(SKRange(lowerLimit: front_camera.position.y))
+        //    id rightConstraint = [SKConstraint positionX:[SKRange rangeWithUpperLimit:(tiles.exitSign.position.x + 200 - camera.position.x)]];
+
+        let rightConstraint = SKConstraint.positionX(SKRange(upperLimit:184))//TBD how to get this no  dynamic
+     
+        print(self.frame.size.width - background_node.frame.size.width)
+      let topConstraint = SKConstraint.positionX(SKRange(upperLimit: (background_node.frame.size.width - front_camera.position.y)))
         
+   
+
+        
+        front_camera.constraints = [horizConstraint, vertConstraint, leftConstraint , bottomConstraint, rightConstraint, topConstraint]
         
  
     }
  
+
  
     override func update(_ currentTime: TimeInterval) {
  
         super.update( currentTime)
- 
-        mycammera.position = walkingfox.position
+
+       // mycammera.position.x = walkingfox.position.x
 
  
  }
@@ -407,6 +435,31 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
  
  )
  }
+ //APPLE CODE
+ let zeroRange = SKRange(constantValue: 0.0)
+ let foxConst = SKConstraint.distance(zeroRange, to: self.walkingfox)
+ 
+ let boardNode = self.childNode(withName: "background")
+ let boardContentRect = boardNode?.calculateAccumulatedFrame()
+ 
+ // get the scene size as scaled by `scaleMode = .AspectFill`
+ let scaledSize = CGSize(width: size.width * front_camera.xScale, height: size.height * front_camera.yScale)
+ 
+ 
+ // inset that frame from the edges of the level
+ // inset by `scaledSize / 2 - 100` to show 100 pt of black around the level
+ // (no need for `- 100` if you want zero padding)
+ // use min() to make sure we don't inset too far if the level is small
+ let xInset = min((scaledSize.width / 2) - 200.0, (boardContentRect?.width)! / 2)
+ let yInset = min((scaledSize.height / 2) - 200.0, (boardContentRect?.height)! / 2)
+ let insetContentRect = boardContentRect?.insetBy(dx: xInset, dy: yInset)
+ 
+ // use the corners of the inset as the X and Y range of a position constraint
+ let xRange = SKRange(lowerLimit: (insetContentRect?.minX)!, upperLimit: (insetContentRect?.maxX)!)
+ let yRange = SKRange(lowerLimit: (insetContentRect?.minY)!, upperLimit: (insetContentRect?.maxY)!)
+ let levelEdgeConstraint = SKConstraint.positionX(xRange, y: yRange)
+ levelEdgeConstraint.referenceNode = boardNode
+ 
  
  
  */
