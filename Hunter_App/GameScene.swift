@@ -23,7 +23,9 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         actor_setup()
+        animate_setup()
         border_setup()
+
     }
     
     //MARK: - General Variables
@@ -49,19 +51,19 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     var textureatlas = SKTextureAtlas()
     var texturearray = [SKTexture]()
+    var walkAnimation = SKAction()
+    
     
     //MARK: - Cammera Variables
     
      
-    private let mycamera = Camera()
+    var mycammera = Camera()
     
      //MARK: - BackGround & Border Variables
     private let border = Border()
+    var background_node:SKNode!
 
-    let background = SKSpriteNode(imageNamed: "background.png")
-    let bgImage1 = SKSpriteNode(imageNamed: "background.png")
-    let bgImage2 = SKSpriteNode(imageNamed: "background.png")
-    let ground = SKSpriteNode()
+      let ground = SKSpriteNode()
     
 
     //MARK: - Setup
@@ -69,41 +71,38 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     func actor_setup(){
         
        
-        walkingfox.position = CGPoint(x:self.frame.midX, y:walkingfox.size.height/2 + 10)
+        walkingfox.position = CGPoint(x: self.frame.midX , y: self.frame.midY)
         self.addChild(walkingfox)
         
         
         bunny.position = CGPoint(x:self.frame.midX + 200, y:self.size.height/5)
-        self.addChild(bunny)
-        mycamera.setup(walkingfox: walkingfox, background: background)
-        
-        self.camera = mycamera
-        
-        
-        mycamera.position=CGPoint(x:self.frame.midX, y:walkingfox.size.height/2 + 10)
-             
-        self.addChild(mycamera)
+        //self.addChild(bunny)
+      
         
         
     }
- 
+    func animate_setup(){
+        
+        textureatlas = SKTextureAtlas(named: "foxwalk")
+        
+        for i  in 0...(textureatlas.textureNames.count-1){
+            
+            let filename = "fox_\(i).png"
+            texturearray.append(SKTexture(imageNamed: filename))
+            
+        }
+        walkAnimation = SKAction.repeatForever(SKAction.animate(with: texturearray, timePerFrame: 0.1))
+
+    }
     func border_setup(){
-    
-        border.setup()
+        
+        background_node = self.childNode(withName: "background")
+        
+        border.setup(border: background_node)
         addChild(border)
     }
     
     func scene_setup(){
-        background.position = CGPoint(x:0,y: self.size.height/2)
-        background.zPosition = 0
-        self.addChild(background)
-        
-        bgImage1.position = CGPoint(x:bgImage1.size.width,y: self.size.height/2)
-        bgImage1.zPosition = 0
-        //   self.addChild(bgImage1)
-        bgImage2.position = CGPoint(x:-bgImage1.size.width,y: self.size.height/2)
-        bgImage2.zPosition = 0
-        // self.addChild(bgImage2)
         
     }
     
@@ -125,31 +124,45 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         
         screen_tap_setup(view: view)
         
-        // code to load images
         
-        textureatlas = SKTextureAtlas(named: "foxwalk")
+       // mycammera.setup(walkingfox: walkingfox, background: background_node)
         
-        for i  in 0...(textureatlas.textureNames.count-1){
-            
-            let filename = "fox_\(i).png"
-            texturearray.append(SKTexture(imageNamed: filename))
-            
-        }
+          mycammera.position = CGPoint(x: self.frame.midX , y: self.frame.midY)
+          let horizConstraint = SKConstraint.distance(SKRange(upperLimit: 50), toNode: walkingfox)
         
-
+        
+         let vertConstraint = SKConstraint.distance(SKRange(upperLimit: 100), to: walkingfox)
+         
+         
+         let leftConstraint = SKConstraint.positionX(SKRange(lowerLimit: (mycammera.position.x)))
+         let bottomConstraint = SKConstraint.positionY(SKRange(lowerLimit: mycammera.position.y))
+         
+         let rightConstraint = SKConstraint.positionX(SKRange(upperLimit: (border.frame.size.width - mycammera.position.x)))
+         
+         
+         let topConstraint = SKConstraint.positionX(SKRange(upperLimit: (border.frame.size.width - mycammera.position.y)))
+         
+         mycammera.constraints = [horizConstraint,vertConstraint,leftConstraint,bottomConstraint,rightConstraint,topConstraint]
+        self.camera=mycammera
+        
+        
+ 
     }
-    
-    
+ 
+ 
     override func update(_ currentTime: TimeInterval) {
-        
+ 
         super.update( currentTime)
-     
+ 
+        mycammera.position = CGPoint(x: self.frame.midX , y: self.frame.midY)
+
+ 
  }
-    
-    
+ 
+ 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-    
-        
+ 
+ 
           if let touch = touches.first {
             let location = touch.location(in: self)
             lastTouchPosition = location
@@ -171,26 +184,29 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             
         }
  
-        if (walkingfox.hasActions()){
+       /* if (walkingfox.hasActions()){
             walkingfox.removeAllActions()
          }else{
-            walkingfox.run(SKAction.repeatForever(SKAction.animate(with: texturearray, timePerFrame: 0.1)))
             
-        }
+        }*/
         
         if ((lefttouches == 1) && (righttouches == 0)){
             
             let leftMove = SKAction.move(by: CGVector(dx:-1.0 * kHugeTime * kMoveSpeed, dy:0), duration: kHugeTime )
             walkingfox.run(leftMove)
+            walkingfox.run(walkAnimation)
+            //mycammera.position = walkingfox.position
 
-            //SKAction *leftMove = [SKAction moveBy:CGVectorMake(-1.0*kMoveSpeed*kHugeTime,0) duration:kHugeTime];
-
+            
         }else if ((lefttouches == 0) && (righttouches == 1)){
             let rightMove = SKAction.move(by: CGVector(dx:1.0 * kHugeTime * kMoveSpeed, dy:0), duration: kHugeTime )
             walkingfox.run(rightMove)
+            walkingfox.run(walkAnimation)
+         //   mycammera.position = walkingfox.position
 
-
-      }
+            
+            
+        }
     }
     
     override func touchesCancelled(_ touches: Set<UITouch>?, with event: UIEvent?) {
@@ -319,7 +335,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
  
  )
  }
-
+ 
  
  */
 

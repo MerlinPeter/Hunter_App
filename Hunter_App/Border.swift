@@ -15,11 +15,13 @@ class Border : SKNode {
     let   category_bunny:UInt32  = 0x1 << 2;
     let   category_fox:UInt32    = 0x1 << 0;
     
-    let borderBody = SKPhysicsBody(edgeLoopFrom : CGRect(x: 0, y: 0, width: 667*9 , height: 375))
-
+    var borderBody : SKPhysicsBody!
 
     
- public func setup(){
+    public func setup(border:SKNode){
+        
+    borderBody=SKPhysicsBody(edgeLoopFrom: border.frame)
+        
     borderBody.friction = 1
     self.physicsBody = borderBody
     self.physicsBody?.categoryBitMask = category_fence

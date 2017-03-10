@@ -25,10 +25,10 @@ class Camera : SKCameraNode {
     
     
     
-    public func setup(walkingfox : SKSpriteNode, background : SKSpriteNode){
+    public func setup(walkingfox : SKSpriteNode, background : SKNode){
         
         
-        let horizConstraint = SKConstraint.distance(SKRange(upperLimit: 50), to: walkingfox)
+       /* let horizConstraint = SKConstraint.distance(SKRange(upperLimit: 50), to: walkingfox)
         
         let vertConstraint = SKConstraint.distance(SKRange(upperLimit: 100), to: walkingfox)
         
@@ -41,7 +41,7 @@ class Camera : SKCameraNode {
         
         let topConstraint = SKConstraint.positionX(SKRange(upperLimit: (background.frame.size.width - position.y)))
         
-         constraints = [horizConstraint,vertConstraint,leftConstraint,bottomConstraint,rightConstraint,topConstraint]
+        constraints = [horizConstraint,vertConstraint,leftConstraint,bottomConstraint,rightConstraint,topConstraint]*/
         
         
         
