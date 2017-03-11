@@ -23,7 +23,6 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         border_setup()
-
         actor_setup()
         animate_setup()
 
@@ -42,8 +41,6 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     var kMoveSpeed : Double = 200.0;
     var jump = 0
     
-    
-    
     //MARK: - Actors Variables
     
     var  walkingfox =  Fox()
@@ -53,8 +50,6 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     var textureatlas = SKTextureAtlas()
     var texturearray = [SKTexture]()
-    var textureatlas2 = SKTextureAtlas()
-    var texturearray2 = [SKTexture]()
     var walkAnimation = SKAction()
     var walkAnimation2 = SKAction()
     var jumpAnimation = SKAction()
@@ -62,30 +57,24 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     //MARK: - Cammera Variables
     
-    var front_camera :SKNode!
-
-   // var mycammera = Camera()
+    var front_camera = MyCamera()
+    
     
      //MARK: - BackGround & Border Variables
-     let border = Border()
+    let border = Border()
     var background_node:SKNode!
-
-      let ground = SKSpriteNode()
+    let ground = SKSpriteNode()
     
 
     //MARK: - Setup
     
     func actor_setup(){
         
-       
         walkingfox.position = CGPoint(x: -184 , y: 0)
         self.addChild(walkingfox)
-        
-        
+    
         bunny.position = CGPoint(x:self.frame.midX + 200, y:self.size.height/5)
         //self.addChild(bunny)
-      
-        
         
     }
     func animate_setup(){
@@ -99,44 +88,39 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             
         }
         walkAnimation = SKAction.repeatForever(SKAction.animate(with: texturearray, timePerFrame: 0.1))
-        
-        textureatlas2 = SKTextureAtlas(named: "foxwalk2")
-        
-        for i  in 0...(textureatlas2.textureNames.count-1){
+        texturearray.removeAll()
+
+        textureatlas = SKTextureAtlas(named: "foxwalk2")
+        for i  in 0...(textureatlas.textureNames.count-1){
             
             let filename = "fox2_\(i).png"
-            texturearray2.append(SKTexture(imageNamed: filename))
+            texturearray.append(SKTexture(imageNamed: filename))
             
         }
-        walkAnimation2 = SKAction.repeatForever(SKAction.animate(with: texturearray2, timePerFrame: 0.1))
-        texturearray2.removeAll()
-        textureatlas2 = SKTextureAtlas(named: "foxjump")
+        walkAnimation2 = SKAction.repeatForever(SKAction.animate(with: texturearray, timePerFrame: 0.1))
+        texturearray.removeAll()
+
+        textureatlas = SKTextureAtlas(named: "foxjump")
         
-        for i  in 0...(textureatlas2.textureNames.count-1){
+        for i  in 0...(textureatlas.textureNames.count-1){
             
             let filename = "fox_3_\(i).png"
-            texturearray2.append(SKTexture(imageNamed: filename))
+            texturearray.append(SKTexture(imageNamed: filename))
             
         }
-        jumpAnimation = SKAction.animate(with: texturearray2, timePerFrame: 0.1)
+        jumpAnimation = SKAction.animate(with: texturearray, timePerFrame: 0.1)
         
 
     }
     func border_setup(){
         
         background_node = self.childNode(withName: "background")
- 
-        
         border.setup(border: background_node)
-        
-        
         addChild(border)
         let barra = SKShapeNode(rectOf: CGSize(width: 300, height: 100))
         barra.name = "bar"
         barra.fillColor = SKColor.white
         barra.position = CGPoint(x: 0, y: self.size.height/10)
-       
-        
         //self.addChild(barra)
     }
     
@@ -146,44 +130,28 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     func screen_tap_setup(view :SKView){
         //doubletab
-        //let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
-        //tap.numberOfTapsRequired = 2
-       // view.addGestureRecognizer(tap)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(doubleTapped))
+        tap.numberOfTapsRequired = 2
+        view.addGestureRecognizer(tap)
         
     }
     //MARK: - SKScene functions
     
     override func didMove(to view: SKView) {
         
-      
+        
         motionManager = CMMotionManager()
         motionManager.startAccelerometerUpdates()
         self.physicsWorld.contactDelegate = self
         
         screen_tap_setup(view: view)
-        //let zeroRange = SKRange(constantValue: 0)
-       // let foxConst = SKConstraint.distance(zeroRange, to: self.background_node)
         
-        front_camera = self.childNode(withName: "front_camera")
-        let horizConstraint = SKConstraint.distance(SKRange(upperLimit: 100), to: walkingfox)
+       self.camera = front_camera 
         
-
-        let vertConstraint = SKConstraint.distance(SKRange(upperLimit: 50), to: walkingfox)
-        
-        print(front_camera.position.x)
-         let leftConstraint = SKConstraint.positionX(SKRange(lowerLimit: front_camera.position.x))
-        let bottomConstraint = SKConstraint.positionY(SKRange(lowerLimit: front_camera.position.y))
-        //    id rightConstraint = [SKConstraint positionX:[SKRange rangeWithUpperLimit:(tiles.exitSign.position.x + 200 - camera.position.x)]];
-
-        let rightConstraint = SKConstraint.positionX(SKRange(upperLimit:184))//TBD how to get this no  dynamic
-     
-        print(self.frame.size.width - background_node.frame.size.width)
-      let topConstraint = SKConstraint.positionX(SKRange(upperLimit: (background_node.frame.size.width - front_camera.position.y)))
-        
-   
-
-        
-        front_camera.constraints = [horizConstraint, vertConstraint, leftConstraint , bottomConstraint, rightConstraint, topConstraint]
+        front_camera.walkingfox  = walkingfox
+        front_camera.background_node = background_node
+        front_camera.setup()
+        addChild(front_camera)
         
  
     }
@@ -316,30 +284,11 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     //MARK: - Custom Functions
     
     func doubleTapped() {
-//        walkingfox.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 360))
+        walkingfox.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 360))
 
     }
     
-    func createGround(){
-        
-        
-        for i in 0...10
-        {
-            let ground = SKSpriteNode(imageNamed: "groundtile.png")
-            ground.name = "Ground"
-            ground.size = CGSize(width: (self.scene?.size.width)!, height: 35)
-            ground.anchorPoint = CGPoint(x: 0.5, y: 0.5)
-            ground.physicsBody = SKPhysicsBody(rectangleOf: ground.size)
-            ground.physicsBody?.isDynamic=false
-            
-            ground.position = CGPoint(x: CGFloat(i) * ground.size.width, y: 0)
-            
-            self.addChild(ground)
-            
-            
-        }
-    }
-
+   
     
     //MARK: - Contact Delegate functions
 
@@ -461,7 +410,26 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
  levelEdgeConstraint.referenceNode = boardNode
  
  
+ func createGround(){
  
+ 
+ for i in 0...10
+ {
+ let ground = SKSpriteNode(imageNamed: "groundtile.png")
+ ground.name = "Ground"
+ ground.size = CGSize(width: (self.scene?.size.width)!, height: 35)
+ ground.anchorPoint = CGPoint(x: 0.5, y: 0.5)
+ ground.physicsBody = SKPhysicsBody(rectangleOf: ground.size)
+ ground.physicsBody?.isDynamic=false
+ 
+ ground.position = CGPoint(x: CGFloat(i) * ground.size.width, y: 0)
+ 
+ self.addChild(ground)
+ 
+ 
+ }
+ }
+
  */
 
 
