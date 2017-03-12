@@ -126,9 +126,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "410"
-            endingLineNumber = "410"
-            landmarkName = "didBegin(_:)"
-            landmarkType = "7">
+            endingLineNumber = "410">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

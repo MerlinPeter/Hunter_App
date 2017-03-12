@@ -20,15 +20,8 @@ class GameOver: SKScene {
             let node = self.nodes(at: location)
             
             if node[0].name == "overnewLabel" {
-                
-                //  if let scene = SKScene(fileNamed: "GameStartScene") {
-                
                 let overnewgame = SKScene(fileNamed: "GameScene") as! GameScene
-                
-                
                 self.view?.presentScene(overnewgame)
-
-            
         }
     }
 
