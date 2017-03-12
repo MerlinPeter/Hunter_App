@@ -40,12 +40,21 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     var lefttouches :Int = 0 //: Int
     var kMoveSpeed : Double = 200.0;
     var jump = 0
+    var scoreLabel: SKLabelNode!
+    
+    var score: Int = 0 {
+        didSet {
+            scoreLabel.text = "Score: \(score)"
+        }
+    }
     
     //MARK: - Actors Variables
     
     var  walkingfox =  Fox()
     var  bunny = Bunny()
     var  bunny1 = Bunny()
+    var  bunny2 = Bunny()
+    var  bunny3 = Bunny()
     
     //MARK: - Animaton Variables
     
@@ -82,6 +91,12 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         
         bunny1.position = CGPoint(x: -300, y:0)
         self.addChild(bunny1)
+        
+        bunny3.position = CGPoint(x: -470, y:0)
+        self.addChild(bunny3)
+        
+        bunny2.position = CGPoint(x: 411, y:151)
+        self.addChild(bunny2)
         
         
     }
@@ -163,7 +178,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         addChild(front_camera)
         
         //Cliff block
-        let sprites = spritesCollection(xposition: -11,yposition: 30)
+        let sprites = spritesCollection(xposition: -469,yposition: -29)
         
           for sprite in sprites {
            addChild(sprite)
@@ -173,6 +188,15 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         for sprite in sprite1 {
             addChild(sprite)
         }
+        
+        scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
+        scoreLabel.text = "Score: 0"
+        scoreLabel.horizontalAlignmentMode = .right
+        scoreLabel.position = CGPoint(x: -365, y: 100)
+        addChild(scoreLabel)
+      // tbd let vertConstraint =  SKConstraint.positionY(SKRange(upperLimit: (0)))
+        
+        //scoreLabel.constraints = [vertConstraint]
     
     }
  
@@ -199,8 +223,6 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         super.touchesBegan(touches, with: event)
         
         for touch: UITouch in touches {
-            print(touch.location(in: walkingfox.parent!).x)
-            print(walkingfox.position.x)
             if touch.location(in: walkingfox.parent!).x < walkingfox.position.x {
                 
                 lefttouches += 1
@@ -239,13 +261,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
                 
             walkingfox.run(jump)
             walkingfox.run(jumpAnimation,withKey:"jumpAnimation")
-
-            print("jump")
         }
-        
-        print("touchbegin")
-    print(lefttouches)
-    print(righttouches)
         
         
     }
@@ -280,15 +296,10 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         }
         
         if((lefttouches + righttouches) <= 0){
-            print("stop")
-
             walkingfox.removeAction(forKey: "walkingAnimation")
             walkingfox.removeAction(forKey: "MoveAction")
   
         }
-        print("reeduce")
-        print(lefttouches)
-        print(righttouches)
         
     }
     
@@ -310,7 +321,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         walkingfox.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 360))
 
     }
-    //MARK: -- Cliff blocks
+    //MARK: - Cliff blocks
     //sprite.position = CGPoint(x: x, y: 30.0)
     private func spritesCollection(xposition: Int,yposition: Int) -> [SKSpriteNode] {
         var sprites = [SKSpriteNode]()
@@ -323,8 +334,13 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
          for i  in 1...(textureatlas.textureNames.count-1){
          
             let sprite = SKSpriteNode(imageNamed: "grass_0\(i).png")
-            // skipping the physicsBody stuff for now as it is not part of the question
-            // giving the sprites a random position
+            sprite.physicsBody=SKPhysicsBody(rectangleOf: sprite.size)
+
+            sprite.physicsBody!.allowsRotation = false
+            sprite.physicsBody!.linearDamping = 0.5
+            sprite.physicsBody!.categoryBitMask = category_fence
+            sprite.physicsBody!.contactTestBitMask = category_bunny | category_fox
+            sprite.physicsBody!.isDynamic = false
             sprite.size = CGSize(width: 63, height: 49)
             sprite.position = CGPoint(x: x, y: y)
             sprites.append(sprite)
@@ -359,8 +375,9 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         let fireParticle = NSKeyedUnarchiver.unarchiveObject(withFile: path!) as! SKEmitterNode
         
         // 3
-        if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask == category_bunny {
+         if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask == category_bunny {
             print("Fox hit bunny. First contact has been made.")
+            score += 1
          
             // let gamewin = SKScene(fileNamed: "GameWin") as! GameWin
             

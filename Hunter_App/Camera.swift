@@ -22,8 +22,12 @@ class MyCamera :SKCameraNode{
         let leftConstraint = SKConstraint.positionX(SKRange(lowerLimit: position.x))
         let bottomConstraint = SKConstraint.positionY(SKRange(lowerLimit: position.y))
         let rightConstraint = SKConstraint.positionX(SKRange(upperLimit:184))//TBD this no need to dynamic
-        let topConstraint = SKConstraint.positionX(SKRange(upperLimit: (background_node.frame.size.width - position.y)))
-        constraints = [horizConstraint, vertConstraint, leftConstraint , bottomConstraint, rightConstraint, topConstraint]
+    //    let topConstraint = SKConstraint.positionY(SKRange(upperLimit: (background_node.frame.size.width - position.y)))
+        let topConstraint = SKConstraint.positionY(SKRange(upperLimit: (0)))//tBD
+        
+
+            //(upperLimit: (background_node.frame.size.width - position.y)))
+        constraints = [horizConstraint, vertConstraint, leftConstraint , bottomConstraint, rightConstraint,topConstraint]
         
         
     }

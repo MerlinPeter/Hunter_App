@@ -13,7 +13,9 @@ class Bunny : CommonSpriteNode{
      // MARK: -Init
     init() {
         let texture = SKTexture(imageNamed: "bunny.png")
-        super.init(texture: texture, color: UIColor.clear, size: texture.size())
+       // super.init(texture: texture, color: UIColor.clear, size: texture.size())
+        super.init(texture: texture, color: UIColor.clear, size: CGSize(width: 82, height: 51))
+        
          setup()
     }
     
@@ -23,7 +25,7 @@ class Bunny : CommonSpriteNode{
     
     func setup(){
         name="Bunny"
-        physicsBody=SKPhysicsBody(circleOfRadius: self.size.width/2)
+        physicsBody=SKPhysicsBody(circleOfRadius: self.size.width/3)
         // walkingfox.setScale( 2.0)
         physicsBody!.allowsRotation = false
         physicsBody!.linearDamping = 0.5
