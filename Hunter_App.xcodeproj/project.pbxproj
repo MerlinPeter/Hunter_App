@@ -23,10 +23,15 @@
 		D031F2981E5FEC81000E646B /* GameStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D031F2971E5FEC81000E646B /* GameStart.swift */; };
 		D031F29A1E5FEEBA000E646B /* PreferenceScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D031F2991E5FEEBA000E646B /* PreferenceScene.swift */; };
 		D073D7A41E6CFD0700684780 /* sample (1).mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D073D7A31E6CFD0700684780 /* sample (1).mp3 */; };
+		D08453F41E750C8200403DF6 /* Cliffblocks.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D08453F31E750C8200403DF6 /* Cliffblocks.atlas */; };
 		D091010E1E71302000783594 /* Border.swift in Sources */ = {isa = PBXBuildFile; fileRef = D091010D1E71302000783594 /* Border.swift */; };
 		D09101101E713E5300783594 /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = D091010F1E713E5300783594 /* Camera.swift */; };
 		D09101121E72AAAC00783594 /* foxwalk2.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D09101111E72AAAC00783594 /* foxwalk2.atlas */; };
 		D09101141E72B11B00783594 /* foxjump.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D09101131E72B11B00783594 /* foxjump.atlas */; };
+		D09101171E7386EB00783594 /* MyParticlespark.sks in Resources */ = {isa = PBXBuildFile; fileRef = D09101151E7386EB00783594 /* MyParticlespark.sks */; };
+		D09101181E7386EB00783594 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = D09101161E7386EB00783594 /* spark.png */; };
+		D091011A1E738D6700783594 /* FireParticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = D09101191E738D6700783594 /* FireParticle.sks */; };
+		D091011C1E74018500783594 /* fox_hit.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D091011B1E74018500783594 /* fox_hit.mp3 */; };
 		D0915BEF1E6120280020D014 /* GameOver.sks in Resources */ = {isa = PBXBuildFile; fileRef = D0915BEE1E6120280020D014 /* GameOver.sks */; };
 		D0915BF11E6120510020D014 /* GameOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0915BF01E6120510020D014 /* GameOver.swift */; };
 		D77652FD1E706BF1007CCED4 /* CommonSpriteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77652FC1E706BF0007CCED4 /* CommonSpriteNode.swift */; };
@@ -57,10 +62,15 @@
 		D031F2971E5FEC81000E646B /* GameStart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameStart.swift; sourceTree = "<group>"; };
 		D031F2991E5FEEBA000E646B /* PreferenceScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceScene.swift; sourceTree = "<group>"; };
 		D073D7A31E6CFD0700684780 /* sample (1).mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "sample (1).mp3"; sourceTree = "<group>"; };
+		D08453F31E750C8200403DF6 /* Cliffblocks.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Cliffblocks.atlas; sourceTree = "<group>"; };
 		D091010D1E71302000783594 /* Border.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Border.swift; sourceTree = "<group>"; };
 		D091010F1E713E5300783594 /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		D09101111E72AAAC00783594 /* foxwalk2.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = foxwalk2.atlas; sourceTree = "<group>"; };
 		D09101131E72B11B00783594 /* foxjump.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = foxjump.atlas; sourceTree = "<group>"; };
+		D09101151E7386EB00783594 /* MyParticlespark.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MyParticlespark.sks; sourceTree = "<group>"; };
+		D09101161E7386EB00783594 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		D09101191E738D6700783594 /* FireParticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FireParticle.sks; sourceTree = "<group>"; };
+		D091011B1E74018500783594 /* fox_hit.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = fox_hit.mp3; sourceTree = "<group>"; };
 		D0915BEE1E6120280020D014 /* GameOver.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameOver.sks; sourceTree = "<group>"; };
 		D0915BF01E6120510020D014 /* GameOver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOver.swift; sourceTree = "<group>"; };
 		D77652FC1E706BF0007CCED4 /* CommonSpriteNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonSpriteNode.swift; sourceTree = "<group>"; };
@@ -121,6 +131,7 @@
 		D031F27A1E5FCC59000E646B /* Hunter_App */ = {
 			isa = PBXGroup;
 			children = (
+				D08453F31E750C8200403DF6 /* Cliffblocks.atlas */,
 				D09101131E72B11B00783594 /* foxjump.atlas */,
 				D09101111E72AAAC00783594 /* foxwalk2.atlas */,
 				D7F568291E6E0CF300163554 /* foxwalk.atlas */,
@@ -134,6 +145,9 @@
 				D031F2971E5FEC81000E646B /* GameStart.swift */,
 				D031F27D1E5FCC59000E646B /* GameScene.sks */,
 				D031F2811E5FCC59000E646B /* GameScene.swift */,
+				D09101151E7386EB00783594 /* MyParticlespark.sks */,
+				D09101191E738D6700783594 /* FireParticle.sks */,
+				D09101161E7386EB00783594 /* spark.png */,
 				D091010D1E71302000783594 /* Border.swift */,
 				D091010F1E713E5300783594 /* Camera.swift */,
 				D7F5682B1E6E962100163554 /* Fox.swift */,
@@ -155,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				D073D7A31E6CFD0700684780 /* sample (1).mp3 */,
+				D091011B1E74018500783594 /* fox_hit.mp3 */,
 			);
 			name = "My music";
 			sourceTree = "<group>";
@@ -222,7 +237,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D09101171E7386EB00783594 /* MyParticlespark.sks in Resources */,
+				D091011A1E738D6700783594 /* FireParticle.sks in Resources */,
 				D031F2871E5FCC59000E646B /* Main.storyboard in Resources */,
+				D08453F41E750C8200403DF6 /* Cliffblocks.atlas in Resources */,
 				D09101141E72B11B00783594 /* foxjump.atlas in Resources */,
 				D09101121E72AAAC00783594 /* foxwalk2.atlas in Resources */,
 				D02799C31E63D3BF00C34A57 /* GameWin.sks in Resources */,
@@ -230,10 +248,12 @@
 				D031F2941E5FD0FA000E646B /* GameStartScene.sks in Resources */,
 				D7F5682A1E6E0CF300163554 /* foxwalk.atlas in Resources */,
 				D031F27E1E5FCC59000E646B /* GameScene.sks in Resources */,
+				D091011C1E74018500783594 /* fox_hit.mp3 in Resources */,
 				D031F2891E5FCC59000E646B /* Assets.xcassets in Resources */,
 				D031F28C1E5FCC59000E646B /* LaunchScreen.storyboard in Resources */,
 				D073D7A41E6CFD0700684780 /* sample (1).mp3 in Resources */,
 				D031F2961E5FD14E000E646B /* PreferenceScene.sks in Resources */,
+				D09101181E7386EB00783594 /* spark.png in Resources */,
 				D02799C71E6408D200C34A57 /* GameFlow.storyboard in Resources */,
 				D031F2801E5FCC59000E646B /* Actions.sks in Resources */,
 			);

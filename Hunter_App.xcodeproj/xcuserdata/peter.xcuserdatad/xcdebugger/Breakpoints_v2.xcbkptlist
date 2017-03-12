@@ -118,15 +118,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hunter_App/GameScene.swift"
-            timestampString = "510834526.680429"
+            timestampString = "510991346.561281"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "359"
-            endingLineNumber = "359"
+            startingLineNumber = "410"
+            endingLineNumber = "410"
             landmarkName = "didBegin(_:)"
             landmarkType = "7">
          </BreakpointContent>

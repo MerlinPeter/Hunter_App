@@ -22,13 +22,14 @@ class Bunny : CommonSpriteNode{
     }
     
     func setup(){
+        name="Bunny"
         physicsBody=SKPhysicsBody(circleOfRadius: self.size.width/2)
         // walkingfox.setScale( 2.0)
         physicsBody!.allowsRotation = false
         physicsBody!.linearDamping = 0.5
         physicsBody!.categoryBitMask = category_bunny
         physicsBody!.contactTestBitMask = category_fence | category_fox
-         physicsBody!.isDynamic = false
+         physicsBody!.isDynamic = true
         ////walkingfox = SKSpriteNode(imageNamed: "fox_0.png")
     }
     

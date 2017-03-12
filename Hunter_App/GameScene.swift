@@ -48,6 +48,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     var  walkingfox =  Fox()
     var  bunny = Bunny()
+    var  bunny1 = Bunny()
     
     //MARK: - Animaton Variables
     
@@ -73,6 +74,9 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
       let ground = SKSpriteNode()
     
 
+    //Emitter variable
+    
+    
     //MARK: - Setup
     
     func actor_setup(){
@@ -82,9 +86,12 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         self.addChild(walkingfox)
         
         
-        bunny.position = CGPoint(x:self.frame.midX + 200, y:self.size.height/5)
-        //self.addChild(bunny)
-      
+        bunny.position = CGPoint(x: 200, y:0)
+        self.addChild(bunny)
+        
+        bunny1.position = CGPoint(x: -300, y:0)
+        self.addChild(bunny1)
+        
         
         
     }
@@ -180,12 +187,22 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         print(self.frame.size.width - background_node.frame.size.width)
       let topConstraint = SKConstraint.positionX(SKRange(upperLimit: (background_node.frame.size.width - front_camera.position.y)))
         
-   
 
-        
+        //camera constraint
         front_camera.constraints = [horizConstraint, vertConstraint, leftConstraint , bottomConstraint, rightConstraint, topConstraint]
         
- 
+        //Cliff block
+        let sprites = spritesCollection(xposition: -11,yposition: 30)
+        
+          for sprite in sprites {
+           addChild(sprite)
+         }
+
+         let sprite1 = spritesCollection(xposition: 350,yposition: 72)
+        for sprite in sprite1 {
+            addChild(sprite)
+        }
+    
     }
  
 
@@ -311,6 +328,9 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     override func touchesEnded(_ touches: Set<UITouch>?, with event: UIEvent?) {
        super.touchesEnded(touches!, with: event)
        self.reduceTouches(touches, with: event)
+        
+    
+   
     }
     
     //MARK: - Custom Functions
@@ -319,6 +339,29 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
 //        walkingfox.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 360))
 
     }
+    //MARK: -- Cliff blocks
+    //sprite.position = CGPoint(x: x, y: 30.0)
+    private func spritesCollection(xposition: Int,yposition: Int) -> [SKSpriteNode] {
+        var sprites = [SKSpriteNode]()
+        textureatlas = SKTextureAtlas(named: "Cliffblocks.atlas")
+        let incrvar = CGFloat(57.319)
+        var x = CGFloat(xposition)
+        var y = CGFloat(yposition)
+  
+
+         for i  in 1...(textureatlas.textureNames.count-1){
+         
+            let sprite = SKSpriteNode(imageNamed: "grass_0\(i).png")
+            // skipping the physicsBody stuff for now as it is not part of the question
+            // giving the sprites a random position
+            sprite.size = CGSize(width: 63, height: 49)
+            sprite.position = CGPoint(x: x, y: y)
+            sprites.append(sprite)
+            x = x + incrvar
+        }
+        return sprites
+        //
+            }
     
     func createGround(){
         
@@ -346,6 +389,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     func didBegin(_ contact: SKPhysicsContact) {
         var firstBody: SKPhysicsBody
+        
         var secondBody: SKPhysicsBody
         // 2
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
@@ -355,16 +399,38 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             firstBody = contact.bodyB
             secondBody = contact.bodyA
         }
+        
+        let  actionAudioExplode = SKAction.playSoundFileNamed("fox_hit.mp3",waitForCompletion: false)
+        
+         //(SKAction  playSoundFileNamed : "fox_hit.mp3"  waitForCompletion:NO)
+        let path = Bundle.main.path(forResource: "FireParticle", ofType: "sks")
+        let fireParticle = NSKeyedUnarchiver.unarchiveObject(withFile: path!) as! SKEmitterNode
+        
         // 3
         if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask == category_bunny {
             print("Fox hit bunny. First contact has been made.")
+         
             // let gamewin = SKScene(fileNamed: "GameWin") as! GameWin
             
             // self.view?.presentScene(gamewin)
             
+            //Particle Emitter
+            fireParticle.position = (contact.bodyB.node?.position)!
+            contact.bodyB.node?.removeFromParent()
+            fireParticle.name = "FIREParticle"
+            fireParticle.targetNode = self.scene
+           // fireParticle.particleBirthRate = 150
+            fireParticle.particleLifetime = 0.5
+           // let actionExplodeSequence = SKAction.sequence([actionAudioExplode])
+   
+            walkingfox.run(actionAudioExplode)
             
+            self.addChild(fireParticle)
+
         }
+    
     }
+    
 }
 
 
