@@ -23,6 +23,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         border_setup()
+        scene_setup()
         actor_setup()
         animate_setup()
 
@@ -33,6 +34,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     let category_fence:UInt32  = 0x1 << 3;
     let category_bunny:UInt32  = 0x1 << 2;
     let category_fox:UInt32    = 0x1 << 0;
+    let category_pbush:UInt32  = 0x1 << 4;
     var motionManager: CMMotionManager!
     var lastTouchPosition: CGPoint?
     var touching: Bool = false
@@ -41,10 +43,18 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     var kMoveSpeed : Double = 200.0;
     var jump = 0
     var scoreLabel: SKLabelNode!
+    var timerLabel: SKLabelNode!
+    var gameTimer: Timer!
+    var bunny_count : Int = 0
     
     var score: Int = 0 {
         didSet {
-            scoreLabel.text = "Score: \(score)"
+            scoreLabel.text = "Score : \(score)"
+        }
+    }
+    var seconds: Int = 40 {
+        didSet {
+            timerLabel.text = "Clock : \(seconds)"
         }
     }
     
@@ -55,6 +65,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     var  bunny1 = Bunny()
     var  bunny2 = Bunny()
     var  bunny3 = Bunny()
+    var pbush1 = Poisonbush()
     
     //MARK: - Animaton Variables
     
@@ -74,6 +85,8 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     let border = Border()
     var background_node:SKNode!
     let ground = SKSpriteNode()
+    var backgroundMusic: SKAudioNode!
+
     
 
     //Emitter variable
@@ -95,9 +108,11 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         bunny3.position = CGPoint(x: -470, y:0)
         self.addChild(bunny3)
         
-        bunny2.position = CGPoint(x: 411, y:151)
+        bunny2.position = CGPoint(x: 411, y:51)
         self.addChild(bunny2)
         
+        pbush1.position = CGPoint(x: 204, y: -160)
+        self.addChild(pbush1)
         
     }
     func animate_setup(){
@@ -148,6 +163,17 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     }
     
     func scene_setup(){
+        //Cliff block
+        let sprites = spritesCollection(xposition: -469,yposition: -29)
+        
+        for sprite in sprites {
+            addChild(sprite)
+        }
+        
+        let sprite1 = spritesCollection(xposition: 400,yposition: 42)
+        for sprite in sprite1 {
+            addChild(sprite)
+        }
         
     }
     
@@ -162,7 +188,10 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     override func didMove(to view: SKView) {
         
-        
+        if let musicURL = Bundle.main.url(forResource: "bg_music", withExtension: "mp3") {
+            backgroundMusic = SKAudioNode(url: musicURL)
+            addChild(backgroundMusic)
+        }
         motionManager = CMMotionManager()
         motionManager.startAccelerometerUpdates()
         self.physicsWorld.contactDelegate = self
@@ -177,29 +206,41 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         front_camera.setup()
         addChild(front_camera)
         
-        //Cliff block
-        let sprites = spritesCollection(xposition: -469,yposition: -29)
-        
-          for sprite in sprites {
-           addChild(sprite)
-         }
-
-         let sprite1 = spritesCollection(xposition: 350,yposition: 72)
-        for sprite in sprite1 {
-            addChild(sprite)
-        }
         
         scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
-        scoreLabel.text = "Score: 0"
-        scoreLabel.horizontalAlignmentMode = .right
-        scoreLabel.position = CGPoint(x: -365, y: 100)
+        scoreLabel.text = "Score : 0"
+         scoreLabel.horizontalAlignmentMode = .left
+        scoreLabel.verticalAlignmentMode = .top
         addChild(scoreLabel)
-      // tbd let vertConstraint =  SKConstraint.positionY(SKRange(upperLimit: (0)))
         
-        //scoreLabel.constraints = [vertConstraint]
+        let horizConstraint = SKConstraint.distance(SKRange(constantValue: 0), to: front_camera)
+        let vertConstraint = SKConstraint.distance(SKRange(constantValue: 0), to: front_camera)
+        let leftConstraint = SKConstraint.positionX(SKRange(lowerLimit: front_camera.position.x - 100))
+        let bottomConstraint = SKConstraint.positionY(SKRange(constantValue: 0))
+        let rightConstraint = SKConstraint.positionX(SKRange(lowerLimit:-100))
+        let topConstraint = SKConstraint.positionY(SKRange(constantValue: (140)))
+       
+        scoreLabel.constraints = [horizConstraint, vertConstraint, leftConstraint , bottomConstraint, rightConstraint,topConstraint]
+        
+        
+        timerLabel = SKLabelNode(fontNamed: "Chalkduster")
+        timerLabel.text = "Clock : "+String(seconds)
+        timerLabel.horizontalAlignmentMode = .left
+        timerLabel.verticalAlignmentMode = .top
+        addChild(timerLabel)
+        
+         let topConstraint_clock = SKConstraint.positionY(SKRange(constantValue: (170)))
+       timerLabel.constraints = [horizConstraint, vertConstraint, leftConstraint , bottomConstraint, rightConstraint,topConstraint_clock]
+        
+        gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
+
     
     }
- 
+    
+    override func willMove(from view: SKView) {
+        gameTimer.invalidate()
+
+    }
 
  
     override func update(_ currentTime: TimeInterval) {
@@ -316,10 +357,27 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     }
     
     //MARK: - Custom Functions
-    
+   
     func doubleTapped() {
         walkingfox.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 360))
 
+    }
+    
+    func runTimedCode() {
+        
+        if(seconds <= 0) {
+            
+            let prefScene = SKScene(fileNamed: "GameOver") as! GameOver
+            prefScene.userData = NSMutableDictionary()
+            prefScene.userData?.setObject("timer", forKey: "scrname"  as NSCopying)
+            self.view?.presentScene(prefScene)
+
+        }
+        seconds-=1
+        
+        
+        
+        
     }
     //MARK: - Cliff blocks
     //sprite.position = CGPoint(x: x, y: 30.0)
@@ -328,7 +386,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         textureatlas = SKTextureAtlas(named: "Cliffblocks.atlas")
         let incrvar = CGFloat(57.319)
         var x = CGFloat(xposition)
-        var y = CGFloat(yposition)
+        let y = CGFloat(yposition)
   
 
          for i  in 1...(textureatlas.textureNames.count-1){
@@ -356,6 +414,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
 
     
     func didBegin(_ contact: SKPhysicsContact) {
+        //fox hit bunny
         var firstBody: SKPhysicsBody
         
         var secondBody: SKPhysicsBody
@@ -368,6 +427,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             secondBody = contact.bodyA
         }
         
+        
         let  actionAudioExplode = SKAction.playSoundFileNamed("fox_hit.mp3",waitForCompletion: false)
         
          //(SKAction  playSoundFileNamed : "fox_hit.mp3"  waitForCompletion:NO)
@@ -377,26 +437,38 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         // 3
          if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask == category_bunny {
             print("Fox hit bunny. First contact has been made.")
-            score += 1
-         
-            // let gamewin = SKScene(fileNamed: "GameWin") as! GameWin
-            
-            // self.view?.presentScene(gamewin)
-            
-            //Particle Emitter
+            score += 500
             fireParticle.position = (contact.bodyB.node?.position)!
             contact.bodyB.node?.removeFromParent()
             fireParticle.name = "FIREParticle"
             fireParticle.targetNode = self.scene
            // fireParticle.particleBirthRate = 150
             fireParticle.particleLifetime = 0.5
-           // let actionExplodeSequence = SKAction.sequence([actionAudioExplode])
-   
+    
             walkingfox.run(actionAudioExplode)
             
             self.addChild(fireParticle)
+            print(bunny_count)
+            if (bunny_count == 3) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                    let gamewin = SKScene(fileNamed: "GameWin") as! GameWin
+                    
+                    self.view?.presentScene(gamewin)})
+                
 
-        }
+            }
+            bunny_count+=1
+            
+ 
+        } else if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask == category_pbush {
+            print("Fox hit poisonbush. ")
+            
+            let prefScene = SKScene(fileNamed: "GameOver") as! GameOver
+            prefScene.userData = NSMutableDictionary()
+            prefScene.userData?.setObject("pbush", forKey: "scrname"  as NSCopying)
+            self.view?.presentScene(prefScene)
+
+       }
     
     }
     

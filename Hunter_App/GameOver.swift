@@ -10,8 +10,32 @@ import UIKit
 import SpriteKit
 
 class GameOver: SKScene {
+    
+    
+    override func didMove(to view: SKView) {
+        var labelNode: SKLabelNode!
+        
+        labelNode = self.childNode(withName: "game_over") as! SKLabelNode!
 
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        if let scrname = self.userData?.value(forKey: "scrname")  {
+            if (scrname as! String == "timer") {
+               
+                 labelNode.text = "Timer Elapsed you had only 40 Seconds";
+                
+                
+            }else{
+                
+                 labelNode.text = "Oh No!! You Hit Poision Bush";
+
+                
+                
+            }
+
+      }
+    }
+    
+
+     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         
         let touch = touches.first
@@ -26,5 +50,6 @@ class GameOver: SKScene {
     }
 
     
-}
+ }
+
 }

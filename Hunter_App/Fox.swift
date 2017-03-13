@@ -26,7 +26,7 @@ class Fox : CommonSpriteNode{
     func setup(){
         name="fox"
          physicsBody=SKPhysicsBody(circleOfRadius: self.size.width/2)
-         // walkingfox.setScale( 2.0)
+         setScale(0.75)
          physicsBody!.allowsRotation = false
          physicsBody!.linearDamping = 0.5
          physicsBody!.categoryBitMask = category_fox
