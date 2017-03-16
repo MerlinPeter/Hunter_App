@@ -20,12 +20,12 @@ class GameOver: SKScene {
         if let scrname = self.userData?.value(forKey: "scrname")  {
             if (scrname as! String == "timer") {
                
-                 labelNode.text = "Timer Elapsed you had only 40 Seconds";
+                 labelNode.text = "Game over: Timer Elapsed  35 Seconds";
                 
                 
             }else{
                 
-                 labelNode.text = "Oh No!! You Hit Poision Bush";
+                 labelNode.text = "Game over: Oh No!! You Hit Poision Bush";
 
                 
                 

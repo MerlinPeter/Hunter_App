@@ -18,6 +18,8 @@ class GameViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        print("this is working")
+        
         //music
        /* do{
             audioPlayer = try AVAudioPlayer(contentsOf: URL.init(fileURLWithPath: Bundle.main.path(forResource: "sample(1)", ofType: "mp3")!))
@@ -28,9 +30,9 @@ class GameViewController: UIViewController {
         }*/
         
         
-        if let view = self.view as! SKView? {
+       if let view = self.view as! SKView? {
             // Load the SKScene from 'GameScene.sks'
-            if let scene = SKScene(fileNamed: "GameScene") {
+            if let scene = SKScene(fileNamed: "GameStartScene") {
                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .aspectFill
                 
@@ -46,7 +48,7 @@ class GameViewController: UIViewController {
             
 
         }
-        
+    
         
         
         

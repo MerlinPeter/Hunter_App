@@ -52,7 +52,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             scoreLabel.text = "Score : \(score)"
         }
     }
-    var seconds: Int = 40 {
+    var seconds: Int = 35 {
         didSet {
             timerLabel.text = "Clock : \(seconds)"
         }
@@ -140,7 +140,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
 
         textureatlas = SKTextureAtlas(named: "foxjump")
         
-        for i  in 0...(textureatlas.textureNames.count-1){
+        for i  in 0...(textureatlas.textureNames.count-2){
             
             let filename = "fox_3_\(i).png"
             texturearray.append(SKTexture(imageNamed: filename))
@@ -196,6 +196,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         motionManager.startAccelerometerUpdates()
         self.physicsWorld.contactDelegate = self
         
+        //disabling double tap : 
         screen_tap_setup(view: view)
         
        self.camera = front_camera 
@@ -301,7 +302,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             let jump = SKAction.applyImpulse(CGVector(dx: 0, dy: 1000), duration: 0.3)
                 
             walkingfox.run(jump)
-            walkingfox.run(jumpAnimation,withKey:"jumpAnimation")
+           // walkingfox.run(jumpAnimation,withKey:"jumpAnimation")
         }
         
         
@@ -450,6 +451,18 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             self.addChild(fireParticle)
             print(bunny_count)
             if (bunny_count == 3) {
+                //add code here to put the data to fire base
+                
+                 //update score = current score
+                 //query the user and store the highest score data in a variable
+                //check if that highest score is less than current score
+                //if it is less than update the highscore to currentscore
+                // if it greater leave it
+                // speed achivment if he completes witn 20 seconds
+                //increment speeedo achivment
+                //if he has three speedo achivement he get speed king
+                //acheivment
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                     let gamewin = SKScene(fileNamed: "GameWin") as! GameWin
                     

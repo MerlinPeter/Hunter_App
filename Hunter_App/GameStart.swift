@@ -29,7 +29,7 @@ class GameStart: SKScene {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        
+        super.touchesBegan(touches, with: event)
         let touch = touches.first
         if let location = touch?.location(in: self) {
             let node = self.nodes(at: location)

@@ -122,11 +122,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Hunter_App/GameScene.swift"
-            timestampString = "511075899.54812"
+            timestampString = "511081230.178673"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "482"
-            endingLineNumber = "482">
+            startingLineNumber = "483"
+            endingLineNumber = "483">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

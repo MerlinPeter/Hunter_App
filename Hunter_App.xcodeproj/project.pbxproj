@@ -22,6 +22,8 @@
 		D031F2961E5FD14E000E646B /* PreferenceScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = D031F2951E5FD14E000E646B /* PreferenceScene.sks */; };
 		D031F2981E5FEC81000E646B /* GameStart.swift in Sources */ = {isa = PBXBuildFile; fileRef = D031F2971E5FEC81000E646B /* GameStart.swift */; };
 		D031F29A1E5FEEBA000E646B /* PreferenceScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D031F2991E5FEEBA000E646B /* PreferenceScene.swift */; };
+		D04C80AB1E78C58000CD840A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D04C80AA1E78C58000CD840A /* GoogleService-Info.plist */; };
+		D04C80AF1E79094900CD840A /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04C80AE1E79094900CD840A /* LoginController.swift */; };
 		D073D7A41E6CFD0700684780 /* sample (1).mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D073D7A31E6CFD0700684780 /* sample (1).mp3 */; };
 		D08453F41E750C8200403DF6 /* Cliffblocks.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D08453F31E750C8200403DF6 /* Cliffblocks.atlas */; };
 		D08453F61E761A3300403DF6 /* Poisonbush.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08453F51E761A3300403DF6 /* Poisonbush.swift */; };
@@ -63,6 +65,8 @@
 		D031F2951E5FD14E000E646B /* PreferenceScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = PreferenceScene.sks; sourceTree = "<group>"; };
 		D031F2971E5FEC81000E646B /* GameStart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameStart.swift; sourceTree = "<group>"; };
 		D031F2991E5FEEBA000E646B /* PreferenceScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceScene.swift; sourceTree = "<group>"; };
+		D04C80AA1E78C58000CD840A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D04C80AE1E79094900CD840A /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginController.swift; path = ../LoginController.swift; sourceTree = "<group>"; };
 		D073D7A31E6CFD0700684780 /* sample (1).mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "sample (1).mp3"; sourceTree = "<group>"; };
 		D08453F31E750C8200403DF6 /* Cliffblocks.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Cliffblocks.atlas; sourceTree = "<group>"; };
 		D08453F51E761A3300403DF6 /* Poisonbush.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Poisonbush.swift; sourceTree = "<group>"; };
@@ -116,6 +120,7 @@
 		D031F26F1E5FCC59000E646B = {
 			isa = PBXGroup;
 			children = (
+				D04C80AA1E78C58000CD840A /* GoogleService-Info.plist */,
 				D073D7A21E6CFCE500684780 /* My music */,
 				D031F27A1E5FCC59000E646B /* Hunter_App */,
 				D031F2791E5FCC59000E646B /* Products */,
@@ -163,6 +168,7 @@
 				D031F2951E5FD14E000E646B /* PreferenceScene.sks */,
 				D02799C21E63D3BF00C34A57 /* GameWin.sks */,
 				D02799C41E63D3E600C34A57 /* GameWin.swift */,
+				D04C80AE1E79094900CD840A /* LoginController.swift */,
 				D031F2851E5FCC59000E646B /* Main.storyboard */,
 				D031F2881E5FCC59000E646B /* Assets.xcassets */,
 				D031F28A1E5FCC59000E646B /* LaunchScreen.storyboard */,
@@ -254,6 +260,7 @@
 				D0915BEF1E6120280020D014 /* GameOver.sks in Resources */,
 				D031F2941E5FD0FA000E646B /* GameStartScene.sks in Resources */,
 				D7F5682A1E6E0CF300163554 /* foxwalk.atlas in Resources */,
+				D04C80AB1E78C58000CD840A /* GoogleService-Info.plist in Resources */,
 				D031F27E1E5FCC59000E646B /* GameScene.sks in Resources */,
 				D091011C1E74018500783594 /* fox_hit.mp3 in Resources */,
 				D031F2891E5FCC59000E646B /* Assets.xcassets in Resources */,
@@ -334,6 +341,7 @@
 				D031F2981E5FEC81000E646B /* GameStart.swift in Sources */,
 				D031F27C1E5FCC59000E646B /* AppDelegate.swift in Sources */,
 				D08453F61E761A3300403DF6 /* Poisonbush.swift in Sources */,
+				D04C80AF1E79094900CD840A /* LoginController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
