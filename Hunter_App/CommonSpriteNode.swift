@@ -15,6 +15,8 @@ class CommonSpriteNode : SKSpriteNode{
     let   category_bunny:UInt32  = 0x1 << 2;
     let   category_fox:UInt32    = 0x1 << 0;
     let   category_pbush:UInt32  = 0x1 << 4;
+    let   category_hole:UInt32   = 0x1 << 5;
+    let   category_net:UInt32    = 0x1 << 6;
 
     
     

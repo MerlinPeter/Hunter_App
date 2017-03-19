@@ -9,6 +9,7 @@ import SpriteKit
 import GameplayKit
 import CoreMotion
 import MotionHUD
+import FirebaseDatabase
 
 
 class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
@@ -35,6 +36,9 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     let category_bunny:UInt32  = 0x1 << 2;
     let category_fox:UInt32    = 0x1 << 0;
     let category_pbush:UInt32  = 0x1 << 4;
+    let  category_hole:UInt32   = 0x1 << 5;
+    let  category_net:UInt32    = 0x1 << 6;
+
     var motionManager: CMMotionManager!
     var lastTouchPosition: CGPoint?
     var touching: Bool = false
@@ -66,6 +70,9 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     var  bunny2 = Bunny()
     var  bunny3 = Bunny()
     var pbush1 = Poisonbush()
+    var hole1 = Hole()
+    var hole2 = Hole()
+    
     
     //MARK: - Animaton Variables
     
@@ -113,6 +120,12 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         
         pbush1.position = CGPoint(x: 204, y: -160)
         self.addChild(pbush1)
+        
+        hole1.position = CGPoint(x: -19.6, y: -109)
+        self.addChild(hole1)
+        
+        hole2.position = CGPoint(x: -436.5, y: -139.8)
+        self.addChild(hole2)
         
     }
     func animate_setup(){
@@ -415,6 +428,13 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
 
     
     func didBegin(_ contact: SKPhysicsContact) {
+       //fox hit hole,net
+   
+        var fadeAction: SKAction
+        
+        
+     
+        
         //fox hit bunny
         var firstBody: SKPhysicsBody
         
@@ -451,9 +471,34 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             self.addChild(fireParticle)
             print(bunny_count)
             if (bunny_count == 3) {
+               
                 //add code here to put the data to fire base
+                let databaseRef = FIRDatabase.database().reference()
+                let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml")
+                prntRef.updateChildValues(["Score":score])
                 
-                 //update score = current score
+//update score = current score
+                databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").observeSingleEvent(of: .value, with: { (snapshot) in
+                 // Get user value
+                 let value = snapshot.value as? NSDictionary
+                 
+                 var HScore  = value?["HighScore"] as? Int
+                    
+                    if self.score > HScore! {
+                        
+                        HScore = self.score
+                        prntRef.updateChildValues(["HighScore" : HScore!])
+                        
+
+                    }
+                 
+                  // ...
+                 }) { (error) in
+                 print(error.localizedDescription)
+                 }
+             
+                
+                
                  //query the user and store the highest score data in a variable
                 //check if that highest score is less than current score
                 //if it is less than update the highscore to currentscore
@@ -467,6 +512,10 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
                     let gamewin = SKScene(fileNamed: "GameWin") as! GameWin
                     
                     self.view?.presentScene(gamewin)})
+                
+               // hole acheivement code
+                
+               
                 
 
             }
@@ -482,8 +531,21 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             self.view?.presentScene(prefScene)
 
        }
+        
+        
+        if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask ==
+            category_hole {
+            
+          let fadeAction = SKAction.fadeAlpha(to: 1, duration: 2.0)
+           walkingfox.run(fadeAction)
+            print("Fox hit hole. Second contact has been made.")
+            
+        }else {
+            print("Please jump")
+        }
     
     }
+
     
 }
 

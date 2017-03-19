@@ -29,19 +29,14 @@ class LoginController: UIViewController {
     @IBAction func CreateAccount(_ sender: Any) {
        
         
-        let player = "Peter"
-        let Score = 20000
-        
+                
         //var post : [String  : AnyObject] = [ "Player" : player as AnyObject , "Score" : score as AnyObject]
         
-        let databaseRef = FIRDatabase.database().reference()
+             // databaseRef.child("game_score").childByAutoId().setValue(post)
         
-       // databaseRef.child("game_score").childByAutoId().setValue(post)
+       
         
-        let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml")
-         prntRef.updateChildValues(["Score":Score])
-        
-        databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").observeSingleEvent(of: .value, with: { (snapshot) in
+        /*databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").observeSingleEvent(of: .value, with: { (snapshot) in
             // Get user value
             let value = snapshot.value as? NSDictionary
            
@@ -51,7 +46,7 @@ class LoginController: UIViewController {
             // ...
         }) { (error) in
             print(error.localizedDescription)
-        }
+        }*/
         /*FIRAuth.auth()?.createUser(withEmail: Email.text!, password: Password.text!, completion: {
             user,Error in
             

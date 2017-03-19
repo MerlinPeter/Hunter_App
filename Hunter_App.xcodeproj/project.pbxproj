@@ -24,6 +24,9 @@
 		D031F29A1E5FEEBA000E646B /* PreferenceScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = D031F2991E5FEEBA000E646B /* PreferenceScene.swift */; };
 		D04C80AB1E78C58000CD840A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D04C80AA1E78C58000CD840A /* GoogleService-Info.plist */; };
 		D04C80AF1E79094900CD840A /* LoginController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04C80AE1E79094900CD840A /* LoginController.swift */; };
+		D04C80CF1E7CAE4D00CD840A /* Hole.swift in Sources */ = {isa = PBXBuildFile; fileRef = D04C80CE1E7CAE4D00CD840A /* Hole.swift */; };
+		D04C80D31E7E1C1900CD840A /* bokeh.png in Resources */ = {isa = PBXBuildFile; fileRef = D04C80D11E7E1C1900CD840A /* bokeh.png */; };
+		D04C80D91E7E1CE600CD840A /* Magicparticle.sks in Resources */ = {isa = PBXBuildFile; fileRef = D04C80D81E7E1CE600CD840A /* Magicparticle.sks */; };
 		D073D7A41E6CFD0700684780 /* sample (1).mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D073D7A31E6CFD0700684780 /* sample (1).mp3 */; };
 		D08453F41E750C8200403DF6 /* Cliffblocks.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D08453F31E750C8200403DF6 /* Cliffblocks.atlas */; };
 		D08453F61E761A3300403DF6 /* Poisonbush.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08453F51E761A3300403DF6 /* Poisonbush.swift */; };
@@ -38,6 +41,11 @@
 		D091011C1E74018500783594 /* fox_hit.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D091011B1E74018500783594 /* fox_hit.mp3 */; };
 		D0915BEF1E6120280020D014 /* GameOver.sks in Resources */ = {isa = PBXBuildFile; fileRef = D0915BEE1E6120280020D014 /* GameOver.sks */; };
 		D0915BF11E6120510020D014 /* GameOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0915BF01E6120510020D014 /* GameOver.swift */; };
+		D760F53A1E7B549E003406B0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D760F5391E7B549E003406B0 /* GoogleService-Info.plist */; };
+		D760F53E1E7CA589003406B0 /* LeaderBord.sks in Resources */ = {isa = PBXBuildFile; fileRef = D760F53D1E7CA589003406B0 /* LeaderBord.sks */; };
+		D760F5441E7CACB4003406B0 /* LeaderBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D760F5431E7CACB4003406B0 /* LeaderBoard.swift */; };
+		D760F5461E7CC543003406B0 /* Acheivement.sks in Resources */ = {isa = PBXBuildFile; fileRef = D760F5451E7CC543003406B0 /* Acheivement.sks */; };
+		D760F5481E7D19D4003406B0 /* Achievement.swift in Sources */ = {isa = PBXBuildFile; fileRef = D760F5471E7D19D4003406B0 /* Achievement.swift */; };
 		D77652FD1E706BF1007CCED4 /* CommonSpriteNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = D77652FC1E706BF0007CCED4 /* CommonSpriteNode.swift */; };
 		D7F5682A1E6E0CF300163554 /* foxwalk.atlas in Resources */ = {isa = PBXBuildFile; fileRef = D7F568291E6E0CF300163554 /* foxwalk.atlas */; };
 		D7F5682C1E6E962100163554 /* Fox.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7F5682B1E6E962100163554 /* Fox.swift */; };
@@ -67,6 +75,9 @@
 		D031F2991E5FEEBA000E646B /* PreferenceScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreferenceScene.swift; sourceTree = "<group>"; };
 		D04C80AA1E78C58000CD840A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D04C80AE1E79094900CD840A /* LoginController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginController.swift; path = ../LoginController.swift; sourceTree = "<group>"; };
+		D04C80CE1E7CAE4D00CD840A /* Hole.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Hole.swift; sourceTree = "<group>"; };
+		D04C80D11E7E1C1900CD840A /* bokeh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bokeh.png; sourceTree = "<group>"; };
+		D04C80D81E7E1CE600CD840A /* Magicparticle.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Magicparticle.sks; sourceTree = "<group>"; };
 		D073D7A31E6CFD0700684780 /* sample (1).mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "sample (1).mp3"; sourceTree = "<group>"; };
 		D08453F31E750C8200403DF6 /* Cliffblocks.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = Cliffblocks.atlas; sourceTree = "<group>"; };
 		D08453F51E761A3300403DF6 /* Poisonbush.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Poisonbush.swift; sourceTree = "<group>"; };
@@ -81,6 +92,11 @@
 		D091011B1E74018500783594 /* fox_hit.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = fox_hit.mp3; sourceTree = "<group>"; };
 		D0915BEE1E6120280020D014 /* GameOver.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameOver.sks; sourceTree = "<group>"; };
 		D0915BF01E6120510020D014 /* GameOver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOver.swift; sourceTree = "<group>"; };
+		D760F5391E7B549E003406B0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		D760F53D1E7CA589003406B0 /* LeaderBord.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LeaderBord.sks; sourceTree = "<group>"; };
+		D760F5431E7CACB4003406B0 /* LeaderBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeaderBoard.swift; sourceTree = "<group>"; };
+		D760F5451E7CC543003406B0 /* Acheivement.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Acheivement.sks; sourceTree = "<group>"; };
+		D760F5471E7D19D4003406B0 /* Achievement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Achievement.swift; sourceTree = "<group>"; };
 		D77652FC1E706BF0007CCED4 /* CommonSpriteNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonSpriteNode.swift; sourceTree = "<group>"; };
 		D7F568291E6E0CF300163554 /* foxwalk.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = foxwalk.atlas; sourceTree = "<group>"; };
 		D7F5682B1E6E962100163554 /* Fox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fox.swift; sourceTree = "<group>"; };
@@ -121,6 +137,7 @@
 			isa = PBXGroup;
 			children = (
 				D04C80AA1E78C58000CD840A /* GoogleService-Info.plist */,
+				D760F5391E7B549E003406B0 /* GoogleService-Info.plist */,
 				D073D7A21E6CFCE500684780 /* My music */,
 				D031F27A1E5FCC59000E646B /* Hunter_App */,
 				D031F2791E5FCC59000E646B /* Products */,
@@ -153,7 +170,10 @@
 				D031F2931E5FD0FA000E646B /* GameStartScene.sks */,
 				D031F2971E5FEC81000E646B /* GameStart.swift */,
 				D031F27D1E5FCC59000E646B /* GameScene.sks */,
+				D04C80D11E7E1C1900CD840A /* bokeh.png */,
+				D04C80D81E7E1CE600CD840A /* Magicparticle.sks */,
 				D031F2811E5FCC59000E646B /* GameScene.swift */,
+				D04C80CE1E7CAE4D00CD840A /* Hole.swift */,
 				D09101151E7386EB00783594 /* MyParticlespark.sks */,
 				D09101191E738D6700783594 /* FireParticle.sks */,
 				D09101161E7386EB00783594 /* spark.png */,
@@ -166,7 +186,11 @@
 				D08453F51E761A3300403DF6 /* Poisonbush.swift */,
 				D031F2991E5FEEBA000E646B /* PreferenceScene.swift */,
 				D031F2951E5FD14E000E646B /* PreferenceScene.sks */,
+				D760F5471E7D19D4003406B0 /* Achievement.swift */,
+				D760F5451E7CC543003406B0 /* Acheivement.sks */,
 				D02799C21E63D3BF00C34A57 /* GameWin.sks */,
+				D760F53D1E7CA589003406B0 /* LeaderBord.sks */,
+				D760F5431E7CACB4003406B0 /* LeaderBoard.swift */,
 				D02799C41E63D3E600C34A57 /* GameWin.swift */,
 				D04C80AE1E79094900CD840A /* LoginController.swift */,
 				D031F2851E5FCC59000E646B /* Main.storyboard */,
@@ -255,6 +279,7 @@
 				D08453F81E7665CB00403DF6 /* bg_music.mp3 in Resources */,
 				D08453F41E750C8200403DF6 /* Cliffblocks.atlas in Resources */,
 				D09101141E72B11B00783594 /* foxjump.atlas in Resources */,
+				D04C80D31E7E1C1900CD840A /* bokeh.png in Resources */,
 				D09101121E72AAAC00783594 /* foxwalk2.atlas in Resources */,
 				D02799C31E63D3BF00C34A57 /* GameWin.sks in Resources */,
 				D0915BEF1E6120280020D014 /* GameOver.sks in Resources */,
@@ -264,12 +289,16 @@
 				D031F27E1E5FCC59000E646B /* GameScene.sks in Resources */,
 				D091011C1E74018500783594 /* fox_hit.mp3 in Resources */,
 				D031F2891E5FCC59000E646B /* Assets.xcassets in Resources */,
+				D760F53A1E7B549E003406B0 /* GoogleService-Info.plist in Resources */,
+				D760F53E1E7CA589003406B0 /* LeaderBord.sks in Resources */,
 				D031F28C1E5FCC59000E646B /* LaunchScreen.storyboard in Resources */,
 				D073D7A41E6CFD0700684780 /* sample (1).mp3 in Resources */,
 				D031F2961E5FD14E000E646B /* PreferenceScene.sks in Resources */,
 				D09101181E7386EB00783594 /* spark.png in Resources */,
 				D02799C71E6408D200C34A57 /* GameFlow.storyboard in Resources */,
 				D031F2801E5FCC59000E646B /* Actions.sks in Resources */,
+				D04C80D91E7E1CE600CD840A /* Magicparticle.sks in Resources */,
+				D760F5461E7CC543003406B0 /* Acheivement.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -333,11 +362,14 @@
 				D031F29A1E5FEEBA000E646B /* PreferenceScene.swift in Sources */,
 				D7F5682C1E6E962100163554 /* Fox.swift in Sources */,
 				D031F2821E5FCC59000E646B /* GameScene.swift in Sources */,
+				D760F5481E7D19D4003406B0 /* Achievement.swift in Sources */,
 				D02799C51E63D3E600C34A57 /* GameWin.swift in Sources */,
 				D77652FD1E706BF1007CCED4 /* CommonSpriteNode.swift in Sources */,
+				D04C80CF1E7CAE4D00CD840A /* Hole.swift in Sources */,
 				D031F2841E5FCC59000E646B /* GameViewController.swift in Sources */,
 				D09101101E713E5300783594 /* Camera.swift in Sources */,
 				D0915BF11E6120510020D014 /* GameOver.swift in Sources */,
+				D760F5441E7CACB4003406B0 /* LeaderBoard.swift in Sources */,
 				D031F2981E5FEC81000E646B /* GameStart.swift in Sources */,
 				D031F27C1E5FCC59000E646B /* AppDelegate.swift in Sources */,
 				D08453F61E761A3300403DF6 /* Poisonbush.swift in Sources */,
