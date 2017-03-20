@@ -121,10 +121,10 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         pbush1.position = CGPoint(x: 204, y: -160)
         self.addChild(pbush1)
         
-        hole1.position = CGPoint(x: -19.6, y: -109)
+        hole1.position = CGPoint(x: -19.6, y: -100)
         self.addChild(hole1)
         
-        hole2.position = CGPoint(x: -436.5, y: -139.8)
+        hole2.position = CGPoint(x: -412.5, y: -11.7)
         self.addChild(hole2)
         
     }
@@ -430,7 +430,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     func didBegin(_ contact: SKPhysicsContact) {
        //fox hit hole,net
    
-        var fadeAction: SKAction
+       // var fadeAction: SKAction
         
         
      
@@ -536,7 +536,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask ==
             category_hole {
             
-          let fadeAction = SKAction.fadeAlpha(to: 1, duration: 2.0)
+          let fadeAction = SKAction.fadeAlpha(to: 0.3, duration: 2.0)
            walkingfox.run(fadeAction)
             print("Fox hit hole. Second contact has been made.")
             
