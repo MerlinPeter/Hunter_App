@@ -16,7 +16,7 @@ class CommonSpriteNode : SKSpriteNode{
     let   category_fox:UInt32    = 0x1 << 0;
     let   category_pbush:UInt32  = 0x1 << 4;
     let   category_hole:UInt32   = 0x1 << 5;
-    let   category_goldenTrophy:UInt32   = 0x1 << 6;
+    let   category_golden_trophy:UInt32   = 0x1 << 6;
    
     
 

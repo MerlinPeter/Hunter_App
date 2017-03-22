@@ -27,14 +27,14 @@ class Achievements: SKScene {
     func fillTable() {
     
     let databaseRef = FIRDatabase.database().reference()
-    databaseRef.child("game_score").child("PL01").child("achieve").observeSingleEvent(of: .value, with: { (snapshot) in
+    databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").observeSingleEvent(of: .value, with: { (snapshot) in
 
          for rest in snapshot.children.allObjects as! [FIRDataSnapshot] {
             let dvalue = rest.value as? NSDictionary
             let score:Int! = dvalue!.value(forKey: "score") as? Int
             let done:Bool! = dvalue!.value(forKey: "done") as? Bool
             if (done==true){
-                self.achivment_names.append(rest.key + " Points : " + String(score) + " Unlocked!!! "   )
+                self.achivment_names.append(rest.key + " Points : " + String(score) + " UnLocked !!! "   )
 
             }else{
                 self.achivment_names.append(rest.key + " Points : " + String(score) + " Locked "   )
@@ -68,26 +68,38 @@ class Achievements: SKScene {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
         
+        super.touchesBegan(touches, with: event)
         let touch = touches.first
         
         
         if let location = touch?.location(in: self) {
             let node = self.nodes(at: location)
             
-   
+            
             if node[0].name == "game_win" {
                 
-                gameTableView.removeFromSuperview()
-                let playButton = SKScene(fileNamed: "GameWin") as! GameWin
                 
-                self.view?.presentScene(playButton)
-
+                if let scrname = self.userData?.value(forKey: "scrname")  {
+                    if (scrname as! String == "GameStart") {
+                        let scene = SKScene(fileNamed: "GameStartScene") as! GameStart
+                        self.view?.presentScene(scene)
+                        
+                        
+                    }else{
+                        let scene = SKScene(fileNamed: "GameWin") as! GameWin
+                        self.view?.presentScene(scene)
+                        
+                        
+                    }
+                    gameTableView.removeFromSuperview()
+                    
+                    
+                }
                 
             }
-            
         }
+        
     }
-    
     
 
     

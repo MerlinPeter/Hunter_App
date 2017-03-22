@@ -20,15 +20,13 @@ class GameWin: SKScene {
     override func didMove(to view: SKView) {
         
         let databaseRef = FIRDatabase.database().reference()
-        databaseRef.child("game_score").child("PL01").observeSingleEvent(of: .value, with: { (snapshot) in
+        databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").observeSingleEvent(of: .value, with: { (snapshot) in
             // Get user value
             let value = snapshot.value as? NSDictionary
-            print(value)
-             let username = value?["Player"] as? String ?? ""
+              let username = value?["Player"] as? String ?? ""
              let score  = value?["Score"] as? Int
              let highscore  = value?["HighScore"] as? Int
             
-            print(username,score!,highscore!)
             let high_score_node = self.childNode(withName: "highscore") as! SKLabelNode
             high_score_node.text = String(describing: highscore!)
             let score_node = self.childNode(withName: "score") as! SKLabelNode
@@ -45,14 +43,15 @@ class GameWin: SKScene {
     }
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         
-        
+        super.touchesBegan(touches, with: event)
+
         let touch = touches.first
         
         
         if let location = touch?.location(in: self) {
             let node = self.nodes(at: location)
             
-            if node[0].name == "back" {
+            if node[0].name == "playback" {
                 let playButton = SKScene(fileNamed: "GameScene") as! GameScene
                 
                 self.view?.presentScene(playButton)
@@ -65,9 +64,14 @@ class GameWin: SKScene {
                 
             }
             if node[0].name == "acheivement" {
-                let playButton = SKScene(fileNamed: "Acheivement") as! Achievements
+                //let playButton = SKScene(fileNamed: "Acheivement") as! Achievements
                 
-                self.view?.presentScene(playButton)
+                //self.view?.presentScene(playButton)
+                let prefScene = SKScene(fileNamed: "Acheivement") as! Achievements
+                prefScene.userData = NSMutableDictionary()
+                prefScene.userData?.setObject("GameWin", forKey: "scrname"  as NSCopying)
+                self.view?.presentScene(prefScene)
+                
                 
                 
             }

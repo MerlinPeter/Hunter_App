@@ -14,7 +14,7 @@ class GoldenTrophy: CommonSpriteNode {
     init() {
         let texture = SKTexture(imageNamed: "GreenButton-Active.png")
         // super.init(texture: texture, color: UIColor.clear, size: texture.size())
-        super.init(texture: texture, color: UIColor.clear, size: CGSize(width: -47, height: -29))
+        super.init(texture: texture, color: UIColor.clear, size: CGSize(width: 47, height: 46))
         
         setup()
         
@@ -26,12 +26,12 @@ class GoldenTrophy: CommonSpriteNode {
     
     func setup(){
         name="GoldenTrophy"
-        physicsBody = SKPhysicsBody(rectangleOf: self.size)
+        physicsBody = SKPhysicsBody(circleOfRadius: self.size.width)
         physicsBody!.allowsRotation = false
         physicsBody!.linearDamping = 0.5
-        physicsBody!.categoryBitMask = category_hole
+        physicsBody!.categoryBitMask = category_golden_trophy
         physicsBody!.contactTestBitMask =  category_fox
-        physicsBody!.isDynamic = false
+        physicsBody!.isDynamic = true
         
 }
 

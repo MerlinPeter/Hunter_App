@@ -25,7 +25,7 @@ class GameOver: SKScene {
                 
             }else{
                 
-                 labelNode.text = "Game over: Oh No!! You Hit Poision Bush";
+                 labelNode.text = "Game over!! You Hit Poision Bush 3rd time";
 
                 
                 

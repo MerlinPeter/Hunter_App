@@ -34,8 +34,8 @@ class GameViewController: UIViewController {
             // Load the SKScene from 'GameScene.sks'
 
  
-            if let scene = SKScene(fileNamed: "LeaderBord") {
-                // Set the scale mode to scale to fit the window
+               if let scene = SKScene(fileNamed: "GameStartScene") {
+                 // Set the scale mode to scale to fit the window
                 scene.scaleMode = .aspectFill
                 
                 // Present the scene
@@ -46,7 +46,7 @@ class GameViewController: UIViewController {
             
             view.showsFPS = true
             view.showsNodeCount = true
-          view.showsPhysics = true
+            //view.showsPhysics = true
             
 
         }

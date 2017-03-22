@@ -51,8 +51,15 @@ class GameStart: SKScene {
                 
                 
              }
-
- 
+            
+            if node[0].name == "achivment" {
+                let prefScene = SKScene(fileNamed: "Acheivement") as! Achievements
+                prefScene.userData = NSMutableDictionary()
+                prefScene.userData?.setObject("GameStart", forKey: "scrname"  as NSCopying)
+                self.view?.presentScene(prefScene)
+                
+                
+            }
         }
     }
  

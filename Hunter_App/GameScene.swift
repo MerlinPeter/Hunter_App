@@ -32,12 +32,12 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
     //MARK: - General Variables
 
-    let category_fence:UInt32  = 0x1 << 3;
-    let category_bunny:UInt32  = 0x1 << 2;
-    let category_fox:UInt32    = 0x1 << 0;
-    let category_pbush:UInt32  = 0x1 << 4;
-    let  category_hole:UInt32   = 0x1 << 5;
-    let  category_net:UInt32    = 0x1 << 6;
+    let   category_fence:UInt32  = 0x1 << 3;
+    let   category_bunny:UInt32  = 0x1 << 2;
+    let   category_fox:UInt32    = 0x1 << 0;
+    let   category_pbush:UInt32  = 0x1 << 4;
+    let   category_hole:UInt32   = 0x1 << 5;
+    let   category_golden_trophy:UInt32   = 0x1 << 6;
 
     var motionManager: CMMotionManager!
     var lastTouchPosition: CGPoint?
@@ -48,8 +48,11 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     var jump = 0
     var scoreLabel: SKLabelNode!
     var timerLabel: SKLabelNode!
+    var lifeLabel: SKLabelNode!
+    var achivmentLabel : SKLabelNode!
     var gameTimer: Timer!
     var bunny_count : Int = 0
+    var pbush_count : Int = 0
     
     var score: Int = 0 {
         didSet {
@@ -61,6 +64,12 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             timerLabel.text = "Clock : \(seconds)"
         }
     }
+    var life: Int = 3 {
+        didSet {
+            lifeLabel.text = "Life : \(life) Left"
+        }
+    }
+
     
     //MARK: - Actors Variables
     
@@ -70,8 +79,11 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     var  bunny2 = Bunny()
     var  bunny3 = Bunny()
     var pbush1 = Poisonbush()
+    var pbush2 = Poisonbush()
+    var pbush3 = Poisonbush()
     var hole1 = Hole()
     var hole2 = Hole()
+    var goldentropy = GoldenTrophy()
     
     
     //MARK: - Animaton Variables
@@ -111,9 +123,18 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         
         bunny1.position = CGPoint(x: -300, y:0)
         self.addChild(bunny1)
-        
-        bunny3.position = CGPoint(x: -470, y:0)
+        //left most bunny and pbush
+        bunny3.position = CGPoint(x: -400, y:0)
         self.addChild(bunny3)
+        
+        
+      
+         pbush2.position = CGPoint(x: -470, y: 0)
+        self.addChild(pbush2)
+        
+        //middle pbush
+        pbush3.position = CGPoint(x: 138, y: 0)
+        self.addChild(pbush3)
         
         bunny2.position = CGPoint(x: 411, y:51)
         self.addChild(bunny2)
@@ -124,8 +145,11 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         hole1.position = CGPoint(x: -19.6, y: -100)
         self.addChild(hole1)
         
-        hole2.position = CGPoint(x: -412.5, y: -11.7)
-        self.addChild(hole2)
+       // hole2.position = CGPoint(x: -412.5, y: -11.7)
+        //self.addChild(hole2)
+        
+        goldentropy.position = CGPoint(x: 411, y: 144)
+        self.addChild(goldentropy)
         
     }
     func animate_setup(){
@@ -227,6 +251,12 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         scoreLabel.verticalAlignmentMode = .top
         addChild(scoreLabel)
         
+        lifeLabel = SKLabelNode(fontNamed: "Chalkduster")
+        lifeLabel.text = "Life : 3 Left"
+        lifeLabel.horizontalAlignmentMode = .left
+        lifeLabel.verticalAlignmentMode = .top
+        addChild(lifeLabel)
+        
         let horizConstraint = SKConstraint.distance(SKRange(constantValue: 0), to: front_camera)
         let vertConstraint = SKConstraint.distance(SKRange(constantValue: 0), to: front_camera)
         let leftConstraint = SKConstraint.positionX(SKRange(lowerLimit: front_camera.position.x - 100))
@@ -245,6 +275,11 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         
          let topConstraint_clock = SKConstraint.positionY(SKRange(constantValue: (170)))
        timerLabel.constraints = [horizConstraint, vertConstraint, leftConstraint , bottomConstraint, rightConstraint,topConstraint_clock]
+        
+        let topConstraint_life = SKConstraint.positionY(SKRange(constantValue: (100)))
+        lifeLabel.constraints = [horizConstraint, vertConstraint, leftConstraint , bottomConstraint, rightConstraint,topConstraint_life]
+        
+        
         
         gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
 
@@ -428,13 +463,12 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
 
     
     func didBegin(_ contact: SKPhysicsContact) {
+        
+        let databaseRef = FIRDatabase.database().reference()
+
        //fox hit hole,net
    
        // var fadeAction: SKAction
-        
-        
-     
-        
         //fox hit bunny
         var firstBody: SKPhysicsBody
         
@@ -469,12 +503,52 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             walkingfox.run(actionAudioExplode)
             
             self.addChild(fireParticle)
-            print(bunny_count)
-            if (bunny_count == 3) {
-               
+            
+            //speed hero achivment
+             if (bunny_count == 3) {
+                var prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("bunnycatcher")
+                prntRef.updateChildValues(["done":true])
+                achivmentLabel = SKLabelNode(fontNamed: "Chalkduster")
+                achivmentLabel.position = CGPoint(x: walkingfox.position.x - 500,y:  walkingfox.position.y+80)
+                achivmentLabel.text = "Bunny Catcher Unlocked! 10 points"
+                achivmentLabel.horizontalAlignmentMode = .left
+                achivmentLabel.verticalAlignmentMode = .top
+                addChild(achivmentLabel)
+                score = score + 10
+                
+                if( seconds <= 30 ){
+                    let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("speedhero")
+                    prntRef.updateChildValues(["done":true])
+                    achivmentLabel = SKLabelNode(fontNamed: "Chalkduster")
+                    achivmentLabel.position = CGPoint(x: walkingfox.position.x - 500,y:  walkingfox.position.y)
+                    achivmentLabel.text = "Speed Hero Unlocked! 10 points"
+                    achivmentLabel.horizontalAlignmentMode = .left
+                    achivmentLabel.verticalAlignmentMode = .top
+                    addChild(achivmentLabel)
+                    score = score + 10
+                    
+                    
+                }
+                //poision bush achivment
+                if( pbush_count == 0  ){
+                    let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("poisonfree")
+                    prntRef.updateChildValues(["done":true])
+                    achivmentLabel = SKLabelNode(fontNamed: "Chalkduster")
+                    achivmentLabel.position = CGPoint(x: walkingfox.position.x - 500,y:  walkingfox.position.y-80)
+                    achivmentLabel.text = "Poison Free Unlocked! 20 points"
+                    achivmentLabel.horizontalAlignmentMode = .left
+                    achivmentLabel.verticalAlignmentMode = .top
+                    addChild(achivmentLabel)
+                    score = score + 20
+                    
+                    
+                }
+                // bunny count
+         
+                    
+                
                 //add code here to put the data to fire base
-                let databaseRef = FIRDatabase.database().reference()
-                let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml")
+                prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml")
                 prntRef.updateChildValues(["Score":score])
                 
 //update score = current score
@@ -488,34 +562,21 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
                         
                         HScore = self.score
                         prntRef.updateChildValues(["HighScore" : HScore!])
-                        
 
                     }
                  
-                  // ...
-                 }) { (error) in
+                  
+                }) { (error) in
                  print(error.localizedDescription)
                  }
              
+         
                 
-                
-                 //query the user and store the highest score data in a variable
-                //check if that highest score is less than current score
-                //if it is less than update the highscore to currentscore
-                // if it greater leave it
-                // speed achivment if he completes witn 20 seconds
-                //increment speeedo achivment
-                //if he has three speedo achivement he get speed king
-                //acheivment
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
                     let gamewin = SKScene(fileNamed: "GameWin") as! GameWin
-                    
                     self.view?.presentScene(gamewin)})
                 
                // hole acheivement code
-                
-               
                 
 
             }
@@ -524,11 +585,29 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
  
         } else if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask == category_pbush {
             print("Fox hit poisonbush. ")
-            
-            let prefScene = SKScene(fileNamed: "GameOver") as! GameOver
-            prefScene.userData = NSMutableDictionary()
-            prefScene.userData?.setObject("pbush", forKey: "scrname"  as NSCopying)
-            self.view?.presentScene(prefScene)
+            contact.bodyB.node?.removeFromParent()
+            achivmentLabel = SKLabelNode(fontNamed: "Chalkduster")
+            achivmentLabel.position = CGPoint(x: walkingfox.position.x - 100,y:  walkingfox.position.y)
+            achivmentLabel.text = "Poison bush hit,lost 50 points"
+            achivmentLabel.horizontalAlignmentMode = .left
+            achivmentLabel.verticalAlignmentMode = .top
+            addChild(achivmentLabel)
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+       
+            self.achivmentLabel.removeFromParent()
+            })
+            pbush_count += 1
+            life = life - 1
+            score = score - 50
+            if (pbush_count >= 3 )
+            {
+                
+                 let prefScene = SKScene(fileNamed: "GameOver") as! GameOver
+                 prefScene.userData = NSMutableDictionary()
+                prefScene.userData?.setObject("pbush", forKey: "scrname"  as NSCopying)
+                self.view?.presentScene(prefScene)
+            }
 
        }
         
@@ -536,12 +615,34 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask ==
             category_hole {
             
-          let fadeAction = SKAction.fadeAlpha(to: 0.3, duration: 2.0)
-           walkingfox.run(fadeAction)
-            print("Fox hit hole. Second contact has been made.")
+            // let fadeAction = SKAction.fadeAlpha(to: 0.3, duration: 2.0)
+            //walkingfox.run(fadeAction)
+            print("Fox hit hole.  contact has been made.")
             
-        }else {
-            print("Please jump")
+        }
+        if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask ==
+            category_golden_trophy {
+            
+            // let fadeAction = SKAction.fadeAlpha(to: 0.3, duration: 2.0)
+            //walkingfox.run(fadeAction)
+            print("Fox hit golden tropy.  contact has been made.")
+            contact.bodyB.node?.removeFromParent()
+
+            achivmentLabel = SKLabelNode(fontNamed: "Chalkduster")
+            achivmentLabel.position = CGPoint(x: walkingfox.position.x - 500,y:  walkingfox.position.y-100)
+            achivmentLabel.text = "Hole Jumper Unlocked !! 50 points bonus"
+            achivmentLabel.horizontalAlignmentMode = .left
+            achivmentLabel.verticalAlignmentMode = .top
+            addChild(achivmentLabel)
+            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                
+               self.achivmentLabel.removeFromParent()
+            })
+            let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("holejumper")
+            prntRef.updateChildValues(["done":true])
+            score = score + 50
+
+            
         }
     
     }
