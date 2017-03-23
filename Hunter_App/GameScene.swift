@@ -27,6 +27,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         scene_setup()
         actor_setup()
         animate_setup()
+        create_hud()
 
     }
     
@@ -64,20 +65,21 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             timerLabel.text = "Clock : \(seconds)"
         }
     }
-    var life: Int = 3 {
-        didSet {
-            lifeLabel.text = "Life : \(life) Left"
-        }
-    }
+   
 
+    //MARK: - Hud Variables
+    var lifeNodes : [SKSpriteNode] = []
+    var remainingLifes = 3
+    var scoreNode = SKLabelNode()
+    var message_hud : SKSpriteNode!
     
     //MARK: - Actors Variables
     
-    var  walkingfox =  Fox()
-    var  bunny = Bunny()
-    var  bunny1 = Bunny()
-    var  bunny2 = Bunny()
-    var  bunny3 = Bunny()
+    var walkingfox = Fox()
+    var bunny = Bunny()
+    var bunny1 = Bunny()
+    var bunny2 = Bunny()
+    var bunny3 = Bunny()
     var pbush1 = Poisonbush()
     var pbush2 = Poisonbush()
     var pbush3 = Poisonbush()
@@ -100,16 +102,13 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     var front_camera = MyCamera()
     
     
-     //MARK: - BackGround & Border Variables
+    //MARK: - BackGround & Border Variables
     let border = Border()
     var background_node:SKNode!
     let ground = SKSpriteNode()
     var backgroundMusic: SKAudioNode!
 
-    
-
     //Emitter variable
-    
     
     //MARK: - Setup
     
@@ -117,7 +116,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         
         walkingfox.position = CGPoint(x: -184 , y: 0)
         self.addChild(walkingfox)
- 
+        
         bunny.position = CGPoint(x: 200, y:0)
         self.addChild(bunny)
         
@@ -127,9 +126,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         bunny3.position = CGPoint(x: -400, y:0)
         self.addChild(bunny3)
         
-        
-      
-         pbush2.position = CGPoint(x: -470, y: 0)
+        pbush2.position = CGPoint(x: -470, y: 0)
         self.addChild(pbush2)
         
         //middle pbush
@@ -145,7 +142,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         hole1.position = CGPoint(x: -19.6, y: -100)
         self.addChild(hole1)
         
-       // hole2.position = CGPoint(x: -412.5, y: -11.7)
+        //hole2.position = CGPoint(x: -412.5, y: -11.7)
         //self.addChild(hole2)
         
         goldentropy.position = CGPoint(x: 411, y: 144)
@@ -192,11 +189,8 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         background_node = self.childNode(withName: "background")
         border.setup(border: background_node)
         addChild(border)
-        let barra = SKShapeNode(rectOf: CGSize(width: 300, height: 100))
-        barra.name = "bar"
-        barra.fillColor = SKColor.white
-        barra.position = CGPoint(x: 0, y: self.size.height/10)
-        //self.addChild(barra)
+        
+
     }
     
     func scene_setup(){
@@ -243,47 +237,8 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         front_camera.background_node = background_node
         front_camera.setup()
         addChild(front_camera)
-        
-        
-        scoreLabel = SKLabelNode(fontNamed: "Chalkduster")
-        scoreLabel.text = "Score : 0"
-         scoreLabel.horizontalAlignmentMode = .left
-        scoreLabel.verticalAlignmentMode = .top
-        addChild(scoreLabel)
-        
-        lifeLabel = SKLabelNode(fontNamed: "Chalkduster")
-        lifeLabel.text = "Life : 3 Left"
-        lifeLabel.horizontalAlignmentMode = .left
-        lifeLabel.verticalAlignmentMode = .top
-        addChild(lifeLabel)
-        
-        let horizConstraint = SKConstraint.distance(SKRange(constantValue: 0), to: front_camera)
-        let vertConstraint = SKConstraint.distance(SKRange(constantValue: 0), to: front_camera)
-        let leftConstraint = SKConstraint.positionX(SKRange(lowerLimit: front_camera.position.x - 100))
-        let bottomConstraint = SKConstraint.positionY(SKRange(constantValue: 0))
-        let rightConstraint = SKConstraint.positionX(SKRange(lowerLimit:-100))
-        let topConstraint = SKConstraint.positionY(SKRange(constantValue: (140)))
-       
-        scoreLabel.constraints = [horizConstraint, vertConstraint, leftConstraint , bottomConstraint, rightConstraint,topConstraint]
-        
-        
-        timerLabel = SKLabelNode(fontNamed: "Chalkduster")
-        timerLabel.text = "Clock : "+String(seconds)
-        timerLabel.horizontalAlignmentMode = .left
-        timerLabel.verticalAlignmentMode = .top
-        addChild(timerLabel)
-        
-         let topConstraint_clock = SKConstraint.positionY(SKRange(constantValue: (170)))
-       timerLabel.constraints = [horizConstraint, vertConstraint, leftConstraint , bottomConstraint, rightConstraint,topConstraint_clock]
-        
-        let topConstraint_life = SKConstraint.positionY(SKRange(constantValue: (100)))
-        lifeLabel.constraints = [horizConstraint, vertConstraint, leftConstraint , bottomConstraint, rightConstraint,topConstraint_life]
-        
-        
-        
         gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
 
-    
     }
     
     override func willMove(from view: SKView) {
@@ -322,12 +277,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             
         }
  
-       /* if (walkingfox.hasActions()){
-            walkingfox.removeAllActions()
-         }else{
-            
-        }*/
-        
+
         if ((lefttouches == 1) && (righttouches == 0)){
             
             let leftMove = SKAction.move(by: CGVector(dx:-1.0 * kHugeTime * kMoveSpeed, dy:0), duration: kHugeTime )
@@ -357,10 +307,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     }
     
     
-    
-    
     func reduceTouches(_ touches: Set<UITouch>?, with event: UIEvent?){
-        
         
         for touch: UITouch in touches! {
             
@@ -404,8 +351,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     
    
     }
-    
-    //MARK: - Custom Functions
+     //MARK: - Custom Functions
    
     func doubleTapped() {
         walkingfox.physicsBody?.applyImpulse(CGVector(dx: 0, dy: 360))
@@ -429,20 +375,19 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         
     }
     //MARK: - Cliff blocks
-    //sprite.position = CGPoint(x: x, y: 30.0)
     private func spritesCollection(xposition: Int,yposition: Int) -> [SKSpriteNode] {
         var sprites = [SKSpriteNode]()
         textureatlas = SKTextureAtlas(named: "Cliffblocks.atlas")
         let incrvar = CGFloat(57.319)
         var x = CGFloat(xposition)
         let y = CGFloat(yposition)
-  
-
-         for i  in 1...(textureatlas.textureNames.count-1){
-         
+        
+        
+        for i  in 1...(textureatlas.textureNames.count-1){
+            
             let sprite = SKSpriteNode(imageNamed: "grass_0\(i).png")
             sprite.physicsBody=SKPhysicsBody(rectangleOf: sprite.size)
-
+            
             sprite.physicsBody!.allowsRotation = false
             sprite.physicsBody!.linearDamping = 0.5
             sprite.physicsBody!.categoryBitMask = category_fence
@@ -455,9 +400,62 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         }
         return sprites
         //
-            }
+    }
     
-   
+    //MARK: - Create Hud
+    func create_hud()  {
+        let hud = SKSpriteNode(color: UIColor.init(red: 0, green: 1, blue: 0, alpha: 0.3), size: CGSize(width: 667, height: 30))
+        hud.anchorPoint=CGPoint(x:0.5, y:0.5)
+        hud.position = CGPoint(x:0 , y:self.size.height/2  - hud.size.height/2)
+        hud.zPosition=1
+        front_camera.addChild(hud)
+        // Display the remaining lifes
+        // Add icons to display the remaining lifes
+        // Reuse the Spaceship image: Scale and position releative to the HUD size
+        let lifeSize = CGSize(width : hud.size.height,  height: hud.size.height)
+        
+        for i  in 1...self.remainingLifes {
+            var tmpNode = SKSpriteNode(imageNamed: "fox_3_1")
+            lifeNodes.append(tmpNode)
+            tmpNode.size = lifeSize
+            tmpNode.position=CGPoint(x:hud.size.width/2-(lifeSize.width * CGFloat(i)),y:0)
+            tmpNode.zPosition=1
+            hud.addChild(tmpNode)
+        }
+        
+        scoreLabel = SKLabelNode(fontNamed: "Copperplate")
+        scoreLabel.text = "Score : 0   "
+        //
+        scoreLabel.position = CGPoint(x:0,y:0)
+        scoreLabel.fontSize=hud.size.height-3
+        scoreLabel.fontColor=UIColor.yellow
+        scoreLabel.horizontalAlignmentMode = .center
+        scoreLabel.verticalAlignmentMode = .center
+        hud.addChild(scoreLabel)
+        
+        
+        timerLabel = SKLabelNode(fontNamed: "Copperplate")
+        timerLabel.text = "Clock : "+String(seconds)
+        timerLabel.fontColor = UIColor.cyan
+        timerLabel.horizontalAlignmentMode = .left
+        timerLabel.verticalAlignmentMode = .center
+        timerLabel.position = CGPoint(x:-(hud.size.width/2),y:0)
+        timerLabel.fontSize=hud.size.height-3
+
+        hud.addChild(timerLabel)
+        
+        
+        message_hud = SKSpriteNode(color: UIColor.init(red: 0, green: 0, blue: 1, alpha: 0.1), size: CGSize(width: 667, height: 30))
+        message_hud.anchorPoint=CGPoint(x:0.5, y:0.5)
+        message_hud.position = CGPoint(x:0 , y:self.size.height/2  - (hud.size.height + (message_hud.size.height/2)))
+        message_hud.zPosition=1
+        front_camera.addChild(message_hud)
+        
+        
+        
+
+       
+    }
     
     //MARK: - Contact Delegate functions
 
@@ -465,10 +463,10 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     func didBegin(_ contact: SKPhysicsContact) {
         
         let databaseRef = FIRDatabase.database().reference()
-
-       //fox hit hole,net
-   
-       // var fadeAction: SKAction
+        
+        //fox hit hole,net
+        
+        // var fadeAction: SKAction
         //fox hit bunny
         var firstBody: SKPhysicsBody
         
@@ -485,27 +483,26 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         
         let  actionAudioExplode = SKAction.playSoundFileNamed("fox_hit.mp3",waitForCompletion: false)
         
-         //(SKAction  playSoundFileNamed : "fox_hit.mp3"  waitForCompletion:NO)
+        //(SKAction  playSoundFileNamed : "fox_hit.mp3"  waitForCompletion:NO)
         let path = Bundle.main.path(forResource: "FireParticle", ofType: "sks")
         let fireParticle = NSKeyedUnarchiver.unarchiveObject(withFile: path!) as! SKEmitterNode
         
         // 3
-         if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask == category_bunny {
+        if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask == category_bunny {
             print("Fox hit bunny. First contact has been made.")
             score += 500
             fireParticle.position = (contact.bodyB.node?.position)!
             contact.bodyB.node?.removeFromParent()
             fireParticle.name = "FIREParticle"
             fireParticle.targetNode = self.scene
-           // fireParticle.particleBirthRate = 150
             fireParticle.particleLifetime = 0.5
-    
+            
             walkingfox.run(actionAudioExplode)
             
             self.addChild(fireParticle)
             
             //speed hero achivment
-             if (bunny_count == 3) {
+            if (bunny_count == 3) {
                 var prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("bunnycatcher")
                 prntRef.updateChildValues(["done":true])
                 achivmentLabel = SKLabelNode(fontNamed: "Chalkduster")
@@ -544,72 +541,71 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
                     
                 }
                 // bunny count
-         
-                    
-                
-                //add code here to put the data to fire base
+                 //add code here to put the data to fire base
                 prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml")
                 prntRef.updateChildValues(["Score":score])
                 
-//update score = current score
+                //update score = current score
                 databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").observeSingleEvent(of: .value, with: { (snapshot) in
-                 // Get user value
-                 let value = snapshot.value as? NSDictionary
-                 
-                 var HScore  = value?["HighScore"] as? Int
+                    // Get user value
+                    let value = snapshot.value as? NSDictionary
+                    
+                    var HScore  = value?["HighScore"] as? Int
                     
                     if self.score > HScore! {
                         
                         HScore = self.score
                         prntRef.updateChildValues(["HighScore" : HScore!])
-
+                        
                     }
-                 
-                  
+                    
                 }) { (error) in
-                 print(error.localizedDescription)
-                 }
-             
-         
+                    print(error.localizedDescription)
+                }
                 
-                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
+                  DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
                     let gamewin = SKScene(fileNamed: "GameWin") as! GameWin
                     self.view?.presentScene(gamewin)})
                 
-               // hole acheivement code
+                // hole acheivement code
                 
-
+                
             }
             bunny_count+=1
             
- 
+            
         } else if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask == category_pbush {
             print("Fox hit poisonbush. ")
             contact.bodyB.node?.removeFromParent()
-            achivmentLabel = SKLabelNode(fontNamed: "Chalkduster")
-            achivmentLabel.position = CGPoint(x: walkingfox.position.x - 100,y:  walkingfox.position.y)
-            achivmentLabel.text = "Poison bush hit,lost 50 points"
-            achivmentLabel.horizontalAlignmentMode = .left
-            achivmentLabel.verticalAlignmentMode = .top
-            addChild(achivmentLabel)
-
+            achivmentLabel = SKLabelNode(fontNamed: "Copperplate")
+             achivmentLabel.text = "Poison bush hit,lost 50 points"
+            achivmentLabel.horizontalAlignmentMode = .center
+            achivmentLabel.verticalAlignmentMode = .center
+            achivmentLabel.fontSize = message_hud.size.height-3
+            achivmentLabel.fontColor = UIColor.black
+            message_hud.addChild(achivmentLabel)
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
-       
-            self.achivmentLabel.removeFromParent()
+                
+                self.achivmentLabel.removeFromParent()
             })
             pbush_count += 1
-            life = life - 1
+           // life = life - 1
             score = score - 50
+            if self.remainingLifes>0 {
+                self.lifeNodes[remainingLifes-1].alpha=0.0
+                self.remainingLifes -= 1;
+            }
             if (pbush_count >= 3 )
             {
                 
-                 let prefScene = SKScene(fileNamed: "GameOver") as! GameOver
-                 prefScene.userData = NSMutableDictionary()
+                let prefScene = SKScene(fileNamed: "GameOver") as! GameOver
+                prefScene.userData = NSMutableDictionary()
                 prefScene.userData?.setObject("pbush", forKey: "scrname"  as NSCopying)
                 self.view?.presentScene(prefScene)
             }
-
-       }
+            
+        }
         
         
         if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask ==
@@ -627,7 +623,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             //walkingfox.run(fadeAction)
             print("Fox hit golden tropy.  contact has been made.")
             contact.bodyB.node?.removeFromParent()
-
+            
             achivmentLabel = SKLabelNode(fontNamed: "Chalkduster")
             achivmentLabel.position = CGPoint(x: walkingfox.position.x - 500,y:  walkingfox.position.y-100)
             achivmentLabel.text = "Hole Jumper Unlocked !! 50 points bonus"
@@ -636,15 +632,15 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             addChild(achivmentLabel)
             DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                 
-               self.achivmentLabel.removeFromParent()
+                self.achivmentLabel.removeFromParent()
             })
             let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("holejumper")
             prntRef.updateChildValues(["done":true])
             score = score + 50
-
+            
             
         }
-    
+        
     }
 
     
