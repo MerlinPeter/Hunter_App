@@ -8,12 +8,12 @@
 import SpriteKit
 import GameplayKit
 import CoreMotion
-import MotionHUD
 import FirebaseDatabase
 
 
-class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
+class GameScene: SKScene ,SKPhysicsContactDelegate{
     
+   
     //MARK: -- Init
     
     override init(size: CGSize ) {
@@ -28,6 +28,14 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         actor_setup()
         animate_setup()
         create_hud()
+        
+       /* let MagicParticles = SKEmitterNode(fileNamed: "Magicparticle.sks")
+        
+        MagicParticles?.zPosition = 15
+        MagicParticles?.position = CGPoint(x: 411, y: 146)
+        let particleEffects = SKEffectNode() // blends better this way
+        particleEffects.addChild(MagicParticles!)
+        addChild(particleEffects)*/
 
     }
     
@@ -54,6 +62,9 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     var gameTimer: Timer!
     var bunny_count : Int = 0
     var pbush_count : Int = 0
+    var gamePaused = false
+    var muteinitial: Bool = false
+
     
     var score: Int = 0 {
         didSet {
@@ -133,7 +144,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         pbush3.position = CGPoint(x: 138, y: 0)
         self.addChild(pbush3)
         
-        bunny2.position = CGPoint(x: 411, y:51)
+        bunny2.position = CGPoint(x: 411, y:0)
         self.addChild(bunny2)
         
         pbush1.position = CGPoint(x: 204, y: -160)
@@ -145,7 +156,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         //hole2.position = CGPoint(x: -412.5, y: -11.7)
         //self.addChild(hole2)
         
-        goldentropy.position = CGPoint(x: 411, y: 144)
+        goldentropy.position = CGPoint(x: 411, y: 20)
         self.addChild(goldentropy)
         
     }
@@ -221,7 +232,12 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         
         if let musicURL = Bundle.main.url(forResource: "bg_music", withExtension: "mp3") {
             backgroundMusic = SKAudioNode(url: musicURL)
+            if (SharingManager.sharedInstance.muteinitial){
+                backgroundMusic.autoplayLooped = false
+            }
             addChild(backgroundMusic)
+            
+       
         }
         motionManager = CMMotionManager()
         motionManager.startAccelerometerUpdates()
@@ -238,6 +254,9 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         front_camera.setup()
         addChild(front_camera)
         gameTimer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(runTimedCode), userInfo: nil, repeats: true)
+        
+        
+        
 
     }
     
@@ -251,33 +270,87 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
  
         super.update( currentTime)
 
-       // mycammera.position.x = walkingfox.position.x
+ 
+    }
+ 
+    func muteunmute() {
+        
+        
+            if SharingManager.sharedInstance.muteinitial {
+                //This runs if the user wants music
+                print("The button will now turn on music.")
+                SharingManager.sharedInstance.muteinitial=false
 
- 
- }
- 
- 
-    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
- 
+                //muteinitial = false
+                backgroundMusic.run(SKAction.play())
+              //  backgroundMusic.run(self.backgroundMusic)
+            } else {
+                //This happens when the user doesn't want music
+                print("the button will now turn off music.")
+                SharingManager.sharedInstance.muteinitial=true
+
+               // muteinitial = true
+                backgroundMusic.run(SKAction.stop())
+
+                // backgroundMusic.
+            }
         
     }
-    
+
+  
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
         let  kHugeTime : TimeInterval = 9999.0;
         super.touchesBegan(touches, with: event)
+         //mute/unmute declaration
+        //var musicURLr: AVAudioPlayer?
+   
         
         for touch: UITouch in touches {
-            if touch.location(in: walkingfox.parent!).x < walkingfox.position.x {
+
+            let location = touch.location(in: self)
+            let node = self.atPoint(location)
+            if (node.name == "PauseButton") {
+                showPauseAlert()
+                break
                 
-                lefttouches += 1
-            }else{
-                righttouches += 1
+                
             }
+           /* if (node.name == "settings") {
+                let prefScene = SKScene(fileNamed: "PreferenceScene") as! PreferenceScene
+                prefScene.userData = NSMutableDictionary()
+                prefScene.userData?.setObject("GameScene", forKey: "scrname"  as NSCopying)
+                self.view?.presentScene(prefScene)
+                break
+                
+                
+            }*/
+            if (node.name == "MuteButton") {
+                muteunmute()
+                break
+                
+                
+            }
+            if (node.name == "restart") {
+                showRestartAlert()
+                break
+                
+            }
+            
+
+             
+             if (touch.location(in: walkingfox.parent!).x < walkingfox.position.x )  {
+ 
+                    lefttouches += 1
+                
+            }else{
+ 
+                    righttouches += 1
+            }
+           
+            
             
         }
  
-
         if ((lefttouches == 1) && (righttouches == 0)){
             
             let leftMove = SKAction.move(by: CGVector(dx:-1.0 * kHugeTime * kMoveSpeed, dy:0), duration: kHugeTime )
@@ -307,9 +380,18 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
     }
     
     
+    
+    
+    
     func reduceTouches(_ touches: Set<UITouch>?, with event: UIEvent?){
         
         for touch: UITouch in touches! {
+            let location = touch.location(in: self)
+            let node = self.atPoint(location)
+            if (node.name == "PauseButton") || (node.name == "MuteButton")   || (node.name == "restart") {
+                break
+            }
+            
             
             if touch.location(in: walkingfox.parent!).x < walkingfox.position.x {
                 lefttouches -= 1
@@ -368,13 +450,15 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             self.view?.presentScene(prefScene)
 
         }
+        if (!gamePaused){
         seconds-=1
+        }
         
         
         
         
     }
-    //MARK: - Cliff blocks
+ 
     private func spritesCollection(xposition: Int,yposition: Int) -> [SKSpriteNode] {
         var sprites = [SKSpriteNode]()
         textureatlas = SKTextureAtlas(named: "Cliffblocks.atlas")
@@ -402,7 +486,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         //
     }
     
-    //MARK: - Create Hud
+ 
     func create_hud()  {
         let hud = SKSpriteNode(color: UIColor.init(red: 0, green: 1, blue: 0, alpha: 0.3), size: CGSize(width: 667, height: 30))
         hud.anchorPoint=CGPoint(x:0.5, y:0.5)
@@ -415,7 +499,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         let lifeSize = CGSize(width : hud.size.height,  height: hud.size.height)
         
         for i  in 1...self.remainingLifes {
-            var tmpNode = SKSpriteNode(imageNamed: "fox_3_1")
+            let tmpNode = SKSpriteNode(imageNamed: "Hearts_01_128x128_032.png")
             lifeNodes.append(tmpNode)
             tmpNode.size = lifeSize
             tmpNode.position=CGPoint(x:hud.size.width/2-(lifeSize.width * CGFloat(i)),y:0)
@@ -445,24 +529,130 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         hud.addChild(timerLabel)
         
         
-        message_hud = SKSpriteNode(color: UIColor.init(red: 0, green: 0, blue: 1, alpha: 0.1), size: CGSize(width: 667, height: 30))
+        message_hud = SKSpriteNode(color: UIColor.init(red: 0, green: 1, blue: 0, alpha: 0), size: CGSize(width: 667, height: 60))
         message_hud.anchorPoint=CGPoint(x:0.5, y:0.5)
-        message_hud.position = CGPoint(x:0 , y:self.size.height/2  - (hud.size.height + (message_hud.size.height/2)))
+       // message_hud.position = CGPoint(x:0 , y:self.size.height/2  - (hud.size.height + (message_hud.size.height/2)))
+        message_hud.position = CGPoint(x:0 , y:-(self.size.height/2)  + ( message_hud.size.height/2))
         message_hud.zPosition=1
+        let pause_screen = SKSpriteNode(imageNamed: "pauseicon.png")
+       // pause_screen.position=CGPoint(x:-(hud.size.width/2),y:0)
+        pause_screen.name="PauseButton"
+        pause_screen.zPosition=1
+        pause_screen.size = CGSize(width: message_hud.size.height/1.4, height:message_hud.size.height/1.4)
+        pause_screen.position=CGPoint(x:-(message_hud.size.width/2)+pause_screen.size.width,y:0)
+
+        message_hud.addChild(pause_screen)
+        
+        //add the mute
+        let mute_screen = SKSpriteNode(imageNamed: "mute.png")
+        mute_screen.name="MuteButton"
+        mute_screen.zPosition=1
+        mute_screen.size = CGSize(width: message_hud.size.height/1.4, height:message_hud.size.height/1.4)
+        mute_screen.position=CGPoint(x:-(message_hud.size.width/2)+mute_screen.size.width*2,y:0)
+        
+        message_hud.addChild(mute_screen)
+        
+        //unmute button here
+        let unmute_screen = SKSpriteNode(imageNamed: "restart.png")
+        unmute_screen.name="restart"
+        unmute_screen.zPosition=1
+        unmute_screen.size = CGSize(width: message_hud.size.height/1.4, height:message_hud.size.height/1.4)
+        unmute_screen.position=CGPoint(x:-(message_hud.size.width/2)+unmute_screen.size.width*3,y:0)
+
+        message_hud.addChild(unmute_screen)
+        
+        
         front_camera.addChild(message_hud)
-        
-        
+               
         
 
        
     }
-    
+    func update_achievment(input_achivment:String)  {
+        
+      let disablefirebase = true
+        
+        if (disablefirebase)
+        {
+            let databaseRef = FIRDatabase.database().reference()
+            
+            
+            switch input_achivment {
+            case "holejumper":
+                let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("holejumper")
+                prntRef.updateChildValues(["done":true])
+            case "bunnycatcher" :
+                let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("bunnycatcher")
+                prntRef.updateChildValues(["done":true])
+            case "speedhero":
+                let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("speedhero")
+                prntRef.updateChildValues(["done":true])
+            case "poisonfree":
+                let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("poisonfree")
+                prntRef.updateChildValues(["done":true])
+            case "score"://updated current score and update high score if needed
+                let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml")
+                prntRef.updateChildValues(["Score":score])
+                databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").observeSingleEvent(of: .value, with: { (snapshot) in
+                    // Get user value
+                    let value = snapshot.value as? NSDictionary
+                    
+                    var HScore  = value?["HighScore"] as? Int
+                    
+                    if self.score > HScore! {
+                        
+                        HScore = self.score
+                        prntRef.updateChildValues(["HighScore" : HScore!])
+                        
+                    }
+                    
+                }) { (error) in
+                    print(error.localizedDescription)
+                }
+            default :
+                print("TBD")
+                
+            }
+        }else{
+            
+            print("Firebase Not used")
+            
+        }
+        
+    }
+
+    func showPauseAlert() {
+        self.gamePaused = true
+        let alert = UIAlertController(title: "Game Paused", message: "Go for Coffee your clock is not running", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Continue", style: UIAlertActionStyle.default)  { _ in
+            self.gamePaused = false
+        })
+        self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
+        
+    }
+    func showRestartAlert() {
+        self.gamePaused = true
+        let alert = UIAlertController(title: "Quit", message: "Do you want to quit the game ", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default)  { _ in
+            let gameStart = SKScene(fileNamed: "GameStartScene") as! GameStart
+            
+            self.view?.presentScene(gameStart)
+
+        })
+        alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.default)  { _ in
+           
+            self.gamePaused = false
+
+        })
+        self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
+        
+    }
+
     //MARK: - Contact Delegate functions
 
     
     func didBegin(_ contact: SKPhysicsContact) {
         
-        let databaseRef = FIRDatabase.database().reference()
         
         //fox hit hole,net
         
@@ -496,72 +686,68 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
             fireParticle.name = "FIREParticle"
             fireParticle.targetNode = self.scene
             fireParticle.particleLifetime = 0.5
-            
-            walkingfox.run(actionAudioExplode)
+            if  !SharingManager.sharedInstance.muteinitial
+            {
+                walkingfox.run(actionAudioExplode)
+
+            }
             
             self.addChild(fireParticle)
             
             //speed hero achivment
             if (bunny_count == 3) {
-                var prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("bunnycatcher")
-                prntRef.updateChildValues(["done":true])
+
+                 update_achievment(input_achivment: "bunnycatcher")
+                if(!SharingManager.sharedInstance.message){
+
                 achivmentLabel = SKLabelNode(fontNamed: "Chalkduster")
                 achivmentLabel.position = CGPoint(x: walkingfox.position.x - 500,y:  walkingfox.position.y+80)
                 achivmentLabel.text = "Bunny Catcher Unlocked! 10 points"
                 achivmentLabel.horizontalAlignmentMode = .left
                 achivmentLabel.verticalAlignmentMode = .top
                 addChild(achivmentLabel)
+                    
+                }
                 score = score + 10
                 
                 if( seconds <= 30 ){
-                    let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("speedhero")
-                    prntRef.updateChildValues(["done":true])
+                    update_achievment(input_achivment: "speedhero")
+                    if(!SharingManager.sharedInstance.message){
+
                     achivmentLabel = SKLabelNode(fontNamed: "Chalkduster")
                     achivmentLabel.position = CGPoint(x: walkingfox.position.x - 500,y:  walkingfox.position.y)
                     achivmentLabel.text = "Speed Hero Unlocked! 10 points"
                     achivmentLabel.horizontalAlignmentMode = .left
                     achivmentLabel.verticalAlignmentMode = .top
                     addChild(achivmentLabel)
+                    }
                     score = score + 10
                     
                     
                 }
                 //poision bush achivment
                 if( pbush_count == 0  ){
-                    let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("poisonfree")
-                    prntRef.updateChildValues(["done":true])
+                    update_achievment(input_achivment: "poisonfree")
+                    if(!SharingManager.sharedInstance.message){
+
                     achivmentLabel = SKLabelNode(fontNamed: "Chalkduster")
                     achivmentLabel.position = CGPoint(x: walkingfox.position.x - 500,y:  walkingfox.position.y-80)
                     achivmentLabel.text = "Poison Free Unlocked! 20 points"
                     achivmentLabel.horizontalAlignmentMode = .left
                     achivmentLabel.verticalAlignmentMode = .top
                     addChild(achivmentLabel)
+                    }
                     score = score + 20
                     
                     
                 }
                 // bunny count
                  //add code here to put the data to fire base
-                prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml")
-                prntRef.updateChildValues(["Score":score])
+                update_achievment(input_achivment: "score")
+
                 
                 //update score = current score
-                databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").observeSingleEvent(of: .value, with: { (snapshot) in
-                    // Get user value
-                    let value = snapshot.value as? NSDictionary
-                    
-                    var HScore  = value?["HighScore"] as? Int
-                    
-                    if self.score > HScore! {
-                        
-                        HScore = self.score
-                        prntRef.updateChildValues(["HighScore" : HScore!])
-                        
-                    }
-                    
-                }) { (error) in
-                    print(error.localizedDescription)
-                }
+
                 
                   DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(5), execute: {
                     let gamewin = SKScene(fileNamed: "GameWin") as! GameWin
@@ -577,11 +763,13 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         } else if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask == category_pbush {
             print("Fox hit poisonbush. ")
             contact.bodyB.node?.removeFromParent()
+            if(!SharingManager.sharedInstance.message){
+
             achivmentLabel = SKLabelNode(fontNamed: "Copperplate")
              achivmentLabel.text = "Poison bush hit,lost 50 points"
             achivmentLabel.horizontalAlignmentMode = .center
             achivmentLabel.verticalAlignmentMode = .center
-            achivmentLabel.fontSize = message_hud.size.height-3
+            achivmentLabel.fontSize = 24
             achivmentLabel.fontColor = UIColor.black
             message_hud.addChild(achivmentLabel)
             
@@ -589,6 +777,7 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
                 
                 self.achivmentLabel.removeFromParent()
             })
+            }
             pbush_count += 1
            // life = life - 1
             score = score - 50
@@ -611,45 +800,74 @@ class GameScene: MHMotionHUDScene ,SKPhysicsContactDelegate{
         if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask ==
             category_hole {
             
-            // let fadeAction = SKAction.fadeAlpha(to: 0.3, duration: 2.0)
-            //walkingfox.run(fadeAction)
+            //let fadeAction = SKAction.fadeAlpha(to: 0.3, duration: 2.0)
+           // walkingfox.run(fadeAction)
+            
+           // let fadeAway = SKAction.fadeOut(withDuration: 2.0)
+            //let removeNode = SKAction.removeFromParent()
+            //let sequence = SKAction.sequence([fadeAway, removeNode])
+            
+          //  walkingfox.removeFromParent()
+          //  walkingfox.position = CGPoint(x: -184 , y: 0)
+         //   self.addChild(walkingfox)
+        
             print("Fox hit hole.  contact has been made.")
             
         }
+        
+        //MagicParticle and tropy hit fox
+        let  actionAudioExplode1 = SKAction.playSoundFileNamed("fox_hit.mp3",waitForCompletion: false)
+        let path1 = Bundle.main.path(forResource: "Magicparticle", ofType: "sks")
+        let magicParticle = NSKeyedUnarchiver.unarchiveObject(withFile: path1!) as! SKEmitterNode
+        
         if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask ==
             category_golden_trophy {
             
             // let fadeAction = SKAction.fadeAlpha(to: 0.3, duration: 2.0)
             //walkingfox.run(fadeAction)
+            
+            magicParticle.position = (contact.bodyB.node?.position)!
+            contact.bodyB.node?.removeFromParent()
+            magicParticle.name = "MAGICParticle"
+            magicParticle.targetNode = self.scene
+            magicParticle.particleLifetime = 1
+            
+           // walkingfox.run(actionAudioExplode1)
+            
+            self.addChild(magicParticle)
+            
+            
             print("Fox hit golden tropy.  contact has been made.")
             contact.bodyB.node?.removeFromParent()
-            
-            achivmentLabel = SKLabelNode(fontNamed: "Chalkduster")
-            achivmentLabel.position = CGPoint(x: walkingfox.position.x - 500,y:  walkingfox.position.y-100)
-            achivmentLabel.text = "Hole Jumper Unlocked !! 50 points bonus"
-            achivmentLabel.horizontalAlignmentMode = .left
-            achivmentLabel.verticalAlignmentMode = .top
-            addChild(achivmentLabel)
-            DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+            if(!SharingManager.sharedInstance.message){
+                achivmentLabel = SKLabelNode(fontNamed: "Chalkduster")
+                achivmentLabel.position = CGPoint(x: walkingfox.position.x - 500,y:  walkingfox.position.y-100)
+                achivmentLabel.text = "Hole Jumper Unlocked !! 50 points bonus"
+                achivmentLabel.horizontalAlignmentMode = .left
+                achivmentLabel.verticalAlignmentMode = .top
+                addChild(achivmentLabel)
+                update_achievment(input_achivment: "holejumper")
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                    
+                    self.achivmentLabel.removeFromParent()
+                })
                 
-                self.achivmentLabel.removeFromParent()
-            })
-            let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("holejumper")
-            prntRef.updateChildValues(["done":true])
+            }
+            
+
+           
             score = score + 50
             
             
         }
-        
-    }
-
     
+    }
+       
 }
-
 
 //code for accelmetor function
 
-/*   
+/*
  
  #if (arch(i386) || arch(x86_64))
  if let currentTouch = lastTouchPosition {

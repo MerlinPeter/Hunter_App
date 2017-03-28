@@ -33,7 +33,6 @@ class GoldenTrophy: CommonSpriteNode {
         physicsBody!.contactTestBitMask =  category_fox
         physicsBody!.isDynamic = true
         
-}
-
+       }
 
 }

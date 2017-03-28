@@ -75,6 +75,16 @@ class GameWin: SKScene {
                 
                 
             }
+            if node[0].name == "options" {
+                let prefScene = SKScene(fileNamed: "PreferenceScene") as! PreferenceScene
+                prefScene.userData = NSMutableDictionary()
+                prefScene.userData?.setObject("GameWin", forKey: "scrname"  as NSCopying)
+                self.view?.presentScene(prefScene)
+
+                
+                
+                
+            }
             
         }
     }

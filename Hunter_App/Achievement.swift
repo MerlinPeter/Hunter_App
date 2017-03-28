@@ -11,58 +11,74 @@ import SpriteKit
 import FirebaseDatabase
 class Achievements: SKScene {
     
-    var score : Int=0;
-    var username : String!
+     var username : String!
     var tableView: UITableView  =   UITableView()
     var gameTableView : AchievementTableView!// = AchievementTableView()
     var achivment_names = [String]()
+    
     
     override func didMove(to view: SKView) {
  
         self.fillTable()
  
-        //tabel_class
+        self.score_display()
         
+    }
+    
+    func score_display () {
+        let databaseRef = FIRDatabase.database().reference()
+        databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").observeSingleEvent(of: .value, with: { (snapshot) in
+            // Get user value
+            let value = snapshot.value as? NSDictionary
+             let highscore  = value?["HighScore"] as? Int
+            
+            let high_score_node = self.childNode(withName: "highscore") as! SKLabelNode
+            high_score_node.text = String(describing: highscore!)
+            
+            
+            
+            // ...
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+
     }
     func fillTable() {
     
-    let databaseRef = FIRDatabase.database().reference()
-    databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").observeSingleEvent(of: .value, with: { (snapshot) in
-
-         for rest in snapshot.children.allObjects as! [FIRDataSnapshot] {
-            let dvalue = rest.value as? NSDictionary
-            let score:Int! = dvalue!.value(forKey: "score") as? Int
-            let done:Bool! = dvalue!.value(forKey: "done") as? Bool
-            if (done==true){
-                self.achivment_names.append(rest.key + " Points : " + String(score) + " UnLocked !!! "   )
-
-            }else{
-                self.achivment_names.append(rest.key + " Points : " + String(score) + " Locked "   )
+        let databaseRef = FIRDatabase.database().reference()
+        
+        databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            for rest in snapshot.children.allObjects as! [FIRDataSnapshot] {
+                let dvalue = rest.value as? NSDictionary
+                let score:Int! = dvalue!.value(forKey: "score") as? Int
+                let done:Bool! = dvalue!.value(forKey: "done") as? Bool
+                if (done==true){
+                    self.achivment_names.append(rest.key + " Points : " + String(score) + " UnLocked !!! "   )
+                }else{
+                    self.achivment_names.append(rest.key + " Points : " + String(score) + " Locked "   )
+                }
                 
-  
+                /* for (key, value) in dvalue! {
+                 print("Property: \"\(key as! String)\"")
+                 print("Value: \"\(value as! AnyObject)\"")
+                 }*/
+                
             }
+            self.gameTableView = AchievementTableView()
+            self.gameTableView.setitems(i_items: self.achivment_names)
+            self.gameTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+            self.gameTableView.frame=CGRect(x:20,y:65,width:380,height:250)
+            self.gameTableView.reloadData()
+            self.scene?.view?.addSubview(self.gameTableView)
             
-
-           /* for (key, value) in dvalue! {
-                print("Property: \"\(key as! String)\"")
-                print("Value: \"\(value as! AnyObject)\"")
-            }*/
             
+            
+            // ...
+        }) { (error) in
+            print(error.localizedDescription)
         }
-        self.gameTableView = AchievementTableView()
-        self.gameTableView.setitems(i_items: self.achivment_names)
-        self.gameTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        self.gameTableView.frame=CGRect(x:20,y:65,width:380,height:250)
-        self.gameTableView.reloadData()
-        self.scene?.view?.addSubview(self.gameTableView)
-
         
-        
-    
-    // ...
-    }) { (error) in
-    print(error.localizedDescription)
-    }
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -85,12 +101,19 @@ class Achievements: SKScene {
                         self.view?.presentScene(scene)
                         
                         
-                    }else{
+                    } else if (scrname as! String == "GameWin") {
                         let scene = SKScene(fileNamed: "GameWin") as! GameWin
                         self.view?.presentScene(scene)
                         
                         
-                    }
+                    }  else if (scrname as! String == "Preference") {
+                        let prefScene = SKScene(fileNamed: "PreferenceScene") as! PreferenceScene
+                        prefScene.userData = NSMutableDictionary()
+                        prefScene.userData?.setObject("GameScene", forKey: "scrname"  as NSCopying)
+                        self.view?.presentScene(prefScene)
+                        
+                        
+                  }
                     gameTableView.removeFromSuperview()
                     
                     

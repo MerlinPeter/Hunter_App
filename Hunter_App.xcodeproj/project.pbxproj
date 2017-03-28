@@ -42,6 +42,8 @@
 		D091011C1E74018500783594 /* fox_hit.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = D091011B1E74018500783594 /* fox_hit.mp3 */; };
 		D0915BEF1E6120280020D014 /* GameOver.sks in Resources */ = {isa = PBXBuildFile; fileRef = D0915BEE1E6120280020D014 /* GameOver.sks */; };
 		D0915BF11E6120510020D014 /* GameOver.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0915BF01E6120510020D014 /* GameOver.swift */; };
+		D71400131E88BAB700DD8C9C /* FireDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71400121E88BAB700DD8C9C /* FireDB.swift */; };
+		D71400151E88D38700DD8C9C /* SharingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D71400141E88D38700DD8C9C /* SharingManager.swift */; };
 		D760F53A1E7B549E003406B0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = D760F5391E7B549E003406B0 /* GoogleService-Info.plist */; };
 		D760F53E1E7CA589003406B0 /* LeaderBord.sks in Resources */ = {isa = PBXBuildFile; fileRef = D760F53D1E7CA589003406B0 /* LeaderBord.sks */; };
 		D760F5441E7CACB4003406B0 /* LeaderBoard.swift in Sources */ = {isa = PBXBuildFile; fileRef = D760F5431E7CACB4003406B0 /* LeaderBoard.swift */; };
@@ -94,6 +96,8 @@
 		D091011B1E74018500783594 /* fox_hit.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = fox_hit.mp3; sourceTree = "<group>"; };
 		D0915BEE1E6120280020D014 /* GameOver.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameOver.sks; sourceTree = "<group>"; };
 		D0915BF01E6120510020D014 /* GameOver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameOver.swift; sourceTree = "<group>"; };
+		D71400121E88BAB700DD8C9C /* FireDB.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FireDB.swift; sourceTree = "<group>"; };
+		D71400141E88D38700DD8C9C /* SharingManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharingManager.swift; sourceTree = "<group>"; };
 		D760F5391E7B549E003406B0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		D760F53D1E7CA589003406B0 /* LeaderBord.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LeaderBord.sks; sourceTree = "<group>"; };
 		D760F5431E7CACB4003406B0 /* LeaderBoard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeaderBoard.swift; sourceTree = "<group>"; };
@@ -188,8 +192,10 @@
 				D7F5682D1E6EA58E00163554 /* Bunny.swift */,
 				D08453F51E761A3300403DF6 /* Poisonbush.swift */,
 				D031F2991E5FEEBA000E646B /* PreferenceScene.swift */,
+				D71400141E88D38700DD8C9C /* SharingManager.swift */,
 				D031F2951E5FD14E000E646B /* PreferenceScene.sks */,
 				D760F5471E7D19D4003406B0 /* Achievement.swift */,
+				D71400121E88BAB700DD8C9C /* FireDB.swift */,
 				D760F5451E7CC543003406B0 /* Acheivement.sks */,
 				D02799C21E63D3BF00C34A57 /* GameWin.sks */,
 				D760F53D1E7CA589003406B0 /* LeaderBord.sks */,
@@ -367,6 +373,7 @@
 				D031F2821E5FCC59000E646B /* GameScene.swift in Sources */,
 				D760F5481E7D19D4003406B0 /* Achievement.swift in Sources */,
 				D02799C51E63D3E600C34A57 /* GameWin.swift in Sources */,
+				D71400131E88BAB700DD8C9C /* FireDB.swift in Sources */,
 				D77652FD1E706BF1007CCED4 /* CommonSpriteNode.swift in Sources */,
 				D04C80CF1E7CAE4D00CD840A /* Hole.swift in Sources */,
 				D031F2841E5FCC59000E646B /* GameViewController.swift in Sources */,
@@ -377,6 +384,7 @@
 				D04C80DB1E7F778500CD840A /* GoldenTrophy.swift in Sources */,
 				D031F27C1E5FCC59000E646B /* AppDelegate.swift in Sources */,
 				D08453F61E761A3300403DF6 /* Poisonbush.swift in Sources */,
+				D71400151E88D38700DD8C9C /* SharingManager.swift in Sources */,
 				D04C80AF1E79094900CD840A /* LoginController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
