@@ -29,12 +29,12 @@ class Hole: CommonSpriteNode {
         name="Holetask"
         color = UIColor.red
         colorBlendFactor = 1
-        physicsBody = SKPhysicsBody(rectangleOf: self.size)
+        physicsBody = SKPhysicsBody(circleOfRadius: self.size.width/4)
         physicsBody!.allowsRotation = false
         physicsBody!.linearDamping = 0.5
         physicsBody!.categoryBitMask = category_hole
         physicsBody!.contactTestBitMask =  category_fox
-        physicsBody!.isDynamic = false
+        physicsBody!.isDynamic = true
         
     }
     

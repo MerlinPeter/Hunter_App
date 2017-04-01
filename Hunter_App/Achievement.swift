@@ -11,10 +11,11 @@ import SpriteKit
 import FirebaseDatabase
 class Achievements: SKScene {
     
-     var username : String!
+    var username : String!
     var tableView: UITableView  =   UITableView()
     var gameTableView : AchievementTableView!// = AchievementTableView()
     var achivment_names = [String]()
+    var fire_db = FireDB()
     
     
     override func didMove(to view: SKView) {
@@ -26,22 +27,27 @@ class Achievements: SKScene {
     }
     
     func score_display () {
-        let databaseRef = FIRDatabase.database().reference()
+        let high_score_node = self.childNode(withName: "highscore") as! SKLabelNode
+        high_score_node.text = String(describing: fire_db.high_score())
+        
+            
+          //  String(describing: highscore!)
+
+   /*     let databaseRef = FIRDatabase.database().reference()
         databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").observeSingleEvent(of: .value, with: { (snapshot) in
             // Get user value
             let value = snapshot.value as? NSDictionary
              let highscore  = value?["HighScore"] as? Int
             
-            let high_score_node = self.childNode(withName: "highscore") as! SKLabelNode
-            high_score_node.text = String(describing: highscore!)
-            
+       
+         
             
             
             // ...
         }) { (error) in
             print(error.localizedDescription)
         }
-
+*/
     }
     func fillTable() {
     

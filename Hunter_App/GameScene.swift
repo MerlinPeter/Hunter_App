@@ -8,8 +8,7 @@
 import SpriteKit
 import GameplayKit
 import CoreMotion
-import FirebaseDatabase
-
+ 
 
 class GameScene: SKScene ,SKPhysicsContactDelegate{
     
@@ -62,6 +61,8 @@ class GameScene: SKScene ,SKPhysicsContactDelegate{
     var gameTimer: Timer!
     var bunny_count : Int = 0
     var pbush_count : Int = 0
+    var holehit_count: Int = 0
+    
     var gamePaused = false
     var muteinitial: Bool = false
 
@@ -83,6 +84,10 @@ class GameScene: SKScene ,SKPhysicsContactDelegate{
     var remainingLifes = 3
     var scoreNode = SKLabelNode()
     var message_hud : SKSpriteNode!
+    
+    //MARK: - FireDB Variables   
+    var fire_db = FireDB()
+
     
     //MARK: - Actors Variables
     
@@ -150,11 +155,11 @@ class GameScene: SKScene ,SKPhysicsContactDelegate{
         pbush1.position = CGPoint(x: 204, y: -160)
         self.addChild(pbush1)
         
-        hole1.position = CGPoint(x: -19.6, y: -100)
+        hole1.position = CGPoint(x: -19.6, y: 0)
         self.addChild(hole1)
         
-        //hole2.position = CGPoint(x: -412.5, y: -11.7)
-        //self.addChild(hole2)
+        hole2.position = CGPoint(x: -413.5, y: -95.7)
+        self.addChild(hole2)
         
         goldentropy.position = CGPoint(x: 411, y: 20)
         self.addChild(goldentropy)
@@ -568,59 +573,6 @@ class GameScene: SKScene ,SKPhysicsContactDelegate{
 
        
     }
-    func update_achievment(input_achivment:String)  {
-        
-      let disablefirebase = true
-        
-        if (disablefirebase)
-        {
-            let databaseRef = FIRDatabase.database().reference()
-            
-            
-            switch input_achivment {
-            case "holejumper":
-                let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("holejumper")
-                prntRef.updateChildValues(["done":true])
-            case "bunnycatcher" :
-                let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("bunnycatcher")
-                prntRef.updateChildValues(["done":true])
-            case "speedhero":
-                let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("speedhero")
-                prntRef.updateChildValues(["done":true])
-            case "poisonfree":
-                let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("poisonfree")
-                prntRef.updateChildValues(["done":true])
-            case "score"://updated current score and update high score if needed
-                let prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml")
-                prntRef.updateChildValues(["Score":score])
-                databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").observeSingleEvent(of: .value, with: { (snapshot) in
-                    // Get user value
-                    let value = snapshot.value as? NSDictionary
-                    
-                    var HScore  = value?["HighScore"] as? Int
-                    
-                    if self.score > HScore! {
-                        
-                        HScore = self.score
-                        prntRef.updateChildValues(["HighScore" : HScore!])
-                        
-                    }
-                    
-                }) { (error) in
-                    print(error.localizedDescription)
-                }
-            default :
-                print("TBD")
-                
-            }
-        }else{
-            
-            print("Firebase Not used")
-            
-        }
-        
-    }
-
     func showPauseAlert() {
         self.gamePaused = true
         let alert = UIAlertController(title: "Game Paused", message: "Go for Coffee your clock is not running", preferredStyle: UIAlertControllerStyle.alert)
@@ -652,10 +604,7 @@ class GameScene: SKScene ,SKPhysicsContactDelegate{
 
     
     func didBegin(_ contact: SKPhysicsContact) {
-        
-        
-        //fox hit hole,net
-        
+    
         // var fadeAction: SKAction
         //fox hit bunny
         var firstBody: SKPhysicsBody
@@ -697,7 +646,7 @@ class GameScene: SKScene ,SKPhysicsContactDelegate{
             //speed hero achivment
             if (bunny_count == 3) {
 
-                 update_achievment(input_achivment: "bunnycatcher")
+                 fire_db.update_achievment(input_achivment: "bunnycatcher")
                 if(!SharingManager.sharedInstance.message){
 
                 achivmentLabel = SKLabelNode(fontNamed: "Chalkduster")
@@ -711,7 +660,7 @@ class GameScene: SKScene ,SKPhysicsContactDelegate{
                 score = score + 10
                 
                 if( seconds <= 30 ){
-                    update_achievment(input_achivment: "speedhero")
+                    fire_db.update_achievment(input_achivment: "speedhero")
                     if(!SharingManager.sharedInstance.message){
 
                     achivmentLabel = SKLabelNode(fontNamed: "Chalkduster")
@@ -727,7 +676,7 @@ class GameScene: SKScene ,SKPhysicsContactDelegate{
                 }
                 //poision bush achivment
                 if( pbush_count == 0  ){
-                    update_achievment(input_achivment: "poisonfree")
+                    fire_db.update_achievment(input_achivment: "poisonfree")
                     if(!SharingManager.sharedInstance.message){
 
                     achivmentLabel = SKLabelNode(fontNamed: "Chalkduster")
@@ -743,9 +692,8 @@ class GameScene: SKScene ,SKPhysicsContactDelegate{
                 }
                 // bunny count
                  //add code here to put the data to fire base
-                update_achievment(input_achivment: "score")
-
-                
+                fire_db.score = score
+                fire_db.update_achievment(input_achivment: "score")
                 //update score = current score
 
                 
@@ -769,7 +717,7 @@ class GameScene: SKScene ,SKPhysicsContactDelegate{
              achivmentLabel.text = "Poison bush hit,lost 50 points"
             achivmentLabel.horizontalAlignmentMode = .center
             achivmentLabel.verticalAlignmentMode = .center
-            achivmentLabel.fontSize = 24
+            achivmentLabel.fontSize = 20
             achivmentLabel.fontColor = UIColor.black
             message_hud.addChild(achivmentLabel)
             
@@ -795,25 +743,62 @@ class GameScene: SKScene ,SKPhysicsContactDelegate{
             }
             
         }
+       
         
+        
+        
+        //Hole achievement label
+        
+        
+        //Hole count and firebase update score
+        
+       /* if( holehit_count == 0  ){
+            fire_db.update_achievment(input_achivment: "holehit")
+            if(!SharingManager.sharedInstance.message){
+                
+                achivmentLabel = SKLabelNode(fontNamed: "Copperplate")
+                achivmentLabel.position = CGPoint(x: walkingfox.position.x - 500,y:  walkingfox.position.y-80)
+                achivmentLabel.text = "Hole Unlocked! minus 5 points"
+                achivmentLabel.horizontalAlignmentMode = .left
+                achivmentLabel.verticalAlignmentMode = .top
+                addChild(achivmentLabel)
+            
+            score = score - 5
+            hole1.removeFromParent()
+            
+        }
+        
+        fire_db.score = score
+        fire_db.update_achievment(input_achivment: "score")
+    } */
+    
         
         if firstBody.categoryBitMask == category_fox && secondBody.categoryBitMask ==
             category_hole {
             
-            //let fadeAction = SKAction.fadeAlpha(to: 0.3, duration: 2.0)
-           // walkingfox.run(fadeAction)
-            
-           // let fadeAway = SKAction.fadeOut(withDuration: 2.0)
-            //let removeNode = SKAction.removeFromParent()
-            //let sequence = SKAction.sequence([fadeAway, removeNode])
-            
-          //  walkingfox.removeFromParent()
-          //  walkingfox.position = CGPoint(x: -184 , y: 0)
-         //   self.addChild(walkingfox)
-        
             print("Fox hit hole.  contact has been made.")
+             contact.bodyB.node?.removeFromParent()
+            
+            if(!SharingManager.sharedInstance.message){
+                
+                achivmentLabel = SKLabelNode(fontNamed: "Copperplate")
+                achivmentLabel.text = "Hole hit,lost 5 points"
+                achivmentLabel.horizontalAlignmentMode = .left
+                achivmentLabel.verticalAlignmentMode = .top
+                achivmentLabel.fontSize = 20
+                achivmentLabel.fontColor = UIColor.black
+                message_hud.addChild(achivmentLabel)
+                score = score - 5
+
+                DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
+                    
+                    self.achivmentLabel.removeFromParent()
+                })
+            }
             
         }
+        
+        
         
         //MagicParticle and tropy hit fox
         let  actionAudioExplode1 = SKAction.playSoundFileNamed("fox_hit.mp3",waitForCompletion: false)
@@ -846,7 +831,7 @@ class GameScene: SKScene ,SKPhysicsContactDelegate{
                 achivmentLabel.horizontalAlignmentMode = .left
                 achivmentLabel.verticalAlignmentMode = .top
                 addChild(achivmentLabel)
-                update_achievment(input_achivment: "holejumper")
+                fire_db.update_achievment(input_achivment: "holejumper")
                 DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2), execute: {
                     
                     self.achivmentLabel.removeFromParent()
@@ -980,6 +965,21 @@ class GameScene: SKScene ,SKPhysicsContactDelegate{
 
  */
 
+
+//FADE ACTION
+//let fadeAction = SKAction.fadeAlpha(to: 0.3, duration: 2.0)
+// walkingfox.run(fadeAction)
+
+// let fadeAway = SKAction.fadeOut(withDuration: 2.0)
+//let removeNode = SKAction.removeFromParent()
+//let sequence = SKAction.sequence([fadeAway, removeNode])
+
+//  walkingfox.removeFromParent()
+//  walkingfox.position = CGPoint(x: -184 , y: 0)
+//   self.addChild(walkingfox)
+
+// let path1 = Bundle.main.path(forResource: "Hole", ofType: "sks")
+// let holehit = NSKeyedUnarchiver.unarchiveObject(withFile: path1!) as!
 
 
 

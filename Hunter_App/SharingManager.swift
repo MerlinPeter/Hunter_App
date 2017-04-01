@@ -7,8 +7,8 @@
 //
 
 class SharingManager {
-    var welcomeMessage:String = "Default Message"
-    var message:Bool = false
+    
+     var message:Bool = false
     var muteinitial: Bool = false
     static let sharedInstance = SharingManager()
 }

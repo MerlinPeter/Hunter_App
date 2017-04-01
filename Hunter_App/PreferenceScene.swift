@@ -59,12 +59,12 @@ class PreferenceScene: SKScene {
                     }
                 }
             }else if node[0].name == "reset" {
+               
                 show_reset_alert()
                 
             }else if node[0].name == "mute" {
                 
                 show_sound_alert()
-
                 
             }else if node[0].name == "achivment" {
                 let prefScene = SKScene(fileNamed: "Acheivement") as! Achievements
@@ -83,13 +83,13 @@ class PreferenceScene: SKScene {
     
 
     func show_reset_alert() {
+        
          let alert = UIAlertController(title: "Reset Acheivement", message: "You are going reset your hard earned achievments, but we know sometimes in life you have to start new", preferredStyle: UIAlertControllerStyle.alert)
         alert.addAction(UIAlertAction(title: "Reset", style: UIAlertActionStyle.default)  { _ in
             self.fire_db.reset_acheivement()
 
          })
         alert.addAction(UIAlertAction(title: "Skip", style: UIAlertActionStyle.default)  { _ in
-            
             
         })
         self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)

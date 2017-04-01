@@ -13,12 +13,14 @@ class FireDB {
     
     var  databaseRef : AnyObject
     var achivment_names = [String]()
-    var score :Int
+    var reset_score :Int
+    var score:Int
 
     
      init() {
      databaseRef = FIRDatabase.database().reference()
-     score = 0
+     reset_score = 0
+     score=0
     }
 
     
@@ -50,6 +52,12 @@ class FireDB {
             print(error.localizedDescription)
         }
     }
+    
+    
+    func high_score() -> Int {
+        return 100
+    }
+    
     
     func update_achievment(input_achivment:String)  {
         
@@ -117,9 +125,9 @@ class FireDB {
         prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml").child("achieve").child("netcracker")
         prntRef.updateChildValues(["done":false])
         prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml")
-        prntRef.updateChildValues(["Score":score])
+        prntRef.updateChildValues(["Score":reset_score])
         prntRef  = databaseRef.child("game_score").child("-KfKxh3vPVJ82oX5_iml")
-        prntRef.updateChildValues(["HighScore":score])
+        prntRef.updateChildValues(["HighScore":reset_score])
         
     }
     
