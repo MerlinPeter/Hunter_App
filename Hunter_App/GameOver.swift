@@ -2,8 +2,7 @@
 //  GameOver.swift
 //  Hunter_App
 //
-//  Created by Peter on 2/24/17.
-//  Copyright © 2017 peter. All rights reserved.
+ //  Copyright © 2017 peter. All rights reserved.
 //
 
 import UIKit
