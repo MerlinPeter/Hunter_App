@@ -2,7 +2,7 @@
 //  GameWin.swift
 //  Hunter_App
 //
-//  Created by Peter on 2/26/17.
+//  Created by Merlin on 2/26/17.
 //  Copyright © 2017 peter. All rights reserved.
 //
 
